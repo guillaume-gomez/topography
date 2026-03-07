@@ -1,10 +1,11 @@
 import { useRef, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
-import { type Mesh} from "three";
+import { Vector2, type Mesh} from "three";
 import FallBackLoader from "./FallBackLoader";
 import { EffectComposer, Vignette, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
+import TopologyShape from './TopologyShape';
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
@@ -17,7 +18,7 @@ function ThreejsRenderer({
 } : ThreeJsRendererProps ): React.ReactElement {
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
-  const backgroundColor = "#000000";
+  const backgroundColor = "#FFAFA0";
   async function recenter() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
@@ -51,6 +52,17 @@ function ThreejsRenderer({
                   { MODE === "development" &&
                     <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
                   }
+
+                  <TopologyShape  points={[
+                    new Vector2(0, 0),
+                    new Vector2(5, -4),
+                    new Vector2(10, 0),
+                    new Vector2(10, 10),
+                    new Vector2(5, 18),
+                    new Vector2(6, 12),
+                    new Vector2(8, 3),
+                    new Vector2(0, 10),
+                  ]} color={"#FF0000"} position={[0,0,0]} />
               </Suspense>
             </Stage>
           { MODE === "development" &&
@@ -65,10 +77,10 @@ function ThreejsRenderer({
               blendFunction={BlendFunction.NORMAL} // blend mode
             />
             <Bloom mipmapBlur luminanceThreshold={1.0} />
-            <ChromaticAberration
+            {/* <ChromaticAberration
               blendFunction={BlendFunction.NORMAL} // blend mode
               offset={[0.05, 0.05]} // color offset
-            />
+            /> */}
             {/*<GridP scale={0.0} lineWidth={.0}/>*/}
           </EffectComposer>
           <CameraControls
