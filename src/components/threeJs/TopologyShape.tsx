@@ -5,12 +5,13 @@ interface TopologyShapeProps {
     points: Vector2[];
     color: string;
 		position?: [number, number, number];
+    height?: number
 };
 
-function TopologyShape({ points, color, position }: TopologyShapeProps): ReactElement {
+function TopologyShape({ points, color, position, height }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => new Shape(points), [points]);
 	const extrudeSettings = useMemo(() => ({
-		depth: 2,
+		depth: height,
 		bevelEnabled: false,
 	}), []);
 

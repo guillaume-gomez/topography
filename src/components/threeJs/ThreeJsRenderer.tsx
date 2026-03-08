@@ -3,9 +3,10 @@ import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
 import { Vector2, type Mesh} from "three";
 import FallBackLoader from "./FallBackLoader";
-import { EffectComposer, Vignette, Bloom, ChromaticAberration } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import TopologyShape from './TopologyShape';
+import useTopography from "../hooks/useTopography";
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
@@ -18,7 +19,12 @@ function ThreejsRenderer({
 } : ThreeJsRendererProps ): React.ReactElement {
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
+  const { generate, shapes } = useTopography({width: 200, height: 200, numberOfLayers: 10});
+  const heightLayer = 5; 
+
   const backgroundColor = "#FFAFA0";
+
+
   async function recenter() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
@@ -53,7 +59,16 @@ function ThreejsRenderer({
                     <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
                   }
 
-                  <TopologyShape  points={[
+                  {
+                    shapes.map((shape, index) => {
+                      return (
+                        <TopologyShape
+                          points={shape.points} color={shape.color} position={[0,index * heightLayer ,0]} height={heightLayer} />
+                      )
+                    })
+                  }
+
+                  {/*<TopologyShape  points={[
                     new Vector2(0, 0),
                     new Vector2(5, -4),
                     new Vector2(10, 0),
@@ -63,6 +78,14 @@ function ThreejsRenderer({
                     new Vector2(8, 3),
                     new Vector2(0, 10),
                   ]} color={"#FF0000"} position={[0,0,0]} />
+
+                  <TopologyShape  points={[
+                    new Vector2(0, 0),
+                    new Vector2(5, -4),
+                    new Vector2(10, 0),
+                    new Vector2(10, 10),
+                    new Vector2(5, 18),
+                  ]} color={"#FFFF00"} position={[0,2,0]} />*/}
               </Suspense>
             </Stage>
           { MODE === "development" &&
@@ -71,16 +94,11 @@ function ThreejsRenderer({
             </GizmoHelper>
           }
           <EffectComposer enableNormalPass={false}>
-            <Vignette
-              offset={0.1} darkness={2.0} // vignette darkness
-              eskil={false} // Eskil's vignette technique
-              blendFunction={BlendFunction.NORMAL} // blend mode
-            />
             <Bloom mipmapBlur luminanceThreshold={1.0} />
-            {/* <ChromaticAberration
+            {/*<ChromaticAberration
               blendFunction={BlendFunction.NORMAL} // blend mode
-              offset={[0.05, 0.05]} // color offset
-            /> */}
+              offset={[0.005, 0.005]} // color offset
+            />*/}
             {/*<GridP scale={0.0} lineWidth={.0}/>*/}
           </EffectComposer>
           <CameraControls
