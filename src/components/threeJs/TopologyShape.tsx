@@ -10,12 +10,12 @@ interface TopologyShapeProps {
 function TopologyShape({ points, color, position }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => new Shape(points), [points]);
 	const extrudeSettings = useMemo(() => ({
-		depth: 1,
+		depth: 2,
 		bevelEnabled: false,
 	}), []);
 
   return (
-    <mesh	position={position}>
+    <mesh	position={position} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow>
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
       <meshStandardMaterial color={color} />
     </mesh>
