@@ -28,6 +28,11 @@ const COLORS = [
 "#8A6552",
 "#462521",
 "#BDB246",
+"#394053",
+"#4E4A59",
+"#6E6362",
+"#839073",
+"#7CAE7A"
 ]
 
 function useTopography({ width, height, numberOfLayers } : TopographyProps) {
@@ -72,23 +77,31 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
   function generate(): Shape[] {
     const shapes = [];
-    const offset = 10;
+    const offset = 8;
     for(let i = 0; i < numberOfLayers; i++) {
+      const widthLayer = width - (i*offset);
+      const heightLayer = height - (i*offset);
+
       const shapePoints = generateRandomPolygon(
-        width - (i*offset),
-        height - (i*offset),
+        widthLayer,
+        heightLayer,
         20
       );
+      const points = centeredPoints(shapePoints, width/2 - widthLayer/2, height/2 - heightLayer/2);
 
       const shape = { 
         color: COLORS[i],
-        points: shapePoints.map(point => new Vector2(point.x, point.y))
+        points: points.map(point => new Vector2(point.x, point.y))
       }
 
       shapes.push(shape);
     }
     setShapes(shapes);
     return shapes;
+  }
+
+  function centeredPoints(points: Point[], offsetX: number, offsetY) {
+    return points.map(point => ({ x: point.x + offsetX, y: point.y + offsetY }) );
   }
 
   return { generate, shapes };
