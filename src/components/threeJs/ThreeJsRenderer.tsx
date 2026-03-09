@@ -1,9 +1,10 @@
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useEffect } from 'react';
+import { animated, useSprings } from '@react-spring/three';
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
 import { Vector2, type Mesh} from "three";
 import FallBackLoader from "./FallBackLoader";
-import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration, Grid as GridP } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import TopologyShape from './TopologyShape';
 import useTopography from "../hooks/useTopography";
@@ -15,15 +16,52 @@ const { /*BASE_URL,*/ MODE } = import.meta.env;
 interface ThreeJsRendererProps {
 }
 
+const width = 200;
+const height = 200;
+const numberOfLayers = 10;
+const thickness = 5;
+
+const OriginalPosition = 400;
+
 function ThreejsRenderer({
 } : ThreeJsRendererProps ): React.ReactElement {
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
-  const { generate, shapes } = useTopography({width: 200, height: 200, numberOfLayers: 10});
-  const heightLayer = 5; 
+  const { generate, shapes } = useTopography({width, height, numberOfLayers});
+  
 
   const backgroundColor = "#FFAFA0";
 
+  const [springs, api] = useSprings(
+    numberOfLayers,
+    (springIndex) => {
+      return (
+        {
+          from: { y: OriginalPosition },
+          to: async (next, cancel) => {
+            await next({ y: OriginalPosition, immediate: true });
+            await next({ y: springIndex * (thickness * 2.), delay: springIndex * 500 });
+          },
+          config: {
+            duration: 500
+          },
+          reset: true,
+          onStart: () => {
+            if(springIndex === 0) {
+              recenter();  
+            }
+            
+          },
+          onRest: () => {
+            if(springIndex === numberOfLayers) {
+              recenter();
+            }
+          },
+        }
+      );
+    },
+    [shapes]
+  );
 
   async function recenter() {
     if(!meshRef.current || !cameraControllerRef.current) {
@@ -38,11 +76,14 @@ function ThreejsRenderer({
 
   return (
     <div className="flex flex-col gap-5 w-full h-full" style={{ width: '100%', height: '100%'}}>
+      <button className="btn btn-primary" onClick={() => generate()}>
+        Generate
+      </button>
       <div style={{ width: '100%', height: '100%'}}
         className="hover:cursor-grabbing w-full h-full rounded-xl"
       >
         <Canvas
-          camera={{ position: [0,0, 250], fov: 75, far: 500 }}
+          camera={{ position: [0, 200, 250], fov: 75, far: 500 }}
           dpr={window.devicePixelRatio}
           shadows
           id="three-js-renderer"
@@ -59,33 +100,29 @@ function ThreejsRenderer({
                     <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
                   }
 
-                  {
-                    shapes.map((shape, index) => {
-                      return (
-                        <TopologyShape
-                          points={shape.points} color={shape.color} position={[0,index * heightLayer ,0]} height={heightLayer} />
-                      )
-                    })
-                  }
-
-                  {/*<TopologyShape  points={[
-                    new Vector2(0, 0),
-                    new Vector2(5, -4),
-                    new Vector2(10, 0),
-                    new Vector2(10, 10),
-                    new Vector2(5, 18),
-                    new Vector2(6, 12),
-                    new Vector2(8, 3),
-                    new Vector2(0, 10),
-                  ]} color={"#FF0000"} position={[0,0,0]} />
-
-                  <TopologyShape  points={[
-                    new Vector2(0, 0),
-                    new Vector2(5, -4),
-                    new Vector2(10, 0),
-                    new Vector2(10, 10),
-                    new Vector2(5, 18),
-                  ]} color={"#FFFF00"} position={[0,2,0]} />*/}
+                  <group
+                    position={[-width/2, 15, height/2]}
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    ref={meshRef.current}
+                  >
+                    {
+                      shapes.map((shape, index) => {
+                        return (
+                          <TopologyShape
+                            key={index}
+                            points={shape.points}
+                            color={shape.color}
+                            position={[0, 0, springs[index].y]}
+                            thickness={thickness}
+                          />
+                        )
+                      })
+                    }
+                  </group>
+                  <mesh position={[0, 0, 0]}>
+                    <boxGeometry args={[width, 20, height]} />
+                    <meshStandardMaterial color="black" />
+                  </mesh>
               </Suspense>
             </Stage>
           { MODE === "development" &&
@@ -97,9 +134,9 @@ function ThreejsRenderer({
             <Bloom mipmapBlur luminanceThreshold={1.0} />
             {/*<ChromaticAberration
               blendFunction={BlendFunction.NORMAL} // blend mode
-              offset={[0.005, 0.005]} // color offset
+              offset={[0.001, 0.001]} // color offset
             />*/}
-            {/*<GridP scale={0.0} lineWidth={.0}/>*/}
+            <GridP scale={0.0} lineWidth={.0}/>
           </EffectComposer>
           <CameraControls
             ref={cameraControllerRef}
@@ -110,7 +147,7 @@ function ThreejsRenderer({
             minAzimuthAngle={-0.55}
             maxAzimuthAngle={0.55}
             minDistance={10}
-            maxDistance={200}
+            maxDistance={400}
           />
         </Canvas>
       </div>
