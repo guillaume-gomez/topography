@@ -1,4 +1,4 @@
-import { Vector2, Vector3, Shape, CatmullRomCurve3 } from 'three';
+import { Vector2, Vector3, Shape } from 'three';
 import { useMemo, type ReactElement } from 'react';
 import { animated } from '@react-spring/three';
 
@@ -11,9 +11,9 @@ interface TopologyShapeProps {
 
 function TopologyShape({ points, color, position, thickness }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => {
-    new Shape(points)
-    },
-    [points]
+    return new Shape(points);
+  },
+  [points]
   );
 
 	const extrudeSettings = useMemo(() => ({
@@ -22,7 +22,7 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
             bevelThickness: thickness * 0.5,
             bevelSize: thickness * 0.5,
             bevelOffset: 0,
-            bevelSegments: 10 // Plus c'est élevé, plus le biseau est rond
+            bevelSegments: 10
 	}), []);
   return (
     <animated.mesh
@@ -32,7 +32,7 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
       castShadow
       receiveShadow
     >
-      <animated.extrudeGeometry attach="geometry" args={[new Shape(points), extrudeSettings]} />
+      <animated.extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
       <meshStandardMaterial color={color} />
     </animated.mesh>
   );
