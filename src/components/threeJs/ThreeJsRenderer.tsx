@@ -1,11 +1,12 @@
 import { useRef, Suspense, useEffect } from 'react';
 import { animated, useSprings } from '@react-spring/three';
+import useSound from 'use-sound';
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
 import { Vector2, type Mesh} from "three";
 import FallBackLoader from "./FallBackLoader";
-import { EffectComposer, Bloom, ChromaticAberration, Grid as GridP } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration, Grid as GridP, ToneMapping } from '@react-three/postprocessing';
+import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import TopologyShape from './TopologyShape';
 import useTopography from "../hooks/useTopography";
 
@@ -28,8 +29,8 @@ function ThreejsRenderer({
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
+  const [play, { stop }] = useSound('/sounds/pop-down.mp3', { volume: 1. });
   
-
   const backgroundColor = "#FFAFA0";
 
   const [springs, api] = useSprings(
@@ -56,6 +57,7 @@ function ThreejsRenderer({
             if(springIndex === numberOfLayers) {
               recenter();
             }
+            play();
           },
         }
       );
@@ -136,7 +138,8 @@ function ThreejsRenderer({
               blendFunction={BlendFunction.NORMAL} // blend mode
               offset={[0.001, 0.001]} // color offset
             />*/}
-            <GridP scale={0.0} lineWidth={.0}/>
+            {/*<GridP scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
+            <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
           </EffectComposer>
           <CameraControls
             ref={cameraControllerRef}
