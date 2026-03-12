@@ -1,5 +1,5 @@
 import { useRef, Suspense, useEffect } from 'react';
-import { animated, useSprings } from '@react-spring/three';
+import { animated, useSprings, useSpring } from '@react-spring/three';
 import useSound from 'use-sound';
 import { Canvas } from '@react-three/fiber';
 import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
@@ -17,8 +17,8 @@ const { /*BASE_URL,*/ MODE } = import.meta.env;
 interface ThreeJsRendererProps {
 }
 
-const width = 200;
-const height = 200;
+const width = 250;
+const height = 250;
 const numberOfLayers = 10;
 const thickness = 5;
 
@@ -29,7 +29,8 @@ function ThreejsRenderer({
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
-  const [play, { stop }] = useSound('/sounds/pop-down.mp3', { volume: 1. });
+  const [play, { stop, sound }] = useSound('/sounds/pop-down.mp3', { volume: 1., interrupt: true });
+
   
   const backgroundColor = "#FFAFA0";
 
@@ -63,6 +64,18 @@ function ThreejsRenderer({
       );
     },
     [shapes]
+  );
+
+  const [rotationSpring, _api] = useSpring(
+  {
+    from: { rotationY: 0 },
+    to: { rotationY: Math.PI * 2 },
+    config: {
+      duration: 800
+    },
+    reset: true,
+  },
+  [shapes]
   );
 
   async function recenter() {
@@ -121,10 +134,10 @@ function ThreejsRenderer({
                       })
                     }
                   </group>
-                  <mesh position={[0, 0, 0]}>
+                  <animated.mesh position={[0, 0, 0]} rotation-y={rotationSpring.rotationY}>
                     <boxGeometry args={[width, 20, height]} />
                     <meshStandardMaterial color="black" />
-                  </mesh>
+                  </animated.mesh>
               </Suspense>
             </Stage>
           { MODE === "development" &&
