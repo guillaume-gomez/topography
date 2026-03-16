@@ -1,10 +1,13 @@
-import { Vector2, Vector3, Shape } from 'three';
+import { Vector2, Vector3, Shape, Color } from 'three';
 import { useMemo, type ReactElement } from 'react';
 import { animated } from '@react-spring/three';
+import TopologyMaterial from "./Material/TopologyMaterial";
+import WavyPhysicalMaterial from './Material/WavyPhysicalMaterial';
+
 
 interface TopologyShapeProps {
     points: Vector2[];
-    color: string;
+    color: Color;
 		position?: [number, number, number];
     thickness?: number;
 };
@@ -19,10 +22,10 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
 	const extrudeSettings = useMemo(() => ({
 		depth: thickness,
 		bevelEnabled: true,
-            bevelThickness: thickness * 0.5,
-            bevelSize: thickness * 0.5,
-            bevelOffset: 0,
-            bevelSegments: 10
+    bevelThickness: thickness * 0.5,
+    bevelSize: thickness * 0.5,
+    bevelOffset: 0,
+    bevelSegments: 10
 	}), []);
   return (
     <animated.mesh
@@ -31,9 +34,28 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
       position-z={position[2]}
       castShadow
       receiveShadow
+
     >
       <animated.extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
-      <meshStandardMaterial color={color} />
+      {/*<WavyPhysicalMaterial 
+        color={color}
+        emissive={"black"}
+        roughness={1.}
+        metalness={0.1}
+        amplitude={4}
+        frequency={10}
+      />*/}
+      
+      <meshPhysicalMaterial
+        wireframe={false}
+        color={color}
+        emissive={"black"}
+        roughness={1}
+        metalness={0.1}
+        clearcoat={1.0}
+        clearcoatRoughness={0.1}
+      />
+      {/*<meshNormalMaterial/>*/}
     </animated.mesh>
   );
 };
