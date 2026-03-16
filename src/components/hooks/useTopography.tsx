@@ -35,6 +35,10 @@ const COLORS = [
 "#7CAE7A"
 ]
 
+function randomInteger(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 function useTopography({ width, height, numberOfLayers } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
 
@@ -45,39 +49,25 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
   function generateRandomPolygon(width, height, numPoints = 8): Point[] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
 
-      const points : Point[] = [];
-      const centerX = width / 2;
-      const centerY = height / 2;
+      const points = [];
 
-      // Generate random points
-      for (let i = 0; i < numPoints; i++) {
-          points.push({
-              x: Math.random() * width,
-              y: Math.random() * height
-          });
+      const step = (Math.PI * 2)/ numPoints;
+      
+      const radiusX = width / 2;
+      const radiusY = height/ 2;
+      for (let m = 0; m < Math.PI * 2; m += step) {
+        const r1 = randomInteger(radiusX-20, radiusX);
+        const r2 = randomInteger(radiusY-20, radiusY);
+        let x = Math.cos(m) * r1 + width/2;
+        let y = Math.sin(m) * r2 + height/2;
+        points.push({x, y});
       }
-
-      // compute centroid
-      let sumX = 0, sumY = 0;
-      for (const p of points) {
-          sumX += p.x;
-          sumY += p.y;
-      }
-      const centroid = { x: sumX / numPoints, y: sumY / numPoints };
-
-      // sort points to avoid crossed between points
-      points.sort((a, b) => {
-          const angleA = Math.atan2(a.y - centroid.y, a.x - centroid.x);
-          const angleB = Math.atan2(b.y - centroid.y, b.x - centroid.x);
-          return angleA - angleB;
-      });
-
       return points;
   }
 
   function generate(): Shape[] {
     const shapes = [];
-    const offset = 8;
+    const offset = 20;
     for(let i = 0; i < numberOfLayers; i++) {
       const widthLayer = width - (i*offset);
       const heightLayer = height - (i*offset);
@@ -85,7 +75,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       const shapePoints = generateRandomPolygon(
         widthLayer,
         heightLayer,
-        20
+        50
       );
       const points = centeredPoints(shapePoints, width/2 - widthLayer/2, height/2 - heightLayer/2);
 
