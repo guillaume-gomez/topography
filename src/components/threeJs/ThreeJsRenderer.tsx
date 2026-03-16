@@ -1,4 +1,4 @@
-import { useRef, Suspense, useEffect } from 'react';
+import { useRef, Suspense, useEffect, useState } from 'react';
 import { animated, useSprings, useSpring } from '@react-spring/three';
 import useSound from 'use-sound';
 import { Canvas } from '@react-three/fiber';
@@ -29,9 +29,9 @@ function ThreejsRenderer({
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
-  const [play, { stop, sound }] = useSound('/sounds/pop-down.mp3', { volume: 1., interrupt: true });
-
-  
+  const [play, { stop }] = useSound('/sounds/pop-down.mp3', {
+    volume: 1.,
+  });
   const backgroundColor = "#FFAFA0";
 
   const [springs, api] = useSprings(
@@ -50,14 +50,15 @@ function ThreejsRenderer({
           reset: true,
           onStart: () => {
             if(springIndex === 0) {
-              recenter();  
+              recenter();
             }
             
           },
           onRest: () => {
-            if(springIndex === numberOfLayers) {
+            if(springIndex === numberOfLayers-1) {
               recenter();
             }
+            stop();
             play();
           },
         }
@@ -66,10 +67,11 @@ function ThreejsRenderer({
     [shapes]
   );
 
+
   const [rotationSpring, _api] = useSpring(
   {
-    from: { rotationY: 0 },
-    to: { rotationY: Math.PI * 2 },
+    from: { y: 0, rotationY: 0 },
+    to: { y: 0, rotationY: Math.PI * 2 },
     config: {
       duration: 800
     },
@@ -91,7 +93,7 @@ function ThreejsRenderer({
 
   return (
     <div className="flex flex-col gap-5 w-full h-full" style={{ width: '100%', height: '100%'}}>
-      <button className="btn btn-primary" onClick={() => generate()}>
+      <button className="btn btn-primary" onClick={() => {generate();}}>
         Generate
       </button>
       <div style={{ width: '100%', height: '100%'}}
@@ -134,7 +136,7 @@ function ThreejsRenderer({
                       })
                     }
                   </group>
-                  <animated.mesh position={[0, 0, 0]} rotation-y={rotationSpring.rotationY}>
+                  <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
                     <boxGeometry args={[width, 20, height]} />
                     <meshStandardMaterial color="black" />
                   </animated.mesh>
