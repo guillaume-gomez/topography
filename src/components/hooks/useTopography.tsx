@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Vector2 } from "three";
 import { createNoise2D } from 'simplex-noise';
+import { offsetShape } from "../offsetPolygonTools";
 
 interface TopographyProps {
   width: number;
@@ -65,10 +66,10 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
           Math.cos(m) * 0.5,
           Math.sin(m) * 0.5
         );
-      
+
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
-        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
-      
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.1, 1.3) * radius;
+
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
@@ -82,7 +83,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     if (numPoints < 2) throw new Error("Needs at least 2 points to create a shape");
 
     const simplex = new createNoise2D();
-    
+
     const points = [];
 
     const radius = widthLayer;
@@ -92,8 +93,8 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
           Math.cos(m) * 0.5,
           Math.sin(m) * 0.5
         );
-        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.1) * radius;
-      
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
+
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
@@ -108,31 +109,34 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
   function generate(): Shape[] {
     const shapes = [];
-    const offset = 25;
-    for(let i = 0; i < numberOfLayers; i++) {
-      const widthLayer = width - (i*offset);
-      const heightLayer = height - (i*offset);
 
-      // const shapePoints = generateRandomPolygon(
-      //   widthLayer,
-      //   width,
-      //   height,
-      //   100,
-      // );
+    const shapePoints = generateRandomPolygon(
+      width,
+      width,
+      height,
+      75,
+    );
 
-      const shapePoints = generateSquaredRandomPolygon(
-        widthLayer,
-        heightLayer,
-        100,
-      );
-     
+    const shape = {
+      color: COLORS[0],
+      points: shapePoints.map(point => new Vector2(point.x, point.y))
+    }
 
-      const shape = { 
+    shapes.push(shape);
+
+    const offset = -5;
+    let currentShape = shape;
+    for(let i = 1; i < numberOfLayers; i++) {
+
+      const shapePoints = offsetShape(currentShape.points, offset);
+
+      const newShape = {
         color: COLORS[i],
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
-      shapes.push(shape);
+      currentShape = newShape;
+      shapes.push(newShape);
     }
     setShapes(shapes);
     return shapes;

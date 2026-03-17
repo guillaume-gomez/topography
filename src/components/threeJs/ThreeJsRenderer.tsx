@@ -19,7 +19,7 @@ interface ThreeJsRendererProps {
 
 const width = 250;
 const height = 250;
-const numberOfLayers = 10;
+const numberOfLayers = 7;
 const thickness = 5;
 
 const OriginalPosition = 400;
