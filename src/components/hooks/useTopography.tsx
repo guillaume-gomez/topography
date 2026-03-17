@@ -51,14 +51,14 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     generate();
   }, [width, height, numberOfLayers])
 
-  function generateRandomPolygon(width, height, numPoints = 8): Point[] {
+  function generateRandomPolygon(widthLayer, width, height, numPoints = 8): Point[] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
       const simplex = new createNoise2D();
 
       const points = [];
 
       const step = (Math.PI * 2)/ numPoints;
-      const radius = width / 2;
+      const radius = widthLayer / 2;
 
       for (let m = 0; m < Math.PI * 2; m += step) {
         const noiseValue = simplex(
@@ -67,39 +67,41 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
         );
       
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
-        const rayonVarie = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
       
-        const x = Math.cos(m) * rayonVarie;
-        const y = Math.sin(m) * rayonVarie;
+        const x = Math.cos(m) * noisyRadius;
+        const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
 
       }
-      return points;
+
+      return centeredPoints(points, width/2, height/2);;
   }
 
-  function generateSquaredRandomPolygon(width, height, numPoints= 8): Point[] {
+  function generateSquaredRandomPolygon(widthLayer, heightLayer, numPoints= 8): Point[] {
     if (numPoints < 2) throw new Error("Needs at least 2 points to create a shape");
 
     const simplex = new createNoise2D();
     
     const points = [];
-    points.push({x: 0, y: height})
-    points.push({x: 0, y: 0})
-    points.push({x: width, y: 0})
 
-    const radius = width;
-    const step = (Math.PI /2)/(numPoints - 3);
+    const radius = widthLayer;
+    const step = (Math.PI /2)/(numPoints - 2); // push 2 points at the end
     for (let m = 0; m < Math.PI/2; m += step) {
-      const noiseValue = simplex(
-        Math.cos(m) * 0.5,
-        Math.sin(m) * 0.5
-      );
-        const rayonVarie = mapRange(noiseValue, -1, 1, 0.7, 1.1) * radius;
+        const noiseValue = simplex(
+          Math.cos(m) * 0.5,
+          Math.sin(m) * 0.5
+        );
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.1) * radius;
       
-        const x = Math.cos(m) * rayonVarie;
-        const y = Math.sin(m) * rayonVarie;
+        const x = Math.cos(m) * noisyRadius;
+        const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
     }
+    const lastPointAdded = points[points.length -1];
+
+    points.push({x: 0, y: lastPointAdded.y})
+    points.push({x: 0, y: 0})
     return points;
 
   }
@@ -111,19 +113,23 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       const widthLayer = width - (i*offset);
       const heightLayer = height - (i*offset);
 
-      const shapePoints = generateRandomPolygon(
+      // const shapePoints = generateRandomPolygon(
+      //   widthLayer,
+      //   width,
+      //   height,
+      //   100,
+      // );
+
+      const shapePoints = generateSquaredRandomPolygon(
         widthLayer,
         heightLayer,
-        50,
+        100,
       );
-      //const points = shapePoints;
-
-      // for  generateRandomPolygon, needs the function below
-      const points = centeredPoints(shapePoints, width/2, height/2);
+     
 
       const shape = { 
         color: COLORS[i],
-        points: points.map(point => new Vector2(point.x, point.y))
+        points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
       shapes.push(shape);
