@@ -51,19 +51,18 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     generate();
   }, [width, height, numberOfLayers])
 
-  function generateRandomPolygon(widthLayer, width, height, numPoints = 8): Point[] {
+  function generateRandomPolygon(radius, width, height, elevation, numPoints): Point[] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
       const simplex = new createNoise2D();
+      const frequency = Math.max(1.0, 0.5 + (elevation * 0.1));
 
       const points = [];
-
       const step = (Math.PI * 2)/ numPoints;
-      const radius = widthLayer / 2;
 
       for (let m = 0; m < Math.PI * 2; m += step) {
         const noiseValue = simplex(
-          Math.cos(m) * 0.5,
-          Math.sin(m) * 0.5
+          Math.cos(m) * frequency,
+          Math.sin(m) * frequency
         );
       
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
@@ -109,26 +108,27 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
   function generate(): Shape[] {
     const shapes = [];
     const offset = 25;
-    for(let i = 0; i < numberOfLayers; i++) {
-      const widthLayer = width - (i*offset);
-      const heightLayer = height - (i*offset);
+    for(let elevation = 0; elevation < numberOfLayers; elevation++) {
+      const widthLayer = width - (elevation * offset);
+      const heightLayer = height - (elevation * offset);
 
-      // const shapePoints = generateRandomPolygon(
-      //   widthLayer,
-      //   width,
-      //   height,
-      //   100,
-      // );
-
-      const shapePoints = generateSquaredRandomPolygon(
-        widthLayer,
-        heightLayer,
+      const shapePoints = generateRandomPolygon(
+        widthLayer/2,
+        width,
+        height,
+        elevation,
         100,
       );
+
+      // const shapePoints = generateSquaredRandomPolygon(
+      //   widthLayer,
+      //   heightLayer,
+      //   100,
+      // );
      
 
       const shape = { 
-        color: COLORS[i],
+        color: COLORS[elevation],
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
