@@ -29,7 +29,7 @@ function ThreejsRenderer({
   const meshRef = useRef<Mesh|null>(null);
   const cameraControllerRef = useRef<CameraControls>(null);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
-  const [play, { stop }] = useSound('/sounds/pop-down.mp3', {
+  const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', {
     volume: 1.,
   });
   const backgroundColor = "#FFAFA0";
@@ -160,10 +160,10 @@ function ThreejsRenderer({
             ref={cameraControllerRef}
             makeDefault
             smoothTime={1.0}
-            minPolarAngle={0.75}
-            maxPolarAngle={Math.PI / 1.9}
-            minAzimuthAngle={-0.55}
-            maxAzimuthAngle={0.55}
+            // minPolarAngle={0.75}
+            // maxPolarAngle={Math.PI / 1.9}
+            // minAzimuthAngle={-0.55}
+            // maxAzimuthAngle={0.55}
             minDistance={10}
             maxDistance={400}
           />
