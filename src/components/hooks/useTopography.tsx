@@ -51,14 +51,15 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     generate();
   }, [width, height, numberOfLayers])
 
-  function generateRandomPolygon(radius, width, height, elevation, numPoints): Point[] {
+  function generateRandomPolygon(radius, width, height, elevation, numPoints): [Point[], number] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
       const simplex = new createNoise2D();
-      const frequency = Math.max(1.0, 0.5 + (elevation * 0.1));
+      const frequency = 0.5
 
       const points = [];
       const step = (Math.PI * 2)/ numPoints;
 
+      let minRadius = 1.0 * radius;
       for (let m = 0; m < Math.PI * 2; m += step) {
         const noiseValue = simplex(
           Math.cos(m) * frequency,
@@ -66,15 +67,18 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
         );
       
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
-        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.1) * radius;
       
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
 
-      }
+        if(noisyRadius < minRadius) {
+          minRadius = noisyRadius;
+        }
 
-      return centeredPoints(points, width/2, height/2);;
+      }
+      return [centeredPoints(points, width/2, height/2), minRadius];
   }
 
   function generateSquaredRandomPolygon(widthLayer, heightLayer, numPoints= 8): Point[] {
@@ -107,13 +111,12 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
   function generate(): Shape[] {
     const shapes = [];
-    const offset = 25;
+    let radius = width/2;
+    const offset = 2;
     for(let elevation = 0; elevation < numberOfLayers; elevation++) {
-      const widthLayer = width - (elevation * offset);
-      const heightLayer = height - (elevation * offset);
-
-      const shapePoints = generateRandomPolygon(
-        widthLayer/2,
+  
+      const [shapePoints, newRadius] = generateRandomPolygon(
+        radius,
         width,
         height,
         elevation,
@@ -125,6 +128,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       //   heightLayer,
       //   100,
       // );
+      // needs to be updated
      
 
       const shape = { 
@@ -133,6 +137,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       }
 
       shapes.push(shape);
+      radius = newRadius - offset;
     }
     setShapes(shapes);
     return shapes;
