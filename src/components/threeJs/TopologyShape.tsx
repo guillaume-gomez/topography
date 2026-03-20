@@ -10,9 +10,10 @@ interface TopologyShapeProps {
     color: Color;
 		position?: [number, number, number];
     thickness?: number;
+    opacity?: number;
 };
 
-function TopologyShape({ points, color, position, thickness }: TopologyShapeProps): ReactElement {
+function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => {
     return new Shape(points);
   },
@@ -27,6 +28,7 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
     bevelOffset: 0,
     bevelSegments: 10
 	}), []);
+
   return (
     <animated.mesh
       position-x={position[0]}
@@ -36,7 +38,7 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
       receiveShadow
 
     >
-      <animated.extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
+      <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
       {/*<WavyPhysicalMaterial 
         color={color}
         emissive={"black"}
@@ -46,8 +48,10 @@ function TopologyShape({ points, color, position, thickness }: TopologyShapeProp
         frequency={10}
       />*/}
       
-      <meshPhysicalMaterial
+      <animated.meshPhysicalMaterial
         wireframe={false}
+        opacity={opacity}
+        transparent={opacity < 1.0}
         color={color}
         emissive={"black"}
         roughness={1}
