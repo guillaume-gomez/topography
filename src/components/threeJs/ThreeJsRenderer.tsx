@@ -18,7 +18,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
   
-  async function recenter() {
+  async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
     }
@@ -45,7 +45,12 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-            <Scene shapes={shapes} meshRef={meshRef}/>
+            <Scene
+              shapes={shapes}
+              meshRef={meshRef}
+              onAnimationStart={recenterCamera}
+              onAnimationEnd={recenterCamera}
+            />
           </Stage>
           { MODE === "development" &&
             <GizmoHelper alignment="bottom-right" margin={[100, 100]}>

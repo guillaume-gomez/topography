@@ -11,18 +11,18 @@ import { SettingsContext } from "../SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
 
-
-
 interface SceneProps {
   shapes: Shape[];
   meshRef: Ref<Mesh>;
+  onAnimationStart: () => void;
+  onAnimationEnd: () => void;
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 const Thickness = 5;
 const OriginalPosition = 400;
 
-function Scene({ shapes, meshRef } : SceneProps) {
+function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps) {
   const {
     isLight,
     width,
@@ -53,13 +53,13 @@ function Scene({ shapes, meshRef } : SceneProps) {
           reset: true,
           onStart: () => {
             if(springIndex === 0) {
-              //recenter();
+              onAnimationStart();
             }
             
           },
           onRest: () => {
             if(springIndex === numberOfLayers-1) {
-              //recenter();
+              onAnimationEnd()
             }
             stop();
             play();
@@ -94,7 +94,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
       <group
         position={[-width/2, 15, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
-        ref={meshRef.current}
+        ref={meshRef}
       >
         {
           shapes.map((shape, index) => {
