@@ -1,5 +1,5 @@
-import { useContext, Suspense, useRef } from 'react';
-import { Vector2, type Mesh} from "three";
+import { useContext, Suspense, type Ref } from 'react';
+import { type Mesh} from "three";
 import useSound from 'use-sound';
 import { animated, useSprings, useSpring } from '@react-spring/three';
 
@@ -9,29 +9,27 @@ import TopologyShape from './TopologyShape';
 import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../SettingsContextWrapper";
 
-import useTopography, { Shape } from "../hooks/useTopography";
+import { type Shape } from "../hooks/useTopography";
 
 
 
 interface SceneProps {
   shapes: Shape[];
+  meshRef: Ref<Mesh>;
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 const Thickness = 5;
 const OriginalPosition = 400;
 
-function Scene({ shapes } : SceneProps) {
+function Scene({ shapes, meshRef } : SceneProps) {
   const {
     isLight,
-    timerIntroInMs,
-    setLight,
     width,
     height,
     numberOfLayers
   } = useContext(SettingsContext);
-  const meshRef = useRef<Mesh|null>(null);
-
+  
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
@@ -39,13 +37,13 @@ function Scene({ shapes } : SceneProps) {
     config: { duration: 3000}
   })
 
-  const [springs, api] = useSprings(
+  const [springs, _api] = useSprings(
     numberOfLayers,
     (springIndex) => {
       return (
         {
           from: { y: OriginalPosition },
-          to: async (next, cancel) => {
+          to: async (next, _cancel) => {
             await next({ y: OriginalPosition, immediate: true });
             await next({ y: springIndex * (Thickness * 2.), delay: springIndex * 500 });
           },
@@ -73,7 +71,7 @@ function Scene({ shapes } : SceneProps) {
   );
 
 
-  const [rotationSpring, _api] = useSpring(
+  const [rotationSpring, __api] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
     to: { y: 0, rotationY: Math.PI * 2,},
@@ -105,7 +103,7 @@ function Scene({ shapes } : SceneProps) {
                 key={index}
                 points={shape.points}
                 color={shape.color}
-                position={[0, 0, springs[index].y]}
+                position={[0, 0, springs[index].y as unknown as number]}
                 thickness={Thickness}
                 opacity={shapeToDisplay.opacity}
               />

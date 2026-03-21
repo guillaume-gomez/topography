@@ -2,7 +2,7 @@ import Range from "./Range";
 import { useState } from "react";
 
 function Form() {
-  const [layers, setLayers] = useState<number>();
+  const [layers, setLayers] = useState<number>(10);
 	return (
   
     <div className="

@@ -1,9 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { type Mesh} from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
-import { Vector2, type Mesh} from "three";
-import { EffectComposer, Bloom, ChromaticAberration, Grid as GridP, ToneMapping } from '@react-three/postprocessing';
-import { BlendFunction, ToneMappingMode } from 'postprocessing';
+import { EffectComposer, Bloom, /*Grid,*/ ToneMapping } from '@react-three/postprocessing';
+import { /*BlendFunction,*/ ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { Shape } from "../hooks/useTopography";
 
@@ -16,6 +16,7 @@ interface ThreeJsRendererProps {
 
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const cameraControllerRef = useRef<CameraControls>(null);
+  const meshRef = useRef<Mesh|null>(null);
   
   async function recenter() {
     if(!meshRef.current || !cameraControllerRef.current) {
@@ -44,7 +45,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-            <Scene shapes={shapes} />
+            <Scene shapes={shapes} meshRef={meshRef}/>
           </Stage>
           { MODE === "development" &&
             <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
@@ -57,7 +58,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               blendFunction={BlendFunction.NORMAL} // blend mode
               offset={[0.001, 0.001]} // color offset
             />*/}
-            {/*<GridP scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
+            {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
             <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
           </EffectComposer>
           <CameraControls

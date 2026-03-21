@@ -1,16 +1,15 @@
-import { Vector2, Vector3, Shape, Color } from 'three';
+import { Vector2, Shape, Color } from 'three';
 import { useMemo, type ReactElement } from 'react';
-import { animated } from '@react-spring/three';
-import TopologyMaterial from "./Material/TopologyMaterial";
-import WavyPhysicalMaterial from './Material/WavyPhysicalMaterial';
+import { animated, SpringValue } from '@react-spring/three';
+//import WavyPhysicalMaterial from './Material/WavyPhysicalMaterial';
 
 
 interface TopologyShapeProps {
     points: Vector2[];
     color: Color;
-		position?: [number, number, number];
+		position: [number, number, number];
     thickness?: number;
-    opacity?: number;
+    opacity?: SpringValue<number> | number;
 };
 
 function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: TopologyShapeProps): ReactElement {

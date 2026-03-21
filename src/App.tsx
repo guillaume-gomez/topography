@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { SettingsContext } from "./components/SettingsContextWrapper";
 
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';

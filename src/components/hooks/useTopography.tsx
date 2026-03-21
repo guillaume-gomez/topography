@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Vector2 } from "three";
+import { Vector2, Color } from "three";
 import { createNoise2D } from 'simplex-noise';
 
 interface TopographyProps {
@@ -14,7 +14,7 @@ interface Point {
 }
 
 export interface Shape {
-  color: string;
+  color: Color;
   points: Vector2[];
 }
 
@@ -36,7 +36,7 @@ const COLORS = [
 "#7CAE7A"
 ]
 
-function mapRange (n, start1, stop1, start2, stop2) {
+function mapRange (n: number, start1: number, stop1: number, start2: number, stop2: number) : number {
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
@@ -47,9 +47,9 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     generate();
   }, [width, height, numberOfLayers])
 
-  function generateRandomPolygon(radius, width, height, elevation, numPoints): [Point[], number] {
+  function generateRandomPolygon(radius: number, width: number, height: number, numPoints: number): [Point[], number] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
-      const simplex = new createNoise2D();
+      const simplex = new (createNoise2D as any)();
       const minRadiusRatio = 0.7;
       const maxRadiusRatio = 1.1;
       const frequency = 0.5
@@ -80,10 +80,10 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       return [centeredPoints(points, width/2, height/2), minRadius];
   }
 
-  function generateSquaredRandomPolygon(radius, numPoints= 8): [Point[], number] {
+  function generateSquaredRandomPolygon(radius: number, numPoints: number = 8): [Point[], number] {
     if (numPoints < 2) throw new Error("Needs at least 2 points to create a shape");
 
-    const simplex = new createNoise2D();
+    const simplex = new (createNoise2D as any)();
     const minRadiusRatio = 0.7;
     const maxRadiusRatio = 1.1;
     const frequency = 0.5
@@ -95,8 +95,8 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     const step = (Math.PI /2)/(numPoints - 2); // push 2 points at the end
     for (let m = 0; m < Math.PI/2; m += step) {
         const noiseValue = simplex(
-          Math.cos(m) * 0.5,
-          Math.sin(m) * 0.5
+          Math.cos(m) * frequency,
+          Math.sin(m) * frequency
         );
         const noisyRadius = mapRange(noiseValue, -1, 1, minRadiusRatio, maxRadiusRatio) * radius;
       
@@ -126,7 +126,6 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
         radius,
         width,
         height,
-        elevation,
         100,
       );
 
@@ -137,7 +136,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
      
 
       const shape = { 
-        color: COLORS[elevation],
+        color: new Color(COLORS[elevation]),
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
@@ -148,7 +147,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     return shapes;
   }
 
-  function centeredPoints(points: Point[], offsetX: number, offsetY) {
+  function centeredPoints(points: Point[], offsetX: number, offsetY: number) {
     return points.map(point => ({ x: point.x + offsetX, y: point.y + offsetY }) );
   }
 
