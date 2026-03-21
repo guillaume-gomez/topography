@@ -13,7 +13,7 @@ interface Point {
   y: number;
 }
 
-interface Shape {
+export interface Shape {
   color: string;
   points: Vector2[];
 }

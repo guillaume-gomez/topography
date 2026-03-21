@@ -1,85 +1,22 @@
-import { useRef, Suspense, useEffect, useState } from 'react';
-import { animated, useSprings, useSpring } from '@react-spring/three';
-import useSound from 'use-sound';
+import { useRef, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { GizmoHelper, GizmoViewport, Stage, Grid, Stats, CameraControls } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
 import { Vector2, type Mesh} from "three";
-import FallBackLoader from "./FallBackLoader";
 import { EffectComposer, Bloom, ChromaticAberration, Grid as GridP, ToneMapping } from '@react-three/postprocessing';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
-import TopologyShape from './TopologyShape';
-import useTopography from "../hooks/useTopography";
+import Scene from "./Scene";
+import { Shape } from "../hooks/useTopography";
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 
-
 interface ThreeJsRendererProps {
+  shapes: Shape[];
 }
 
-const width = 250;
-const height = 250;
-const numberOfLayers = 10;
-const thickness = 5;
-
-const OriginalPosition = 400;
-
-function ThreejsRenderer({
-} : ThreeJsRendererProps ): React.ReactElement {
-  const meshRef = useRef<Mesh|null>(null);
+function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const cameraControllerRef = useRef<CameraControls>(null);
-  const { generate, shapes } = useTopography({width, height, numberOfLayers});
-  const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', {
-    volume: 1.,
-  });
-  const backgroundColor = "#FFAFA0";
-
-  const [springs, api] = useSprings(
-    numberOfLayers,
-    (springIndex) => {
-      return (
-        {
-          from: { y: OriginalPosition },
-          to: async (next, cancel) => {
-            await next({ y: OriginalPosition, immediate: true });
-            await next({ y: springIndex * (thickness * 2.), delay: springIndex * 500 });
-          },
-          config: {
-            duration: 500
-          },
-          reset: true,
-          onStart: () => {
-            if(springIndex === 0) {
-              recenter();
-            }
-            
-          },
-          onRest: () => {
-            if(springIndex === numberOfLayers-1) {
-              recenter();
-            }
-            stop();
-            play();
-          },
-        }
-      );
-    },
-    [shapes]
-  );
-
-
-  const [rotationSpring, _api] = useSpring(
-  {
-    from: { y: 0, rotationY: 0 },
-    to: { y: 0, rotationY: Math.PI * 2 },
-    config: {
-      duration: 800
-    },
-    reset: true,
-  },
-  [shapes]
-  );
-
+  
   async function recenter() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
@@ -90,14 +27,10 @@ function ThreejsRenderer({
     );
   }
 
-
   return (
     <div className="flex flex-col gap-5 w-full h-full" style={{ width: '100%', height: '100%'}}>
-      <button className="btn btn-primary" onClick={() => {generate();}}>
-        Generate
-      </button>
-      <div style={{ width: '100%', height: '100%'}}
-        className="hover:cursor-grabbing w-full h-full rounded-xl"
+      <div style={{ width: '100%', height: '100%' }}
+        className="hover:cursor-grabbing w-full h-full rounded-xl p-10"
       >
         <Canvas
           camera={{ position: [0, 200, 250], fov: 75, far: 500 }}
@@ -106,42 +39,13 @@ function ThreejsRenderer({
           id="three-js-renderer"
         >
           { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+          
           <ambientLight intensity={1.5} />
-          <color attach="background" args={[backgroundColor]} />
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
-            <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"sunset"}>
-                <Suspense fallback={<FallBackLoader/>} >
-
-                  { MODE === "development" &&
-                    <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
-                  }
-
-                  <group
-                    position={[-width/2, 15, height/2]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                    ref={meshRef.current}
-                  >
-                    {
-                      shapes.map((shape, index) => {
-                        return (
-                          <TopologyShape
-                            key={index}
-                            points={shape.points}
-                            color={shape.color}
-                            position={[0, 0, springs[index].y]}
-                            thickness={thickness}
-                          />
-                        )
-                      })
-                    }
-                  </group>
-                  <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
-                    <boxGeometry args={[width, 20, height]} />
-                    <meshStandardMaterial color="black" />
-                  </animated.mesh>
-              </Suspense>
-            </Stage>
+          <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
+            <Scene shapes={shapes} />
+          </Stage>
           { MODE === "development" &&
             <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
               <GizmoViewport labelColor="white" axisHeadScale={1} />
@@ -160,10 +64,10 @@ function ThreejsRenderer({
             ref={cameraControllerRef}
             makeDefault
             smoothTime={1.0}
-            // minPolarAngle={0.75}
-            // maxPolarAngle={Math.PI / 1.9}
-            // minAzimuthAngle={-0.55}
-            // maxAzimuthAngle={0.55}
+            minPolarAngle={0.75}
+            maxPolarAngle={Math.PI / 1.9}
+            minAzimuthAngle={-0.55}
+            maxAzimuthAngle={0.55}
             minDistance={10}
             maxDistance={400}
           />

@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import ThreejsRenderer from './components/threeJs/ThreeJsRenderer'
+import { useEffect, useContext } from 'react';
+import { SettingsContext } from "./components/SettingsContextWrapper";
+
+import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
+import TiltCard from "./components/TiltCard";
+import useTopography from "./components/hooks/useTopography";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const {
+    isLight,
+    setLight,
+    width,
+    height, 
+    numberOfLayers
+  } = useContext(SettingsContext);
+  const { generate, shapes } = useTopography({width, height, numberOfLayers});
+  
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <TiltCard />
+      <button className="btn btn-primary" onClick={() => {generate();}}>
+        Generate
+      </button>
+      <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
+        {isLight ? "Light" : "Dark"}
+      </button>
       <div className="w-full h-screen">
-        <ThreejsRenderer />
+        <ThreejsRenderer shapes={shapes} />
       </div>
     </>
   )

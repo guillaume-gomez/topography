@@ -47,11 +47,10 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: 
         amplitude={4}
         frequency={10}
       />*/}
-      
       <animated.meshPhysicalMaterial
         wireframe={false}
         opacity={opacity}
-        transparent={opacity < 1.0}
+        transparent={true}
         color={color}
         emissive={"black"}
         roughness={1}

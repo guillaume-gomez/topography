@@ -1,10 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import './index.css';
+import App from './App.tsx';
+
+import SettingsContextWrapper from "./components/SettingsContextWrapper";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <SettingsContextWrapper>
+      <App />
+    </SettingsContextWrapper>
   </StrictMode>,
 )
