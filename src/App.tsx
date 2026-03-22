@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { SettingsContext } from "./components/SettingsContextWrapper";
 
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import TiltCard from "./components/TiltCard";
+//import TiltCard from "./components/TiltCard";
 import useTopography from "./components/hooks/useTopography";
 
 function App() {
@@ -11,15 +11,16 @@ function App() {
     setLight,
     width,
     height, 
-    numberOfLayers
+    numberOfLayers,
+    setAnimationState
   } = useContext(SettingsContext);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
   
   return (
     <>
       <h1>Vite + React</h1>
-      <TiltCard />
-      <button className="btn btn-primary" onClick={() => {generate();}}>
+      {/*<TiltCard />*/}
+      <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
         Generate
       </button>
       <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
