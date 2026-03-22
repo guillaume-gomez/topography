@@ -1,19 +1,31 @@
-import { useRef } from 'react';
-import { useSpring } from '@react-spring/three';
+import { useRef, useContext } from 'react';
+import { useSpring, animated } from '@react-spring/three';
 import {  useThree, useFrame } from '@react-three/fiber';
+import { SettingsContext } from "../SettingsContextWrapper";
 import { Color } from "three";
 
-interface SceneBackgroundProps {
-isLight: boolean;
+function hex2rgb(hex: string) : [number, number, number]  {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+    
+  return [r/255, g/255, b/255 ];
 }
 
-function SceneBackground({isLight}: SceneBackgroundProps) {
+const FROM = hex2rgb("#83FF73");
+const TO = hex2rgb("#FF4A59");
+
+function SceneBackground() {
   const { scene } = useThree();
   const colorRef = useRef<Color>(new Color());
+  const {
+    isLight,
+    timerSwitch,
+  } = useContext(SettingsContext);
 
   const spring = useSpring({
-    color: isLight ? [1, 0, 0] : [0, 0, 1],
-    config: { duration: 5000 }
+    color: isLight ? FROM : TO,
+    config: { duration: timerSwitch }
   });
 
   useFrame(() => {
