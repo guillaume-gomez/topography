@@ -14,7 +14,13 @@ function App() {
     numberOfLayers,
     setAnimationState
   } = useContext(SettingsContext);
-  const { generate, shapes } = useTopography({width, height, numberOfLayers});
+  const { generate, shapes } = useTopography({
+    width, 
+    height,
+    numberOfLayers,
+   // fromToColors: ["#006400", "#A0522D"]
+    fromToColors: ["#ff882f", "#4528cb"]
+  });
   
   return (
     <>
