@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, MutableRefObject } from 'react';
-import { useAnimation } from "../Reducers/generationReducer";
+import { useState, useEffect, useRef, MutableRefObject, useContext } from 'react';
+import { SettingsContext } from "./SettingsContextWrapper";
 
 interface ProgressButtonProps {
   label: string;
@@ -11,7 +11,10 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const [play, setPlay] = useState<boolean>(false);
   const animationRef : MutableRefObject<number | undefined> = useRef<number | undefined>(undefined);
   const previousTimeRef = useRef<number|undefined>(undefined);
-  const { started, duration: durationInMs } = useAnimation();
+  const {
+    animationState,
+    timerGeneration
+  } = useContext(SettingsContext);
 
   function animate(time: number) {
     if (previousTimeRef.current != undefined) {
@@ -26,7 +29,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   }
 
   useEffect(() => {
-    if(started) {
+    if(animationState === "started") {
       handleClick();
     } else {
         if(animationRef.current) {
@@ -36,7 +39,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
         setMilliseconds(0);
         previousTimeRef.current = undefined;
     }
-  }, [started])
+  }, [animationState])
 
   useEffect(() => {
     return () => {
@@ -54,11 +57,11 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
     }
   }
 
-  const progressPercentage = (milliseconds/durationInMs)*100;
+  const progressPercentage = (milliseconds/timerGeneration)*100;
 
   return (
     <button
-      className="btn btn-secondary btn-xs flex flex-row justify-start px-0 w-full"
+      className="btn btn-secondary flex flex-row justify-start px-0 w-full"
       onClick={handleClick}
     >
         <div
