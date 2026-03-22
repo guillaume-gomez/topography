@@ -77,7 +77,9 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               offset={[0.001, 0.001]} // color offset
             />*/}
             {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
             <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+            
           </EffectComposer>
           <CameraControls
             ref={cameraControllerRef}
