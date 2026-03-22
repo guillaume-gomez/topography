@@ -1,4 +1,4 @@
-import { useContext, Suspense, type Ref } from 'react';
+import { useContext, Suspense, type Ref, useEffect } from 'react';
 import { type Mesh} from "three";
 import useSound from 'use-sound';
 import { animated, useSprings, useSpring } from '@react-spring/three';
@@ -27,28 +27,38 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     isLight,
     width,
     height,
-    numberOfLayers
+    timerSwitch,
+    timerGeneration,
+    numberOfLayers,
+    animationState
   } = useContext(SettingsContext);
   
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 0.5,
-    config: { duration: 3000}
-  })
+    config: { duration: timerSwitch}
+  });
 
-  const [springs, _api] = useSprings(
+  const durationByLayer = timerGeneration / numberOfLayers;
+
+  const [springs, apiLayers] = useSprings(
     numberOfLayers,
     (springIndex) => {
+      // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes 
+      if(animationState === "ended") {
+        return { y: springIndex * (Thickness * 2.), delay: springIndex * durationByLayer };
+      };
+
       return (
         {
           from: { y: OriginalPosition },
           to: async (next, _cancel) => {
             await next({ y: OriginalPosition, immediate: true });
-            await next({ y: springIndex * (Thickness * 2.), delay: springIndex * 500 });
+            await next({ y: springIndex * (Thickness * 2.), delay: springIndex * durationByLayer });
           },
           config: {
-            duration: 500
+            duration: durationByLayer
           },
           reset: true,
           onStart: () => {
@@ -59,7 +69,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
           },
           onRest: () => {
             if(springIndex === numberOfLayers-1) {
-              onAnimationEnd()
+              onAnimationEnd();
             }
             stop();
             play();
@@ -67,26 +77,25 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
         }
       );
     },
-    [shapes]
+    [animationState]
   );
 
-
-  const [rotationSpring, __api] = useSpring(
+  const [rotationSpring, apiRotation] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
     to: { y: 0, rotationY: Math.PI * 2,},
     config: {
       duration: 800
     },
-    reset: true,
+    reset: false,
   },
-  [shapes]
+  [animationState]
   );
 
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
-     <SceneBackground isLight={isLight}/>
+     <SceneBackground/>
       { MODE === "development" &&
         <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
       }

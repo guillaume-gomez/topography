@@ -1,11 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { type Mesh} from "three";
+import { type Mesh } from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
-import { EffectComposer, Bloom, /*Grid,*/ ToneMapping } from '@react-three/postprocessing';
-import { /*BlendFunction,*/ ToneMappingMode } from 'postprocessing';
+import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
+import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { Shape } from "../hooks/useTopography";
+import { SettingsContext } from "../SettingsContextWrapper";
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
@@ -15,6 +16,9 @@ interface ThreeJsRendererProps {
 }
 
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
+  const {
+    setAnimationState,
+  } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
   
@@ -26,6 +30,15 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     await cameraControllerRef.current.fitToBox(meshRef.current, true,
       { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
     );
+  }
+
+  async function onAnimationEnd() {
+     recenterCamera();
+     setAnimationState("ended")
+  }
+
+  function onAnimationStart() {
+    recenterCamera();
   }
 
   return (
@@ -48,8 +61,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             <Scene
               shapes={shapes}
               meshRef={meshRef}
-              onAnimationStart={recenterCamera}
-              onAnimationEnd={recenterCamera}
+              onAnimationStart={onAnimationStart}
+              onAnimationEnd={onAnimationEnd}
             />
           </Stage>
           { MODE === "development" &&
