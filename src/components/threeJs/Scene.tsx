@@ -36,7 +36,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
-    opacity: isLight ? 1.0 : 0.5,
+    opacity: isLight ? 1.0 : 1.0,
     config: { duration: timerSwitch}
   });
 
@@ -122,7 +122,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
       </group>
       <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
         <boxGeometry args={[width, 20, height]} />
-        <meshStandardMaterial color="black" />
+        <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
     </Suspense>
   );

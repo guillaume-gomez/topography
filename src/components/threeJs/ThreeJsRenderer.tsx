@@ -47,7 +47,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         className="hover:cursor-grabbing w-full h-full rounded-xl p-10"
       >
         <Canvas
-          camera={{ position: [0, 200, 250], fov: 75, far: 500 }}
+          camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
           dpr={window.devicePixelRatio}
           shadows
           id="three-js-renderer"

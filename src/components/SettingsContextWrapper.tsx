@@ -20,9 +20,9 @@ interface Props {
 }
 
 function SettingsContextWrapper({children}: Props) {
-  const [isLight, setLight] = useState<boolean>(false);
-  const [width, _setWidth] = useState<number>(250);
-  const [height, _setHeight] = useState<number>(250);
+  const [isLight, setLight] = useState<boolean>(true);
+  const [width, _setWidth] = useState<number>(500);
+  const [height, _setHeight] = useState<number>(500);
   const [numberOfLayers, _setNumberOfLayers] = useState<number>(10);
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
 
@@ -30,7 +30,7 @@ function SettingsContextWrapper({children}: Props) {
     <SettingsContext value={{
       isLight, setLight,
       timerSwitch: 2000,
-      timerGeneration: 5000,
+      timerGeneration: 4000,
       animationState, setAnimationState,
       width,
       height,
