@@ -18,7 +18,7 @@ export interface Shape {
   points: Vector2[];
 }
 
-const COLORS = [
+const COLORS_SAMPLE = [
 "#F05D5E",
 "#0F7173",
 "#E7ECEF",
@@ -42,6 +42,9 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
 
 function useTopography({ width, height, numberOfLayers } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
+  const [frequency, _setFrequency] = useState<number>(0.5);
+  const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
+  const [maxRadiusRatio, _setMaxRadiusRatio] = useState<number>(1.1);
 
   useEffect(() => {
     generate();
@@ -49,14 +52,10 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
   function generateRandomPolygon(radius: number, width: number, height: number, numPoints: number): [Point[], number] {
       if (numPoints < 3) throw new Error("Needs at least 3 points to create a shape");
-      const simplex = new (createNoise2D as any)();
-      const minRadiusRatio = 0.7;
-      const maxRadiusRatio = 1.1;
-      const frequency = 0.5
 
+      const simplex = new (createNoise2D as any)();
       const points = [];
       const step = (Math.PI * 2)/ numPoints;
-
       let minRadius = radius * (maxRadiusRatio - 0.1);
 
       for (let m = 0; m < Math.PI * 2; m += step) {
@@ -84,12 +83,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     if (numPoints < 2) throw new Error("Needs at least 2 points to create a shape");
 
     const simplex = new (createNoise2D as any)();
-    const minRadiusRatio = 0.7;
-    const maxRadiusRatio = 1.1;
-    const frequency = 0.5
-    
     const points = [];
-
     let minRadius = radius * (maxRadiusRatio - 0.1);
 
     const step = (Math.PI /2)/(numPoints - 2); // push 2 points at the end
@@ -121,7 +115,6 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
     let radius = width/2 //width for generateSquaredRandomPolygon;
     const offset = 2;
     for(let elevation = 0; elevation < numberOfLayers; elevation++) {
-  
       const [shapePoints, newRadius] = generateRandomPolygon(
         radius,
         width,
@@ -133,10 +126,8 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       //   radius,
       //   100,
       // );
-     
-
       const shape = { 
-        color: new Color(COLORS[elevation]),
+        color: new Color(COLORS_SAMPLE[elevation % COLORS_SAMPLE.length]),
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
