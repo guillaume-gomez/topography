@@ -5,8 +5,8 @@ import { SettingsContext } from "../SettingsContextWrapper";
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
 
-const FROM = hex2rgb("#ffcfde");
-const TO = hex2rgb("#030303");
+const FROM = "#FF0000";  //hex2rgb("#ffcfde");
+const TO = "#FF00FF";  //hex2rgb("#02020B");
 
 function SceneBackground() {
   const { scene } = useThree();
