@@ -39,36 +39,67 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
     return from === color || to == color;
   }
 
+  function onClick(color: string) {
+    // unToggle
+    if(from === color) {
+      setFrom("");
+      return;
+    }
+    // unToggle
+    if(to === color) {
+      setTo("");
+      return;
+    }
+
+    if(from !== "") {
+      setTo(color);
+      return;
+    }
+    setFrom(color)
+  }
+
+  function computeLabel(color: string): string {
+    if(from === color) {
+      return "First color";
+    }
+
+    if(to === color) {
+      return "Last color";
+    }
+
+    return "";
+  }
+
   const [trails, api] = useTrail(
     COLORS.length,
     () => ({
-      from: { opacity: 0, width: 0 },
-      to: { opacity: 1, width: 200 },
+      from: { opacity: 0, height: 0,  },
+      to: { opacity: 1, height: 100, },
       config: {
-        duration: 200,
+        duration: 200
       }
     }),
     []
   )
 
 	return (
-    <div>
-      <div class="grid grid-flow-col grid-rows-4 gap-4">
+    <div className="flex flex-col gap-2">
+      <p className="self-center text-2xl">Pick two colours</p>
+      <div className="grid grid-flow-row xl:grid-cols-8 md:grid-cols-6 grid-cols-4 gap-2">
         {
           trails.map((props, index) => {
             const color = COLORS[index];
             return (
               <animated.button
-                className="btn w-100 h-40 rounded-md"
+                className="btn h-40 rounded-md"
                 style={{
                   ...props,
                   background: color,
-                  margin: isSelected(color) ? "2px" : "",
-                  border: isSelected(color) ? `2px solid white` : ""
                 }}
-                onClick={() => setFrom(color)}
+                onClick={() => onClick(color)}
+                key={color}
               >
-
+                <span className="mix-blend-difference text-2xl">{computeLabel(color)}</span>
               </animated.button>
             );
           })
@@ -76,7 +107,7 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
       </div>
       <div>
         <button
-          className="btn btn-accent"
+          className="btn btn-lg btn-primary"
           disabled={from === "" || to === ""}
           onClick={() => onSubmit(from, to)}
         >
