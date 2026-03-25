@@ -46,7 +46,7 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
       from: { opacity: 0, height: 0,  },
       to: { opacity: 1, height: 100, },
       config: {
-        duration: 200
+        duration: 500
       }
     }),
     [layers]
@@ -55,20 +55,23 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
   useEffect(() => {
     const rgbColors = lerpColors(from, to, layers);
     setColors(rgbColors.map(rgbColor => rgbToHex(rgbColor)));
-
   }, [from, to, layers]);
+
+  function randomColors() {
+
+  }
 
 	return (
     <div className="flex flex-col gap-2 p-5">
       <p className="self-center text-2xl">Pick two colours</p>
       <Card>
-        <div className="flex flex-row gap-0">
+        <div className="flex flex-row gap-1">
           {
             trails.map((props, index) => {
               const color = colors[index];
               return (
                 <animated.div
-                  className="w-100 h-100 rounded-md"
+                  className="w-100 h-100 rounded-md border border-black"
                   style={{
                     opacity: props.opacity,
                     height: `${props.height}%`,
@@ -102,7 +105,10 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
               max={15}
               size={"range-normal"}
             />
-          <button className="btn btn-secondary">
+          <button
+            className="btn btn-secondary"
+            onClick={randomColors}
+          >
             Random colors
           </button>
           <button
