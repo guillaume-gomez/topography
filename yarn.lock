@@ -2650,13 +2650,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"offset-polygon@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "offset-polygon@npm:0.9.2"
-  checksum: 10c0/b4c92d78bcb34fa5d0d0a16ec627e6b1cef677bd5c25159dafdf6891f983ed89d4701554eba36409065b48ffeda50dcccbedd1ab4f248c8f12550f5f34df4040
-  languageName: node
-  linkType: hard
-
 "optionator@npm:^0.9.3":
   version: 0.9.4
   resolution: "optionator@npm:0.9.4"
@@ -3192,7 +3185,6 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.24"
     globals: "npm:^16.5.0"
-    offset-polygon: "npm:^0.9.2"
     react: "npm:^19.2.0"
     react-dom: "npm:^19.2.0"
     rooks: "npm:^9.5.0"
