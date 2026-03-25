@@ -126,7 +126,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       //   radius,
       //   100,
       // );
-      const shape = { 
+      const shape = {
         color: new Color(COLORS_SAMPLE[elevation % COLORS_SAMPLE.length]),
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }

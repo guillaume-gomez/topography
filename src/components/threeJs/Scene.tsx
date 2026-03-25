@@ -32,7 +32,6 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     numberOfLayers,
     animationState
   } = useContext(SettingsContext);
-  
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
@@ -65,7 +64,6 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
             if(springIndex === 0) {
               onAnimationStart();
             }
-            
           },
           onRest: () => {
             if(springIndex === numberOfLayers-1) {

@@ -38,7 +38,7 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: 
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
-      {/*<WavyPhysicalMaterial 
+      {/*<WavyPhysicalMaterial
         color={color}
         emissive={"black"}
         roughness={1.}

@@ -53,7 +53,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           id="three-js-renderer"
         >
           { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-          
           <ambientLight intensity={1.5} />
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
@@ -79,7 +78,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
             <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
             <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
-            
           </EffectComposer>
           <CameraControls
             ref={cameraControllerRef}
