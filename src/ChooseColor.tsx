@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import Range from "./components/Range";
 import Card from "./components/Card";
+import { lerpColors, rgbToHex } from "./colorUtils";
 
 interface ChooseColorProps {
-  onSubmit: (colorFrom: string, colorTo: string) => void;	
+  onSubmit: (colorFrom: string, colorTo: string) => void;
 }
 
 const COLORS = [
@@ -34,47 +35,13 @@ const COLORS = [
 ]
 
 function ChooseColor({onSubmit} : ChooseColorProps) {
-  const [from, setFrom] = useState<string>("");
-  const [to, setTo] = useState<string>("");
+  const [from, setFrom] = useState<string>("#000000");
+  const [to, setTo] = useState<string>("#FFFFFF");
   const [layers, setLayers] = useState<number>(5);
-
-  function isSelected(color: string): boolean {
-    return from === color || to == color;
-  }
-
-  function onClick(color: string) {
-    // unToggle
-    if(from === color) {
-      setFrom("");
-      return;
-    }
-    // unToggle
-    if(to === color) {
-      setTo("");
-      return;
-    }
-
-    if(from !== "") {
-      setTo(color);
-      return;
-    }
-    setFrom(color)
-  }
-
-  function computeLabel(color: string): string {
-    if(from === color) {
-      return "First color";
-    }
-
-    if(to === color) {
-      return "Last color";
-    }
-
-    return "";
-  }
+  const [colors, setColors] = useState<string[]>([]);
 
   const [trails, api] = useTrail(
-    COLORS.length,
+    layers,
     () => ({
       from: { opacity: 0, height: 0,  },
       to: { opacity: 1, height: 100, },
@@ -82,39 +49,41 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
         duration: 200
       }
     }),
-    []
-  )
+    [layers]
+  );
+
+  useEffect(() => {
+    const rgbColors = lerpColors(from, to, layers);
+    setColors(rgbColors.map(rgbColor => rgbToHex(rgbColor)));
+
+  }, [from, to, layers]);
 
 	return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-5">
       <p className="self-center text-2xl">Pick two colours</p>
-      <div className="grid grid-flow-row xl:grid-cols-8 md:grid-cols-6 grid-cols-4 gap-2">
-        {
-          trails.map((props, index) => {
-            const { background, textColor } = COLORS[index];
-            return (
-              <animated.button
-                className="btn h-40 rounded-md"
-                style={{
-                  ...props,
-                  background
-                }}
-                onClick={() => onClick(background)}
-                key={background}
-              >
-                <span
-                  className="text-2xl"
-                  style={{color: textColor}}
-                >
-                  {computeLabel(background)}
-                </span>
-              </animated.button>
-            );
-          })
-        }
-      </div>
       <Card>
-        <div className="flex md:flex-row flex-col content-center justify-between">
+        <div className="flex flex-row gap-0">
+          {
+            trails.map((props, index) => {
+              const color = colors[index];
+              return (
+                <animated.div
+                  className="w-100 h-100 rounded-md"
+                  style={{
+                    opacity: props.opacity,
+                    height: `${props.height}%`,
+                    background:color
+                  }}
+                  key={index}
+                >
+                </animated.div>
+              );
+            })
+          }
+        </div>
+      </Card>
+      <Card>
+        <div className="flex md:flex-row flex-col items-center justify-between">
           <ColorInput
             label={"Start Color"}
             value={from}
@@ -130,9 +99,10 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
               onChange={(newValue) => setLayers(newValue)}
               value={layers}
               min={5}
-              max={30}
+              max={15}
+              size={"range-normal"}
             />
-          <button>
+          <button className="btn btn-secondary">
             Random colors
           </button>
           <button

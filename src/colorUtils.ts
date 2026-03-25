@@ -4,8 +4,12 @@ export function hex2rgb(hex: string) : [number, number, number]  {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-    
+
   return [r/255, g/255, b/255 ];
+}
+
+export function rgbToHex([r, g, b]: RGBNormalizedColor): string {
+  return "#" + (1 << 24 | (r*255) << 16 | (g*255) << 8 | (b*255)).toString(16).slice(1);
 }
 
 function easeInOutQuad(x: number): number {
