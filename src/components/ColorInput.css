@@ -1,0 +1,11 @@
+#colorInput::-webkit-color-swatch
+ {
+    border-radius: 15px;
+    height: 1.5rem;
+    border-width: 2px;
+}
+
+#colorInput::-moz-color-swatch {
+    border-radius: 15px;
+    height: 1.5rem;
+}

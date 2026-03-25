@@ -1,39 +1,42 @@
 import { useState } from "react";
-import { useTrail, animated } from '@react-spring/web'
-
+import { useTrail, animated } from '@react-spring/web';
+import ColorInput from "./components/ColorInput";
+import Range from "./components/Range";
+import Card from "./components/Card";
 
 interface ChooseColorProps {
   onSubmit: (colorFrom: string, colorTo: string) => void;	
 }
 
 const COLORS = [
-  "#D36135",
-  "#7FB069",
-  "#ECE4B7",
-  "#E6AA68",
-  "#EB5E55",
-  "#C6D8D3",
-  "#73937E",
-  "#471323",
-  "#5B2E48",
-  "#DEB841",
-  "#DE9E36",
-  "#F4442E",
-  "#BC5F04",
-  "#FFA552",
-  "#63C132",
-  "#358600",
-  "#9EE37D",
-  "#274690",
-  "#576CA8",
-  "#DE541E",
-  "#FF9FE5",
-  "#FF858D"
+  { background: "#D36135", textColor: "black"},
+  { background: "#7FB069", textColor: "black"},
+  { background: "#ECE4B7", textColor: "black"},
+  { background: "#E6AA68", textColor: "black"},
+  { background: "#EB5E55", textColor: "black"},
+  { background: "#C6D8D3", textColor: "black"},
+  { background: "#73937E", textColor: "black"},
+  { background: "#471323", textColor: "black"},
+  { background: "#5B2E48", textColor: "black"},
+  { background: "#DEB841", textColor: "black"},
+  { background: "#DE9E36", textColor: "black"},
+  { background: "#F4442E", textColor: "black"},
+  { background: "#BC5F04", textColor: "black"},
+  { background: "#FFA552", textColor: "black"},
+  { background: "#63C132", textColor: "black"},
+  { background: "#358600", textColor: "black"},
+  { background: "#9EE37D", textColor: "black"},
+  { background: "#274690", textColor: "black"},
+  { background: "#576CA8", textColor: "black"},
+  { background: "#DE541E", textColor: "black"},
+  { background: "#FF9FE5", textColor: "black"},
+  { background: "#FF858D", textColor: "black"},
 ]
 
 function ChooseColor({onSubmit} : ChooseColorProps) {
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
+  const [layers, setLayers] = useState<number>(5);
 
   function isSelected(color: string): boolean {
     return from === color || to == color;
@@ -88,32 +91,59 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
       <div className="grid grid-flow-row xl:grid-cols-8 md:grid-cols-6 grid-cols-4 gap-2">
         {
           trails.map((props, index) => {
-            const color = COLORS[index];
+            const { background, textColor } = COLORS[index];
             return (
               <animated.button
                 className="btn h-40 rounded-md"
                 style={{
                   ...props,
-                  background: color,
+                  background
                 }}
-                onClick={() => onClick(color)}
-                key={color}
+                onClick={() => onClick(background)}
+                key={background}
               >
-                <span className="mix-blend-difference text-2xl">{computeLabel(color)}</span>
+                <span
+                  className="text-2xl"
+                  style={{color: textColor}}
+                >
+                  {computeLabel(background)}
+                </span>
               </animated.button>
             );
           })
         }
       </div>
-      <div>
-        <button
-          className="btn btn-lg btn-primary"
-          disabled={from === "" || to === ""}
-          onClick={() => onSubmit(from, to)}
-        >
-          Submit
-        </button>
-      </div>
+      <Card>
+        <div className="flex md:flex-row flex-col content-center justify-between">
+          <ColorInput
+            label={"Start Color"}
+            value={from}
+            onChange={(newColor) => setFrom(newColor)}
+          />
+          <ColorInput
+            label={"End Color"}
+            value={to}
+            onChange={(newColor) => setTo(newColor)}
+          />
+          <Range
+              label="Layers"
+              onChange={(newValue) => setLayers(newValue)}
+              value={layers}
+              min={5}
+              max={30}
+            />
+          <button>
+            Random colors
+          </button>
+          <button
+            className="btn btn-lg btn-primary"
+            disabled={from === "" || to === ""}
+            onClick={() => onSubmit(from, to)}
+          >
+            Submit
+          </button>
+        </div>
+      </Card>
     </div>
   );
 }
