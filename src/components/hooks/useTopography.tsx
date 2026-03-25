@@ -68,7 +68,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
         );
 
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
-        const noisyRadius = mapRange(noiseValue, -1, 1, 0.1, 1.3) * radius;
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
 
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
@@ -93,7 +93,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
           Math.cos(m) * 0.5,
           Math.sin(m) * 0.5
         );
-        const noisyRadius = mapRange(noiseValue, -1, 1, 0.7, 1.3) * radius;
+        const noisyRadius = mapRange(noiseValue, -1, 1, 0.8, 1.0) * radius;
 
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
@@ -114,7 +114,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       width,
       width,
       height,
-      75,
+      50,
     );
 
     const shape = {
@@ -124,17 +124,29 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
     shapes.push(shape);
 
-    const offset = -5;
+    const offset = 10;
+    const offsetWidth = 30;
     let currentShape = shape;
     for(let i = 1; i < numberOfLayers; i++) {
+      let shapePoints = null;
 
-      const shapePoints = offsetShape(currentShape.points, offset);
+      if(i % 3 === 0) {
+        const widthLayer = width - (i * offsetWidth);
+        console.log(widthLayer)
+        shapePoints = generateRandomPolygon(
+                        widthLayer,
+                        width,
+                        height,
+                        50,
+                      );
+      } else {
+        shapePoints = offsetShape(currentShape.points, offset);
+      }
 
       const newShape = {
         color: COLORS[i],
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
-
       currentShape = newShape;
       shapes.push(newShape);
     }
