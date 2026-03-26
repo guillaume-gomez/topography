@@ -9,45 +9,35 @@ interface ChooseColorProps {
   onSubmit: (colorFrom: string, colorTo: string) => void;
 }
 
-const COLORS = [
-  { background: "#D36135", textColor: "black"},
-  { background: "#7FB069", textColor: "black"},
-  { background: "#ECE4B7", textColor: "black"},
-  { background: "#E6AA68", textColor: "black"},
-  { background: "#EB5E55", textColor: "black"},
-  { background: "#C6D8D3", textColor: "black"},
-  { background: "#73937E", textColor: "black"},
-  { background: "#471323", textColor: "black"},
-  { background: "#5B2E48", textColor: "black"},
-  { background: "#DEB841", textColor: "black"},
-  { background: "#DE9E36", textColor: "black"},
-  { background: "#F4442E", textColor: "black"},
-  { background: "#BC5F04", textColor: "black"},
-  { background: "#FFA552", textColor: "black"},
-  { background: "#63C132", textColor: "black"},
-  { background: "#358600", textColor: "black"},
-  { background: "#9EE37D", textColor: "black"},
-  { background: "#274690", textColor: "black"},
-  { background: "#576CA8", textColor: "black"},
-  { background: "#DE541E", textColor: "black"},
-  { background: "#FF9FE5", textColor: "black"},
-  { background: "#FF858D", textColor: "black"},
-]
-
 function ChooseColor({onSubmit} : ChooseColorProps) {
-  const [from, setFrom] = useState<string>("#000000");
+  const [from, setFrom] = useState<string>("#333333");
   const [to, setTo] = useState<string>("#FFFFFF");
   const [layers, setLayers] = useState<number>(5);
   const [colors, setColors] = useState<string[]>([]);
 
   const [trails, api] = useTrail(
     layers,
-    () => ({
+    (index) => ({
       from: { opacity: 0, height: 0,  },
-      to: { opacity: 1, height: 100, },
-      config: {
-        duration: 500
-      }
+      to: async (next, _cancel) => {
+            const minHeight = 20; // 20%
+            const height = Math.sin(Math.PI * index/layers) * 100;
+            await next(
+              { 
+                opacity: 1,
+                height: Math.max(minHeight, height),
+                config: { duration: 250 }
+              }
+            );
+            await next(
+              { 
+                opacity: 1,
+                height: 100,
+                delay: 200,
+              }
+            );
+          },
+      reset: true,
     }),
     [layers]
   );
@@ -63,9 +53,9 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
 
 	return (
     <div className="flex flex-col gap-2 p-5">
-      <p className="self-center text-2xl">Pick two colours</p>
+      <p className="self-center text-3xl">Pick two colours</p>
       <Card>
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 items-end h-100">
           {
             trails.map((props, index) => {
               const color = colors[index];
@@ -74,8 +64,9 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
                   className="w-100 h-100 rounded-md border border-black"
                   style={{
                     opacity: props.opacity,
-                    height: `${props.height}%`,
-                    background:color
+                    height: props.height.to(v => v + "%"),
+                    background:color,
+                    transformOrigin: "50% 100%",
                   }}
                   key={index}
                 >
