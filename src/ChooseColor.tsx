@@ -1,27 +1,61 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import Range from "./components/Range";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
+import { SettingsContext } from "./components/SettingsContextWrapper";
+import { sample } from "lodash";
 
 interface ChooseColorProps {
   onSubmit: (colorFrom: string, colorTo: string) => void;
 }
 
+const COLORS = [
+  "#D36135",
+  "#7FB069",
+  "#ECE4B7",
+  "#E6AA68",
+  "#EB5E55",
+  "#C6D8D3",
+  "#73937E",
+  "#471323",
+  "#5B2E48",
+  "#DEB841",
+  "#DE9E36",
+  "#F4442E",
+  "#BC5F04",
+  "#FFA552",
+  "#63C132",
+  "#358600",
+  "#9EE37D",
+  "#274690",
+  "#576CA8",
+  "#DE541E",
+  "#FF9FE5",
+  "#FF858D",
+]
+
 function ChooseColor({onSubmit} : ChooseColorProps) {
-  const [from, setFrom] = useState<string>("#333333");
-  const [to, setTo] = useState<string>("#FFFFFF");
-  const [layers, setLayers] = useState<number>(5);
   const [colors, setColors] = useState<string[]>([]);
+  const {
+    colorFrom,
+    colorTo,
+    setColorFrom,
+    setColorTo,
+    numberOfLayers,
+    setNumberOfLayers,
+    timerSwitch,
+  } = useContext(SettingsContext);
+
 
   const [trails, api] = useTrail(
-    layers,
+    numberOfLayers,
     (index) => ({
       from: { opacity: 0, height: 0,  },
       to: async (next, _cancel) => {
             const minHeight = 20; // 20%
-            const height = Math.sin(Math.PI * index/layers) * 100;
+            const height = Math.sin(Math.PI * index/numberOfLayers) * 100;
             await next(
               { 
                 opacity: 1,
@@ -39,16 +73,19 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
           },
       reset: true,
     }),
-    [layers]
+    [numberOfLayers]
   );
 
   useEffect(() => {
-    const rgbColors = lerpColors(from, to, layers);
+    const rgbColors = lerpColors(colorFrom, colorTo, numberOfLayers);
     setColors(rgbColors.map(rgbColor => rgbToHex(rgbColor)));
-  }, [from, to, layers]);
+  }, [colorFrom, colorTo, numberOfLayers]);
 
   function randomColors() {
-
+    const colorFrom = sample(COLORS);
+    const colorTo = sample(COLORS);
+    setColorFrom(colorFrom);
+    setColorTo(colorTo);
   }
 
 	return (
@@ -80,18 +117,18 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
         <div className="flex md:flex-row flex-col items-center justify-between">
           <ColorInput
             label={"Start Color"}
-            value={from}
-            onChange={(newColor) => setFrom(newColor)}
+            value={colorFrom}
+            onChange={(newColor) => setColorFrom(newColor)}
           />
           <ColorInput
             label={"End Color"}
-            value={to}
-            onChange={(newColor) => setTo(newColor)}
+            value={colorTo}
+            onChange={(newColor) => setColorTo(newColor)}
           />
           <Range
               label="Layers"
-              onChange={(newValue) => setLayers(newValue)}
-              value={layers}
+              onChange={(newValue) => setNumberOfLayers(newValue)}
+              value={numberOfLayers}
               min={5}
               max={15}
               size={"range-normal"}
@@ -104,8 +141,8 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
           </button>
           <button
             className="btn btn-lg btn-primary"
-            disabled={from === "" || to === ""}
-            onClick={() => onSubmit(from, to)}
+            disabled={colorFrom === "" || colorTo === ""}
+            onClick={() => onSubmit(colorFrom, colorTo)}
           >
             Submit
           </button>
