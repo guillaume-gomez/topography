@@ -7,10 +7,10 @@ interface RangeProps {
   step?: number;
   float?: boolean
   onChange: (newValue: number) => void;
+  size: string;
 }
 
-function Range({label, onChange, value, min, max, step = 1, float = false} : RangeProps) {
-  
+function Range({label, onChange, value, min, max, step = 1, size = "range-xs", float = false} : RangeProps) {
   return (
     <div className="form-control">
       <label>{label}</label>
@@ -20,7 +20,7 @@ function Range({label, onChange, value, min, max, step = 1, float = false} : Ran
           min={min}
           max={max}
           type="range"
-          className="range range-xs range-primary w-full"
+          className={`range ${size} range-primary w-full`}
           onChange={(e) => {
               const value = float ? parseFloat(e.target.value) : parseInt(e.target.value);
               onChange(value);

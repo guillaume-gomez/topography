@@ -4,20 +4,12 @@ export function hex2rgb(hex: string) : [number, number, number]  {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-    
+
   return [r/255, g/255, b/255 ];
 }
 
-function easeInOutQuad(x: number): number {
-  return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-}
-
-function easeInOutQuart(x: number): number {
-  return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
-}
-
-function easeInQuart(x: number): number {
-  return x * x * x * x;
+export function rgbToHex([r, g, b]: RGBNormalizedColor): string {
+  return "#" + (1 << 24 | (r*255) << 16 | (g*255) << 8 | (b*255)).toString(16).slice(1);
 }
 
 
@@ -31,6 +23,10 @@ function easeInQuint(x: number): number {
 
 function easeOutQuint(x: number): number {
   return 1 - Math.pow(1 - x, 5);
+}
+
+function easeInOutQuint(x: number): number {
+return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
 }
 
 function lerpColor(starColor: RGBNormalizedColor, endColor: RGBNormalizedColor, amt: number): RGBNormalizedColor {
@@ -53,7 +49,7 @@ export function lerpColors(fromColorHex: string, toColorHex: string, steps: numb
   const stepFactor = 1 / (steps - 1);
 
   for(let i = 0; i < steps; i++) {
-    colorsRGB.push(lerpColor(colorFrom, colorTo, easeOutQuint(i * stepFactor)) );
+    colorsRGB.push(lerpColor(colorFrom, colorTo, linear(i * stepFactor)) );
   }
 
   return colorsRGB;

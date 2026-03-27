@@ -1,9 +1,11 @@
 import { useContext } from 'react';
 import { SettingsContext } from "./components/SettingsContextWrapper";
 
+import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 //import TiltCard from "./components/TiltCard";
 import useTopography from "./components/hooks/useTopography";
+
 
 function App() {
   const {
@@ -12,7 +14,8 @@ function App() {
     width,
     height, 
     numberOfLayers,
-    setAnimationState
+    setNumberOfLayers,
+    setAnimationState,
   } = useContext(SettingsContext);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
   
@@ -26,9 +29,10 @@ function App() {
       <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
         {isLight ? "Light" : "Dark"}
       </button>
-      <div className="w-full h-screen">
+      {/*<div className="w-full h-screen">
         <ThreejsRenderer shapes={shapes} />
-      </div>
+      </div>*/}
+      <ChooseColor onSubmit={() => console.log("fdkjd")} />
     </>
   )
 }
