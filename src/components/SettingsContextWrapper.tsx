@@ -28,7 +28,7 @@ function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
   const [width, _setWidth] = useState<number>(500);
   const [height, _setHeight] = useState<number>(500);
-  const [numberOfLayers, setNumberOfLayers] = useState<number>(5);
+  const [numberOfLayers, setNumberOfLayers] = useState<number>(7);
   const [colorFrom, setColorFrom] = useState<string>("#333333");
   const [colorTo, setColorTo] = useState<string>("#FFFFFF");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");

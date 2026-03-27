@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import useSound from 'use-sound';
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import Range from "./components/Range";
@@ -47,15 +48,20 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
     setNumberOfLayers,
     timerSwitch,
   } = useContext(SettingsContext);
+  const [from, setFrom] = useState<string>(colorFrom);
+  const [to, setTo] = useState<string>(colorTo);
+  const [layers, setLayers] = useState<number>(numberOfLayers);
+  const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
+  const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
 
 
   const [trails, api] = useTrail(
-    numberOfLayers,
+    layers,
     (index) => ({
       from: { opacity: 0, height: 0,  },
       to: async (next, _cancel) => {
             const minHeight = 20; // 20%
-            const height = Math.sin(Math.PI * index/numberOfLayers) * 100;
+            const height = Math.sin(Math.PI * index/layers) * 100;
             await next(
               { 
                 opacity: 1,
@@ -72,20 +78,33 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
             );
           },
       reset: true,
+      onStart: () => { 
+        if(index === 0) { 
+          play();
+        }
+      } 
     }),
-    [numberOfLayers]
+    [layers]
   );
 
   useEffect(() => {
-    const rgbColors = lerpColors(colorFrom, colorTo, numberOfLayers);
+    const rgbColors = lerpColors(from, to, layers);
     setColors(rgbColors.map(rgbColor => rgbToHex(rgbColor)));
-  }, [colorFrom, colorTo, numberOfLayers]);
+  }, [from, to, layers]);
 
   function randomColors() {
     const colorFrom = sample(COLORS);
     const colorTo = sample(COLORS);
-    setColorFrom(colorFrom);
-    setColorTo(colorTo);
+    setFrom(colorFrom);
+    setTo(colorTo);
+  }
+
+  function submit() {
+    setColorFrom(from);
+    setColorTo(to);
+    setNumberOfLayers(layers);
+    stop();
+    playSubmit();
   }
 
 	return (
@@ -117,24 +136,24 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
         <div className="flex md:flex-row flex-col items-center justify-between">
           <ColorInput
             label={"Start Color"}
-            value={colorFrom}
-            onChange={(newColor) => setColorFrom(newColor)}
+            value={from}
+            onChange={(newColor) => setFrom(newColor)}
           />
           <ColorInput
             label={"End Color"}
-            value={colorTo}
-            onChange={(newColor) => setColorTo(newColor)}
+            value={to}
+            onChange={(newColor) => setTo(newColor)}
           />
           <Range
               label="Layers"
-              onChange={(newValue) => setNumberOfLayers(newValue)}
-              value={numberOfLayers}
+              onChange={(newValue) => setLayers(newValue)}
+              value={layers}
               min={5}
               max={15}
               size={"range-normal"}
             />
           <button
-            className="btn btn-secondary"
+            className="btn btn-soft btn-secondary"
             onClick={randomColors}
           >
             Random colors
@@ -142,7 +161,7 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
           <button
             className="btn btn-lg btn-primary"
             disabled={colorFrom === "" || colorTo === ""}
-            onClick={() => onSubmit(colorFrom, colorTo)}
+            onClick={() => submit(colorFrom, colorTo)}
           >
             Submit
           </button>
