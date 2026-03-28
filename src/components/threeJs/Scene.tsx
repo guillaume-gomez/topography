@@ -1,7 +1,7 @@
 import { useContext, Suspense, type Ref, useEffect } from 'react';
 import { type Mesh} from "three";
 import useSound from 'use-sound';
-import { animated, useSprings, useSpring } from '@react-spring/three';
+import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
 
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
@@ -10,6 +10,12 @@ import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
+
+// https://github.com/pmndrs/react-spring/issues/1586
+Globals.assign({
+  frameLoop: "always",
+});
+
 
 interface SceneProps {
   shapes: Shape[];
@@ -32,7 +38,6 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     numberOfLayers,
     animationState
   } = useContext(SettingsContext);
-  
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
@@ -65,7 +70,6 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
             if(springIndex === 0) {
               onAnimationStart();
             }
-            
           },
           onRest: () => {
             if(springIndex === numberOfLayers-1) {
@@ -122,6 +126,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
       </group>
       <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
         <boxGeometry args={[width, 20, height]} />
+        {/*<cylinderGeometry args={[width/2 + 25, width/2 + 25, 20, 64]} />*/}
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
     </Suspense>
