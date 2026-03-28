@@ -46,7 +46,7 @@ function ColorInput({ label, value, onChange } : ColorInputProps ) {
       </label>
       <div className="flex flex-row gap-2">
         <button className="btn btn-dash" onClick={openColorInput}>{value}</button>
-      <div className="relative" style={{bottom: 60, height: 50}}>
+      <div className="relative" style={{ bottom: 60, height: 50 }}>
         <input
           ref={refColorInput}
           id="colorInput"

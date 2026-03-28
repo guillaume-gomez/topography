@@ -1,15 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import useSound from 'use-sound';
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import Range from "./components/Range";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
-import { SettingsContext } from "./components/SettingsContextWrapper";
 import { sample } from "lodash";
 
 interface ChooseColorProps {
-  onSubmit: (colorFrom: string, colorTo: string) => void;
+  onSubmit: (colorFrom: string, colorTo: string, layers: number) => void;
 }
 
 const COLORS = [
@@ -37,40 +36,30 @@ const COLORS = [
   "#FF858D",
 ]
 
-function ChooseColor({onSubmit} : ChooseColorProps) {
+function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [colors, setColors] = useState<string[]>([]);
-  const {
-    colorFrom,
-    colorTo,
-    setColorFrom,
-    setColorTo,
-    numberOfLayers,
-    setNumberOfLayers,
-    timerSwitch,
-  } = useContext(SettingsContext);
-  const [from, setFrom] = useState<string>(colorFrom);
-  const [to, setTo] = useState<string>(colorTo);
-  const [layers, setLayers] = useState<number>(numberOfLayers);
+  const [from, setFrom] = useState<string>("#333333");
+  const [to, setTo] = useState<string>("#FFFFFF");
+  const [layers, setLayers] = useState<number>(5);
   const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
   const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
 
-
-  const [trails, api] = useTrail(
+  const [trails,] = useTrail(
     layers,
     (index) => ({
       from: { opacity: 0, height: 0,  },
-      to: async (next, _cancel) => {
+      to: async (next) => {
             const minHeight = 20; // 20%
             const height = Math.sin(Math.PI * index/layers) * 100;
             await next(
-              { 
+              {
                 opacity: 1,
                 height: Math.max(minHeight, height),
                 config: { duration: 250 }
               }
             );
             await next(
-              { 
+              {
                 opacity: 1,
                 height: 100,
                 delay: 200,
@@ -78,11 +67,11 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
             );
           },
       reset: true,
-      onStart: () => { 
-        if(index === 0) { 
+      onStart: () => {
+        if(index === 0) {
           play();
         }
-      } 
+      }
     }),
     [layers]
   );
@@ -100,9 +89,7 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
   }
 
   function submit() {
-    setColorFrom(from);
-    setColorTo(to);
-    setNumberOfLayers(layers);
+    onSubmit(from, to, layers);
     stop();
     playSubmit();
   }
@@ -160,8 +147,8 @@ function ChooseColor({onSubmit} : ChooseColorProps) {
           </button>
           <button
             className="btn btn-lg btn-primary"
-            disabled={colorFrom === "" || colorTo === ""}
-            onClick={() => submit(colorFrom, colorTo)}
+            disabled={from === "" || to === ""}
+            onClick={submit}
           >
             Submit
           </button>

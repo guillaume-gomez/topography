@@ -44,12 +44,13 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   return (
     <div className="flex flex-col gap-5 w-full h-full" style={{ width: '100%', height: '100%'}}>
       <div style={{ width: '100%', height: '100%' }}
-        className="hover:cursor-grabbing w-full h-full rounded-xl p-10"
+        className="hover:cursor-grabbing w-full h-full p-10"
       >
         <Canvas
           camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
           dpr={window.devicePixelRatio}
           shadows
+          className="rounded-xl"
           id="three-js-renderer"
         >
           { import.meta.env.MODE === "development" ? <Stats/> : <></> }
@@ -57,7 +58,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-            <Scene
+           <Scene
               shapes={shapes}
               meshRef={meshRef}
               onAnimationStart={onAnimationStart}

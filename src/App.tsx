@@ -3,22 +3,24 @@ import { SettingsContext } from "./components/SettingsContextWrapper";
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-//import TiltCard from "./components/TiltCard";
 import useTopography from "./components/hooks/useTopography";
-
 
 function App() {
   const {
     isLight,
     setLight,
     width,
-    height, 
+    height,
     numberOfLayers,
+    setColorFrom,
+    setColorTo,
     setNumberOfLayers,
     setAnimationState,
+    setColorChosen,
+    colorChosen
   } = useContext(SettingsContext);
   const { generate, shapes } = useTopography({width, height, numberOfLayers});
-  
+
   return (
     <>
       <h1>Vite + React</h1>
@@ -29,10 +31,19 @@ function App() {
       <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
         {isLight ? "Light" : "Dark"}
       </button>
-      {/*<div className="w-full h-screen">
-        <ThreejsRenderer shapes={shapes} />
-      </div>*/}
-      <ChooseColor onSubmit={() => console.log("fdkjd")} />
+
+      <div className="w-full h-screen">
+        {colorChosen ? 
+          <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> :
+          <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
+            // Handle the color submission
+            setColorFrom(colorFrom);
+            setColorTo(colorTo);
+            setNumberOfLayers(layers);
+            setColorChosen(true);
+          }} />
+       }
+      </div>
     </>
   )
 }

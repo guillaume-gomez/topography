@@ -1,7 +1,7 @@
 import { useContext, Suspense, type Ref, useEffect } from 'react';
 import { type Mesh} from "three";
 import useSound from 'use-sound';
-import { animated, useSprings, useSpring } from '@react-spring/three';
+import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
 
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
@@ -10,6 +10,12 @@ import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
+
+// https://github.com/pmndrs/react-spring/issues/1586
+Globals.assign({
+  frameLoop: "always",
+});
+
 
 interface SceneProps {
   shapes: Shape[];
