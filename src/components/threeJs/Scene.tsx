@@ -38,10 +38,10 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     animationState
   } = useContext(SettingsContext);
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
-  const [optimized, setOptimized] = useState<boolean>(true);
+  const [optimized, setOptimized] = useState<boolean>(false);
 
 
-  usePerformanceMonitor({ onFallback: () => setOptimized(false) })
+ usePerformanceMonitor({ onIncline: () => { setOptimized(false) }, onFallback: () => { setOptimized(true) } })
 
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 1.0,
@@ -53,7 +53,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
   const [springs, apiLayers] = useSprings(
     numberOfLayers,
     (springIndex) => {
-      // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes 
+      // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes
       if(animationState === "ended") {
         return { y: springIndex * (Thickness * 2.), delay: springIndex * durationByLayer };
       };

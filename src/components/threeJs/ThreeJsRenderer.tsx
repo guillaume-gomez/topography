@@ -60,11 +60,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
            <PerformanceMonitor
-              bounds={() => [30, 500]} // frame/second limit to trigger functions
+              bounds={() => [60, 500]} // frame/second limit to trigger functions
               flipflops={1} // maximum changes before onFallback
               onDecline={() => {
                 setDpr(dpr * 0.8); // lower dpr by 20%
-                setIsPPEnabled(false); // disable post processing
               }}
            >
              <Scene
