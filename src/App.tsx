@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { SettingsContext } from "./components/SettingsContextWrapper";
+import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
@@ -28,6 +29,38 @@ function App() {
     fromToColors: [colorFrom, colorTo]
   });
 
+  const apiTransitionChooseColor = useSpringRef();
+  const transitionChooseColorProps  = useSpring(
+      {
+        ref: apiTransitionChooseColor,
+        from: { display: "block", position: "relative", top: "0%", },
+        to: [
+          { display: "block", position: "relative", top: "-200%" },
+          { display: "none", },
+        ],
+        config: { duration: 500, easing: easings.easeInBack },
+        onStart: () => {
+          setColorChosen(true);
+        },
+        onRest: (result, spring, item) => {
+          apiTransitionThreeJsRenderer.start();  
+        }
+      }
+  );
+
+  const apiTransitionThreeJsRenderer = useSpringRef();
+  const transitionThreeJsRendererProps  = useSpring(
+      {
+        ref: apiTransitionThreeJsRenderer,
+        from: { position: "relative", opacity: 0.3, top: "-210%" },
+        to: [
+          { position: "relative", opacity: 1, top: "0%" },
+          { position: "static", opacity: 1, top: "0%" }
+        ],
+        config: { duration: 500, easing: easings.easeOutBack  },
+      }
+  );
+
   return (
     <>
       <h1>Vite + React</h1>
@@ -40,16 +73,22 @@ function App() {
       </button>
 
       <div className="w-full h-screen">
-        {colorChosen ? 
-          <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> :
+        <animated.div style={transitionChooseColorProps}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
             setColorFrom(colorFrom);
             setColorTo(colorTo);
             setNumberOfLayers(layers);
-            setColorChosen(true);
+
+            apiTransitionChooseColor.start();
           }} />
-       }
+        </animated.div>
+        <animated.div
+          className="w-full h-screen"
+          style={{...transitionThreeJsRendererProps, display: colorChosen ? "block" : "none"}}
+        >
+          <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> 
+        </animated.div> 
       </div>
     </>
   )
