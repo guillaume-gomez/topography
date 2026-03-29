@@ -1,12 +1,11 @@
-import { useContext, Suspense, type Ref, useEffect } from 'react';
+import { useContext, Suspense, type Ref, useEffect, useState } from 'react';
 import { type Mesh} from "three";
 import useSound from 'use-sound';
 import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
-
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopologyShape from './TopologyShape';
-import { Grid } from '@react-three/drei';
+import { Grid, usePerformanceMonitor } from '@react-three/drei';
 import { SettingsContext } from "../SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
@@ -39,6 +38,10 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     animationState
   } = useContext(SettingsContext);
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
+  const [optimized, setOptimized] = useState<boolean>(true);
+
+
+  usePerformanceMonitor({ onFallback: () => setOptimized(false) })
 
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 1.0,
@@ -119,6 +122,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
                 position={[0, 0, springs[index].y as unknown as number]}
                 thickness={Thickness}
                 opacity={shapeToDisplay.opacity}
+                optimized={optimized}
               />
             )
           })

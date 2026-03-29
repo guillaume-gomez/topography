@@ -1,7 +1,7 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
@@ -21,6 +21,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
+  const [dpr, setDpr] = useState<number>(1);
   
   async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
@@ -48,7 +49,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       >
         <Canvas
           camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
-          dpr={window.devicePixelRatio}
+          dpr={Math.max(dpr, window.devicePixelRatio)}
           shadows
           className="rounded-xl"
           id="three-js-renderer"
@@ -58,12 +59,21 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <fog attach="fog" args={['red', 20, -5]} />
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-           <Scene
-              shapes={shapes}
-              meshRef={meshRef}
-              onAnimationStart={onAnimationStart}
-              onAnimationEnd={onAnimationEnd}
-            />
+           <PerformanceMonitor
+              bounds={() => [30, 500]} // frame/second limit to trigger functions
+              flipflops={1} // maximum changes before onFallback
+              onDecline={() => {
+                setDpr(dpr * 0.8); // lower dpr by 20%
+                setIsPPEnabled(false); // disable post processing
+              }}
+           >
+             <Scene
+                shapes={shapes}
+                meshRef={meshRef}
+                onAnimationStart={onAnimationStart}
+                onAnimationEnd={onAnimationEnd}
+              />
+            </PerformanceMonitor>
           </Stage>
           { MODE === "development" &&
             <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
