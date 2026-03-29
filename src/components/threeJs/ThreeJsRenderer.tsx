@@ -85,9 +85,9 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             makeDefault
             smoothTime={1.0}
             minPolarAngle={0.75}
-            maxPolarAngle={Math.PI / 1.9}
-            minAzimuthAngle={-0.55}
-            maxAzimuthAngle={0.55}
+            maxPolarAngle={Math.PI / 2.5}
+            minAzimuthAngle={-Math.PI}
+            maxAzimuthAngle={Math.PI}
             minDistance={10}
             maxDistance={400}
           />

@@ -26,7 +26,7 @@ function easeOutQuint(x: number): number {
 }
 
 function easeInOutQuint(x: number): number {
-return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
+  return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
 }
 
 function lerpColor(starColor: RGBNormalizedColor, endColor: RGBNormalizedColor, amt: number): RGBNormalizedColor {

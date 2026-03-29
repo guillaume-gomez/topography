@@ -19,6 +19,7 @@ function Range({label, onChange, value, min, max, step = 1, size = "range-xs", f
           step={step}
           min={min}
           max={max}
+          value={value}
           type="range"
           className={`range ${size} range-primary w-full`}
           onChange={(e) => {

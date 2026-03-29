@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Vector2, Color } from "three";
 import { createNoise2D } from 'simplex-noise';
+import { lerpColors } from "../../colorUtils";
 
 interface TopographyProps {
   width: number;
   height: number;
   numberOfLayers: number;
+  fromToColors?: [string, string];
 }
 
 interface Point {
@@ -40,7 +42,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopography({ width, height, numberOfLayers } : TopographyProps) {
+function useTopography({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [frequency, _setFrequency] = useState<number>(0.5);
   const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
@@ -113,7 +115,7 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
   function generate(): Shape[] {
     const shapes = [];
     let radius = width/2 //width for generateSquaredRandomPolygon;
-    const offset = 2;
+    const offset = maxRadiusRatio;
     for(let elevation = 0; elevation < numberOfLayers; elevation++) {
       const [shapePoints, newRadius] = generateRandomPolygon(
         radius,
@@ -126,8 +128,9 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
       //   radius,
       //   100,
       // );
-      const shape = {
-        color: new Color(COLORS_SAMPLE[elevation % COLORS_SAMPLE.length]),
+
+      const shape = { 
+        color: colorByElevation(elevation),
         points: shapePoints.map(point => new Vector2(point.x, point.y))
       }
 
@@ -140,6 +143,15 @@ function useTopography({ width, height, numberOfLayers } : TopographyProps) {
 
   function centeredPoints(points: Point[], offsetX: number, offsetY: number) {
     return points.map(point => ({ x: point.x + offsetX, y: point.y + offsetY }) );
+  }
+
+  function colorByElevation(number: index): Color {
+    if(fromToColors) {
+      const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
+      return new Color(...colors[number % colors.length]);
+    }
+
+    return new Color(COLORS_SAMPLE[number % COLORS_SAMPLE.length])
   }
 
   return { generate, shapes };

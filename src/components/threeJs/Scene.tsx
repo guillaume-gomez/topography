@@ -125,8 +125,8 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
         }
       </group>
       <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
-        <boxGeometry args={[width, 20, height]} />
-        {/*<cylinderGeometry args={[width/2 + 25, width/2 + 25, 20, 64]} />*/}
+        {/*<boxGeometry args={[width * 5, 20, height * 5]} />*/}
+        <cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
     </Suspense>
