@@ -7,7 +7,8 @@ import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopologyShape from './TopologyShape';
 import { Grid } from '@react-three/drei';
-import { SettingsContext } from "../SettingsContextWrapper";
+import { SettingsContext } from "../contexts/SettingsContextWrapper";
+import { SoundContext } from "../contexts/SoundContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
 
@@ -38,6 +39,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     numberOfLayers,
     animationState
   } = useContext(SettingsContext);
+  const { hasSound } = useContext(SoundContext);
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
@@ -76,7 +78,9 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
               onAnimationEnd();
             }
             stop();
-            play();
+            if(hasSound) {
+              play();
+            }
           },
         }
       );

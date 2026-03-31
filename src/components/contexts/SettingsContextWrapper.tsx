@@ -19,6 +19,8 @@ export interface SettingsContextParams {
   setColorTo: (color: string) => void;
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
+  hasSound: boolean;
+  setHasSound: (sound: boolean) => void;
 }
 export const SettingsContext = createContext<SettingsContextParams>(null);
 
@@ -35,6 +37,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorTo, setColorTo] = useState<string>("");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
+  const [hasSound, setHasSound] = useState<boolean>(true);
 
   return (
     <SettingsContext value={{
@@ -47,7 +50,8 @@ function SettingsContextWrapper({children}: Props) {
       numberOfLayers, setNumberOfLayers,
       colorFrom, setColorFrom,
       colorTo, setColorTo,
-      colorChosen, setColorChosen
+      colorChosen, setColorChosen,
+      hasSound, setHasSound
     }}>
       {children}
     </SettingsContext >
