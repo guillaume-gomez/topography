@@ -57,7 +57,7 @@ function ColorInput({ label, value, onChange } : ColorInputProps ) {
           onChange={(e) => setValueChanged(e.target.value)}
         />
         <div onClick={openColorInput} style={{ zIndex: 1 }}>
-          <svg width="64" height="64" viewBox="0 0 730 336" className="hover:cursor-pointer">
+          <svg width="64" height="64" viewBox="0 0 714.4 468" className="hover:cursor-pointer">
             <animated.path 
               fill={value} 
               stroke="#000000"
