@@ -25,6 +25,7 @@
     "tailwindcss": "^4.2.1",
     "three": "^0.183.2",
     "three-custom-shader-material": "^6.4.0",
+    "three.meshline": "^1.4.0",
     "use-sound": "^5.0.0"
   },
   "devDependencies": {
