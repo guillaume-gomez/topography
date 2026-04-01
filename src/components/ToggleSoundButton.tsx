@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { useSpring, animated } from '@react-spring/web';
-import { SettingsContext } from "./contexts/SettingsContextWrapper";
+import { SoundContext } from "./contexts/SoundContextWrapper";
 
 function ToggleSoundButton() {
   const {
     hasSound,
     setHasSound,
-  } = useContext(SettingsContext);
+  } = useContext(SoundContext);
 
   const toggleSoundButtonProps = useSpring({
     stroke: "white",
@@ -20,6 +20,8 @@ function ToggleSoundButton() {
     d3: hasSound ? "M18.5391 15.95C19.4764 15.0123 20.003 13.7407 20.003 12.4149C20.003 11.0891 19.4764 9.81764 18.5391 8.88" :
       "M22 2.42004L2 22.42"
   });
+
+  console.log(hasSound)
 
   return (
     <button

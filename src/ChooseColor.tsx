@@ -38,14 +38,14 @@ const COLORS = [
 ]
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
-  const { hasSound } = useContext(SoundContext);
+  const { hasSound, setHasSound } = useContext(SoundContext);
   const [colors, setColors] = useState<string[]>([]);
   const [from, setFrom] = useState<string>("#006400");
   const [to, setTo] = useState<string>("#A0522D");
   const [layers, setLayers] = useState<number>(5);
   const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
   const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
-
+  console.log(hasSound, " ")
   const [trails,] = useTrail(
     layers,
     (index) => ({
