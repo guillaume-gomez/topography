@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useSound from 'use-sound';
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
@@ -6,6 +6,7 @@ import Range from "./components/Range";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
+import { SoundContext } from "./components/contexts/SoundContextWrapper";
 
 interface ChooseColorProps {
   onSubmit: (colorFrom: string, colorTo: string, layers: number) => void;
@@ -37,13 +38,14 @@ const COLORS = [
 ]
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
+  const { hasSound, setHasSound } = useContext(SoundContext);
   const [colors, setColors] = useState<string[]>([]);
   const [from, setFrom] = useState<string>("#006400");
   const [to, setTo] = useState<string>("#A0522D");
   const [layers, setLayers] = useState<number>(5);
   const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
   const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
-
+  console.log(hasSound, " ")
   const [trails,] = useTrail(
     layers,
     (index) => ({
@@ -69,7 +71,9 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
       reset: true,
       onStart: () => {
         if(index === 0) {
-          play();
+          if(hasSound) {
+            play();
+          }
         }
       }
     }),
@@ -91,7 +95,9 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   function submit() {
     onSubmit(from, to, layers);
     stop();
-    playSubmit();
+    if(hasSound) {
+      playSubmit();
+    }
   }
 
 	return (

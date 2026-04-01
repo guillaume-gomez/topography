@@ -47,7 +47,7 @@ function SettingsContextWrapper({children}: Props) {
       numberOfLayers, setNumberOfLayers,
       colorFrom, setColorFrom,
       colorTo, setColorTo,
-      colorChosen, setColorChosen
+      colorChosen, setColorChosen,
     }}>
       {children}
     </SettingsContext >

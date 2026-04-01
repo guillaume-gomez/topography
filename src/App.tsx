@@ -1,10 +1,11 @@
 import { useContext } from 'react';
-import { SettingsContext } from "./components/SettingsContextWrapper";
+import { SettingsContext } from "./components/contexts/SettingsContextWrapper";
 import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
+import ToggleSoundButton from "./components/ToggleSoundButton";
 
 function App() {
   const {
@@ -72,16 +73,20 @@ function App() {
         {isLight ? "Light" : "Dark"}
       </button>
 
+      <ToggleSoundButton />
+
       <div className="w-full h-screen">
         <animated.div style={transitionChooseColorProps}>
-          <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
-            // Handle the color submission
-            setColorFrom(colorFrom);
-            setColorTo(colorTo);
-            setNumberOfLayers(layers);
+          <ChooseColor
+            onSubmit={(colorFrom, colorTo, layers) => {
+              // Handle the color submission
+              setColorFrom(colorFrom);
+              setColorTo(colorTo);
+              setNumberOfLayers(layers);
 
-            apiTransitionChooseColor.start();
-          }} />
+              apiTransitionChooseColor.start();
+            }}
+          />
         </animated.div>
         <animated.div
           className="w-full h-screen"
