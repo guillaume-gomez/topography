@@ -1,5 +1,5 @@
-import { setState } from "react";
-import { useTypography, Shape } from "./useTypography";
+import { useState } from "react";
+import useTopography, { Shape } from "./useTopography";
 
 interface TopographiesProps {
   width: number;
@@ -26,24 +26,26 @@ function useTypographies({
 	const localWidth = width/(numberOfLayers/2);
   const localHeight = height/(numberOfLayers/2);
 
-  const [shapesByGroup, setShapesByGroup] = useState<ShapesByGroup>([]);	
-  const { generate } = useTypograph({width: localWidth, height: localHeight, numberOfLayers, fromToColors });
+  const [shapesByGroup, setShapesByGroup] = useState<ShapesByGroup[]>([]);	
+  const { generate } = useTopography({width: localWidth, height: localHeight, numberOfLayers, fromToColors });
 
 
-	function generate(): ShapesByGroup[] {
+	function generateShapes(): ShapesByGroup[] {
+    console.log(width, localWidth, height, localHeight)
 		let shapesByGroup : ShapesByGroup[] = [];
 
 		for(let x = 0; x < width; x+= localWidth) {
-			for(let y = 0; y < height; x+= localHeight) {
+			for(let y = 0; y < height; y+= localHeight) {
 				const shapes = generate();
         shapesByGroup.push({ x, y, shapes });
 			}
 		}
-
+    console.log(shapesByGroup)
     setShapesByGroup(shapesByGroup);
     return shapesByGroup;
 	}
 
-  return {shapesByGroup, generate };
-
+  return {shapesByGroup, generateShapes };
 }
+
+export default useTypographies;

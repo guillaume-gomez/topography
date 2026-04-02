@@ -4,7 +4,7 @@ import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopography from "./components/hooks/useTopography";
+import useTopographies from "./components/hooks/useTopographies";
 
 function App() {
   const {
@@ -22,10 +22,11 @@ function App() {
     colorFrom, 
     colorTo
   } = useContext(SettingsContext);
-  const { generate, shapes } = useTopography({
+  const { generateShapes, shapesByGroup } = useTopographies({
     width, 
     height,
     numberOfLayers,
+    numberOfTopograhies: 4,
     fromToColors: [colorFrom, colorTo]
   });
 
@@ -65,7 +66,7 @@ function App() {
     <>
       <h1>Vite + React</h1>
       {/*<TiltCard />*/}
-      <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
+      <button className="btn btn-primary" onClick={() => {generateShapes(); setAnimationState("started")}}>
         Generate
       </button>
       <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
@@ -87,7 +88,7 @@ function App() {
           className="w-full h-screen"
           style={{...transitionThreeJsRendererProps, display: colorChosen ? "block" : "none"}}
         >
-          <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> 
+          <ThreejsRenderer shapesByGroup={shapesByGroup} rendered={colorChosen}/> 
         </animated.div> 
       </div>
     </>

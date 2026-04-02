@@ -5,17 +5,16 @@ import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
-import { Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../SettingsContextWrapper";
-
+import { type ShapesByGroup } from "../hooks/useTopographies"
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 
 interface ThreeJsRendererProps {
-  shapes: Shape[];
+  shapesByGroup: ShapesByGroup[];
 }
 
-function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
+function ThreejsRenderer({ shapesByGroup } : ThreeJsRendererProps ): React.ReactElement {
   const {
     setAnimationState,
   } = useContext(SettingsContext);
@@ -59,7 +58,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <pointLight position={[10, 10, 10]} intensity={1} castShadow />
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
            <Scene
-              shapes={shapes}
+              shapesByGroup={shapesByGroup}
               meshRef={meshRef}
               onAnimationStart={onAnimationStart}
               onAnimationEnd={onAnimationEnd}
