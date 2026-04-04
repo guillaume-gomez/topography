@@ -65,8 +65,8 @@ function App() {
     <>
           <div class="
           absolute -z-10 inset-0 h-full w-full 
-          bg-[linear-gradient(to_right,#73737320_1px,transparent_1px),linear-gradient(to_bottom,#73737320_1px,transparent_1px)] 
-          bg-[size:20px_20px]"
+          bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)] 
+          bg-[size:30px_30px]"
       />
       <h1>Vite + React</h1>
       {/*<TiltCard />*/}
