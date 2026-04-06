@@ -42,58 +42,53 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   }
 
   return (
-    <div className="flex flex-col gap-5 w-full h-full" style={{ width: '100%', height: '100%'}}>
-      <div style={{ width: '100%', height: '100%' }}
-        className="hover:cursor-grabbing w-full h-full p-10"
+      <Canvas
+        camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
+        dpr={window.devicePixelRatio}
+        shadows
+        className="rounded-xl hover:cursor-grabbing w-full h-full"
+        id="three-js-renderer"
+        style={{position: "static"}}
       >
-        <Canvas
-          camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
-          dpr={window.devicePixelRatio}
-          shadows
-          className="rounded-xl"
-          id="three-js-renderer"
-        >
-          { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-          <ambientLight intensity={1.5} />
-          <fog attach="fog" args={['red', 20, -5]} />
-          <pointLight position={[10, 10, 10]} intensity={1} castShadow />
-          <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-           <Scene
-              shapes={shapes}
-              meshRef={meshRef}
-              onAnimationStart={onAnimationStart}
-              onAnimationEnd={onAnimationEnd}
-            />
-          </Stage>
-          { MODE === "development" &&
-            <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
-              <GizmoViewport labelColor="white" axisHeadScale={1} />
-            </GizmoHelper>
-          }
-          <EffectComposer enableNormalPass={false}>
-            <Bloom mipmapBlur luminanceThreshold={1.0} />
-            {/*<ChromaticAberration
-              blendFunction={BlendFunction.NORMAL} // blend mode
-              offset={[0.001, 0.001]} // color offset
-            />*/}
-            {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
-            <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
-          </EffectComposer>
-          <CameraControls
-            ref={cameraControllerRef}
-            makeDefault
-            smoothTime={1.0}
-            minPolarAngle={0.75}
-            maxPolarAngle={Math.PI / 2.5}
-            minAzimuthAngle={-Math.PI}
-            maxAzimuthAngle={Math.PI}
-            minDistance={10}
-            maxDistance={400}
+        { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+        <ambientLight intensity={1.5} />
+        <fog attach="fog" args={['red', 20, -5]} />
+        <pointLight position={[10, 10, 10]} intensity={1} castShadow />
+        <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
+         <Scene
+            shapes={shapes}
+            meshRef={meshRef}
+            onAnimationStart={onAnimationStart}
+            onAnimationEnd={onAnimationEnd}
           />
-        </Canvas>
-      </div>
-    </div>
+        </Stage>
+        { MODE === "development" &&
+          <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
+            <GizmoViewport labelColor="white" axisHeadScale={1} />
+          </GizmoHelper>
+        }
+        <EffectComposer enableNormalPass={false}>
+          <Bloom mipmapBlur luminanceThreshold={1.0} />
+          {/*<ChromaticAberration
+            blendFunction={BlendFunction.NORMAL} // blend mode
+            offset={[0.001, 0.001]} // color offset
+          />*/}
+          {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
+          <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+        </EffectComposer>
+        <CameraControls
+          ref={cameraControllerRef}
+          makeDefault
+          smoothTime={1.0}
+          minPolarAngle={0.75}
+          maxPolarAngle={Math.PI / 2.5}
+          minAzimuthAngle={-Math.PI}
+          maxAzimuthAngle={Math.PI}
+          minDistance={10}
+          maxDistance={400}
+        />
+      </Canvas>
   );
 }
 

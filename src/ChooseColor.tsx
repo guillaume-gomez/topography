@@ -95,10 +95,10 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   }
 
 	return (
-    <div className="flex flex-col gap-2 p-5">
+    <div className="flex flex-col gap-2">
       <p className="self-center text-3xl">Pick two colours</p>
       <Card>
-        <div className="flex flex-row gap-1 items-end h-100">
+        <div className="flex flex-row gap-1 items-end h-100" style={{minHeight: "50vh"}}>
           {
             trails.map((props, index) => {
               const color = colors[index];

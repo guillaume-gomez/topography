@@ -63,10 +63,10 @@ function App() {
 
   return (
     <>
-          <div class="
-          absolute -z-10 inset-0 h-full w-full 
-          bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)] 
-          bg-[size:30px_30px]"
+      <div className="
+        absolute -z-10 inset-0 h-full w-full 
+        bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)] 
+        bg-[size:30px_30px]"
       />
       <h1>Vite + React</h1>
       {/*<TiltCard />*/}
@@ -77,7 +77,7 @@ function App() {
         {isLight ? "Light" : "Dark"}
       </button>
 
-      <div className="w-full h-screen">
+      <div className="w-full h-screen p-5">
         <animated.div style={transitionChooseColorProps}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
