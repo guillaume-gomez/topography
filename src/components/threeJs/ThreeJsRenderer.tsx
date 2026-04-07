@@ -32,6 +32,15 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     );
   }
 
+  async function moveTopDown() {
+    if(!meshRef.current || !cameraControllerRef.current) {
+      return;
+    }
+    await cameraControllerRef.current.setPosition(0, 350, 0, true);
+
+    //recenterCamera();
+  }
+
   async function onAnimationEnd() {
      recenterCamera();
      setAnimationState("ended")
@@ -48,7 +57,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
         id="three-js-renderer"
-        style={{position: "static"}}
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
         <ambientLight intensity={1.5} />
