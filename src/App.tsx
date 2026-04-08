@@ -68,7 +68,6 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)] 
         bg-[size:30px_30px]"
       />
-      <h1>Vite + React</h1>
       {/*<TiltCard />*/}
       <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
         Generate
