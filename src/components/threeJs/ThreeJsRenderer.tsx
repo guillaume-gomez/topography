@@ -7,6 +7,7 @@ import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../SettingsContextWrapper";
+import CustomCameraControls, { ExternalActionInterface } from "./CustomCameraControls";
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
@@ -27,19 +28,9 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       return;
     }
 
-    await cameraControllerRef.current.fitToBox(meshRef.current, true,
-      { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
-    );
+    cameraControllerRef.current.recenter(meshRef.current);
   }
 
-  async function moveTopDown() {
-    if(!meshRef.current || !cameraControllerRef.current) {
-      return;
-    }
-    await cameraControllerRef.current.setPosition(0, 350, 0, true);
-
-    //recenterCamera();
-  }
 
   async function onAnimationEnd() {
      recenterCamera();
@@ -85,16 +76,9 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
         </EffectComposer>
-        <CameraControls
+        <CustomCameraControls
+          speed={2.5}
           ref={cameraControllerRef}
-          makeDefault
-          smoothTime={1.0}
-          minPolarAngle={0.75}
-          maxPolarAngle={Math.PI / 2.5}
-          minAzimuthAngle={-Math.PI}
-          maxAzimuthAngle={Math.PI}
-          minDistance={10}
-          maxDistance={400}
         />
       </Canvas>
   );
