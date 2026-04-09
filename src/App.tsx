@@ -1,11 +1,13 @@
 import { useContext } from 'react';
 import { SettingsContext } from "./components/SettingsContextWrapper";
+import { SceneContext } from "./context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
 import Card from "./components/Card";
+import ParallaxTilt from "./components/ParallaxTilt";
 
 function App() {
   const {
@@ -18,11 +20,14 @@ function App() {
     setColorTo,
     setNumberOfLayers,
     setAnimationState,
-    setColorChosen,
-    colorChosen,
     colorFrom, 
     colorTo
   } = useContext(SettingsContext);
+  const {
+    setSceneName,
+    is3DScene,
+  } = useContext(SceneContext);
+
   const { generate, shapes } = useTopography({
     width, 
     height,
@@ -41,7 +46,7 @@ function App() {
         ],
         config: { duration: 500, easing: easings.easeInBack },
         onStart: () => {
-          setColorChosen(true);
+          setSceneName("3d-scene");
         },
         onRest: (result, spring, item) => {
           apiTransitionThreeJsRenderer.start();  
@@ -80,10 +85,16 @@ function App() {
 
             apiTransitionChooseColor.start();
           }} />
+          
+          {/*<div className="w-full h-screen p-5 flex flex-row items-center justify-center">
+            <ParallaxTilt/>
+          </div>*/}
+          
+          
         </animated.div>
         <animated.div
           className="w-full h-screen"
-          style={{...transitionThreeJsRendererProps, display: colorChosen ? "block" : "none"}}
+          style={{...transitionThreeJsRendererProps, display: is3DScene() ? "block" : "none"}}
         >
           <Card kustomClass="absolute left-10 top-10 z-10 opacity-70">
             <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
@@ -93,7 +104,7 @@ function App() {
               {isLight ? "Light" : "Dark"}
             </button>
           </Card>
-          <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> 
+          <ThreejsRenderer shapes={shapes} rendered={is3DScene()}/> 
         </animated.div> 
       </div>
     </>
