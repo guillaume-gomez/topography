@@ -5,6 +5,7 @@ import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
+import ProgressButton from "./components/ProgressButton";
 
 function App() {
   const {
@@ -72,6 +73,7 @@ function App() {
       <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
         Generate
       </button>
+      <ProgressButton label="Generate" onClick={() => {generate(); setAnimationState("started")}} />
       <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
         {isLight ? "Light" : "Dark"}
       </button>
