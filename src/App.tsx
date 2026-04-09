@@ -5,6 +5,7 @@ import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
+import Card from "./components/Card";
 
 function App() {
   const {
@@ -69,13 +70,6 @@ function App() {
         bg-[size:30px_30px]"
       />
       {/*<TiltCard />*/}
-      <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
-        Generate
-      </button>
-      <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
-        {isLight ? "Light" : "Dark"}
-      </button>
-
       <div className="w-full h-screen p-5">
         <animated.div style={transitionChooseColorProps}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
@@ -91,6 +85,14 @@ function App() {
           className="w-full h-screen"
           style={{...transitionThreeJsRendererProps, display: colorChosen ? "block" : "none"}}
         >
+          <Card kustomClass="absolute left-10 top-10 z-10 opacity-70">
+            <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
+              Generate
+            </button>
+            <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
+              {isLight ? "Light" : "Dark"}
+            </button>
+          </Card>
           <ThreejsRenderer shapes={shapes} rendered={colorChosen}/> 
         </animated.div> 
       </div>
