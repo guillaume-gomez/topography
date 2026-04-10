@@ -25,6 +25,8 @@ function App() {
   } = useContext(SettingsContext);
   const {
     setSceneName,
+    isColorChoose,
+    isIntro,
     is3DScene,
   } = useContext(SceneContext);
 
@@ -39,10 +41,10 @@ function App() {
   const transitionChooseColorProps  = useSpring(
       {
         ref: apiTransitionChooseColor,
-        from: { display: "block", position: "relative", top: "0%", },
+        from: { position: "relative", top: "0%", },
         to: [
-          { display: "block", position: "relative", top: "-200%" },
-          { display: "none", },
+          { position: "relative", top: "-200%" },
+          { position: "relative", },
         ],
         config: { duration: 500, easing: easings.easeInBack },
         onStart: () => {
@@ -75,8 +77,12 @@ function App() {
         bg-[size:30px_30px]"
       />
       {/*<TiltCard />*/}
+      <div className="w-full h-screen p-5 flex flex-row items-center justify-center" style={{display: isIntro() ? "block" : "none" }}>
+        <ParallaxTilt/>
+      </div>
+
       <div className="w-full h-screen p-5">
-        <animated.div style={transitionChooseColorProps}>
+        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() ? "block" : "none" }}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
             setColorFrom(colorFrom);
@@ -85,12 +91,6 @@ function App() {
 
             apiTransitionChooseColor.start();
           }} />
-          
-          {/*<div className="w-full h-screen p-5 flex flex-row items-center justify-center">
-            <ParallaxTilt/>
-          </div>*/}
-          
-          
         </animated.div>
         <animated.div
           className="w-full h-screen"
