@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SettingsContext } from "./components/SettingsContextWrapper";
+import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
 
