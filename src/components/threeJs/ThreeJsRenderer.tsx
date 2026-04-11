@@ -6,7 +6,7 @@ import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { Shape } from "../hooks/useTopography";
-import { SettingsContext } from "../SettingsContextWrapper";
+import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;

@@ -7,7 +7,7 @@ import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopologyShape from './TopologyShape';
 import { Grid } from '@react-three/drei';
-import { SettingsContext } from "../SettingsContextWrapper";
+import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
 

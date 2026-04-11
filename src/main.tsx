@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css';
 import App from './App.tsx';
 
-import SettingsContextWrapper from "./components/SettingsContextWrapper";
+import SettingsContextWrapper from "./context/SettingsContextWrapper";
 import SceneContextWrapper from "./context/SceneContextWrapper";
 
 createRoot(document.getElementById('root')!).render(
