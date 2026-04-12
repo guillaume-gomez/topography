@@ -1,5 +1,6 @@
 import React, { useRef, useState, useContext } from "react";
 import { SceneContext } from "../context/SceneContextWrapper";
+import { useSpring, useSpringRef, animated, easings, useChain } from '@react-spring/web';
 import "./ParallaxTilt.css"
 
 https://www.youtube.com/watch?v=x-7EAgNII50
@@ -24,8 +25,25 @@ function ParallaxTilt({
     setSceneName
   } = useContext(SceneContext);
 
+  const squareProps = useSpring(
+    {
+      from: { top: 1000, left: 0, opacity: 0 },
+      to: { top: 0, left: 0, opacity: 1 },
+      config: { duration: 1000, easing: easings.easeInBack },
+    }
+  );
+
+  const firstLayerProps = useSpring(
+    {
+      from: { top: 2000, left: 0, opacity: 0 },
+      to: { top: -120, left: -150, opacity: 1 },
+      config: { duration: 1000, easing: easings.easeInBack },
+    }
+  );
+
+
+
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    
     if(!cardRef || !cardRef.current) {
       return;
     }
@@ -40,7 +58,6 @@ function ParallaxTilt({
   }
 
   function handleMouseLeave() {
-
     if(!cardRef || !cardRef.current) {
       return;
     }
@@ -50,21 +67,31 @@ function ParallaxTilt({
 
   return (
     <div className="p-24 perspective-[800px]" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      <div ref={cardRef} className="card relative bg-red" style={{
-        transformStyle: "preserve-3d",
-        transition: "transform 0.1s ease",
-        width: 500,
-        height: 500,
-        background: "black"
-      }}>
-        <svg viewBox="0 0 200 200"
+      <animated.div 
+        ref={cardRef}
+        className="card relative bg-red"
+        style={{
+          transformStyle: "preserve-3d",
+          transition: "transform 0.1s ease",
+          width: 500,
+          height: 500,
+          background: "#BC5F04",
+          ...squareProps
+        }}
+      >
+        <animated.svg viewBox="0 0 200 200"
             xmlns="http://www.w3.org/2000/svg"
-            className="box" style={{top: -120, left: -150, transform: "translate3d(0, 0, 3px)", background: "transparent"}}
+            className="box"
+            style={{
+              transform: "translate3d(0, 0, 3px)",
+              background: "blue",
+              ...firstLayerProps
+            }}
             width="800px"
             height="800px"
         >
           <path fill="#CA2E55" d="M41.9,-73.3C52,-66.8,56.2,-50.8,61.5,-37C66.9,-23.2,73.5,-11.6,73.1,-0.2C72.8,11.2,65.6,22.5,57.9,32.3C50.3,42.2,42.2,50.6,32.5,59C22.7,67.3,11.4,75.6,1.4,73.2C-8.7,70.9,-17.3,57.9,-25.6,48.8C-34,39.6,-42,34.2,-50.3,26.7C-58.5,19.3,-67,9.6,-71.6,-2.6C-76.1,-14.9,-76.7,-29.8,-69.1,-38.4C-61.5,-46.9,-45.6,-49.2,-32.7,-54C-19.8,-58.8,-9.9,-66.2,3,-71.4C15.9,-76.6,31.9,-79.7,41.9,-73.3Z" transform="translate(100 100)" />
-        </svg>
+        </animated.svg>
 
         <svg viewBox="0 0 200 200"
              xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +108,7 @@ function ParallaxTilt({
              width="500px"
              height="500px"
         >
-          <path fill="#0F7173" d="M37.8,-62.1C49.8,-58.6,60.9,-50.1,64.4,-38.9C67.9,-27.7,63.9,-13.9,65.4,0.8C66.8,15.5,73.8,31.1,72,45.2C70.2,59.4,59.6,72.1,46.1,72.8C32.7,73.4,16.3,61.9,2.2,58.1C-11.9,54.2,-23.8,58.1,-32.3,54.6C-40.8,51.1,-45.9,40.2,-55.8,29.9C-65.7,19.6,-80.4,9.8,-83.9,-2C-87.4,-13.8,-79.6,-27.7,-70.7,-39.7C-61.8,-51.8,-51.8,-62.1,-39.8,-65.6C-27.8,-69.1,-13.9,-65.9,-0.5,-65C12.9,-64.1,25.8,-65.6,37.8,-62.1Z" transform="translate(100 100)" />
+          <path fill="#5B2E48" d="M37.8,-62.1C49.8,-58.6,60.9,-50.1,64.4,-38.9C67.9,-27.7,63.9,-13.9,65.4,0.8C66.8,15.5,73.8,31.1,72,45.2C70.2,59.4,59.6,72.1,46.1,72.8C32.7,73.4,16.3,61.9,2.2,58.1C-11.9,54.2,-23.8,58.1,-32.3,54.6C-40.8,51.1,-45.9,40.2,-55.8,29.9C-65.7,19.6,-80.4,9.8,-83.9,-2C-87.4,-13.8,-79.6,-27.7,-70.7,-39.7C-61.8,-51.8,-51.8,-62.1,-39.8,-65.6C-27.8,-69.1,-13.9,-65.9,-0.5,-65C12.9,-64.1,25.8,-65.6,37.8,-62.1Z" transform="translate(100 100)" />
         </svg>
 
 
@@ -112,11 +139,11 @@ function ParallaxTilt({
           <path fill="#D8A47F" d="M41.9,-68.9C54.4,-65.3,64.6,-54.3,69.9,-41.5C75.2,-28.8,75.6,-14.4,70.8,-2.8C66,8.9,56.1,17.8,51.7,32.1C47.3,46.3,48.3,65.9,40.6,77.5C32.9,89.1,16.5,92.6,0.9,90.9C-14.6,89.3,-29.1,82.5,-41,73.3C-52.9,64.2,-62.1,52.7,-66.6,40C-71.1,27.4,-70.9,13.7,-69.7,0.7C-68.4,-12.3,-66.1,-24.5,-59.9,-34.3C-53.8,-44.1,-43.8,-51.3,-33.2,-56C-22.5,-60.6,-11.3,-62.7,1.7,-65.7C14.7,-68.7,29.4,-72.6,41.9,-68.9Z" transform="translate(100 100)" />
         </svg>
 
-      </div>
-      <div style={{zIndex: 100, padding: "4rem"}}>
-        <h1 className="text-3xl">Topography</h1>
+      </animated.div>
+      <div style={{zIndex: 10, paddingTop: "6rem"}}>
+        <h1 className="md:text-4xl">Topography</h1>
         <p className="text-lg">by Guillaume Gomez</p>
-        <button className="btn btn-primary" onClick={() => setSceneName("color-choice")} >Start to create</button>
+        <button className="btn btn-primary btn-lg" onClick={() => setSceneName("color-choice")} >Start to create</button>
       </div>
     </div>
   );
