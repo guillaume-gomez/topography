@@ -28,6 +28,9 @@ function App() {
     isColorChoose,
     isIntro,
     is3DScene,
+    animationIntroEnd,
+    animationColorChoiceEnd,
+    setAnimationEnd
   } = useContext(SceneContext);
 
   const { generate, shapes } = useTopography({
@@ -44,14 +47,15 @@ function App() {
         from: { position: "relative", top: "0%", },
         to: [
           { position: "relative", top: "-200%" },
-          { position: "relative", },
+          { position: "relative" },
         ],
         config: { duration: 500, easing: easings.easeInBack },
         onStart: () => {
           setSceneName("3d-scene");
         },
         onRest: (result, spring, item) => {
-          apiTransitionThreeJsRenderer.start();  
+          apiTransitionThreeJsRenderer.start();
+          setAnimationEnd("color-choice", true);  
         }
       }
   );
@@ -66,6 +70,9 @@ function App() {
           { position: "static", opacity: 1, top: "0%" }
         ],
         config: { duration: 500, easing: easings.easeOutBack  },
+        onRest: () => {
+          setAnimationEnd("3d-scene", true);
+        }
       }
   );
 
@@ -77,12 +84,17 @@ function App() {
         bg-[size:30px_30px]"
       />
       {/*<TiltCard />*/}
-      <div className="w-full h-screen p-5 flex flex-row items-center justify-center" style={{display: isIntro() ? "block" : "none" }}>
+      <div 
+        className="w-full h-screen p-5 flex flex-row items-center justify-center"
+        style={{
+          display: isIntro() && !animationIntroEnd ? "flex" : "none",
+        }}
+      >
         <ParallaxTilt/>
       </div>
 
       <div className="w-full h-screen p-5">
-        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() ? "block" : "none" }}>
+        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() && !animationColorChoiceEnd ? "block" : "none" }}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
             setColorFrom(colorFrom);
