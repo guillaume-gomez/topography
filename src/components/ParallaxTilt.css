@@ -5,6 +5,6 @@
 	//box-shadow: -5px 5px 10px grey;
 	//background: linear-gradient(blue, purple);
 
-	 -webkit-filter: drop-shadow( -5px 5px 10px grey);
-  filter: drop-shadow( -5px 5px 10px grey);
+	 -webkit-filter: drop-shadow( -5px 5px 5px black);
+  filter: drop-shadow( -5px 5px 5px black);
 }
