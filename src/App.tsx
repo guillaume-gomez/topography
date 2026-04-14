@@ -48,7 +48,7 @@ function App() {
         onStart: () => {
           setSceneName("3d-scene");
         },
-        onRest: (result, spring, item) => {
+        onRest: () => {
           apiTransitionThreeJsRenderer.start();  
         }
       }
@@ -104,7 +104,7 @@ function App() {
               {isLight ? "Light" : "Dark"}
             </button>
           </Card>
-          <ThreejsRenderer shapes={shapes} rendered={is3DScene()}/> 
+          <ThreejsRenderer shapes={shapes}/> 
         </animated.div> 
       </div>
     </>

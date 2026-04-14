@@ -1,5 +1,5 @@
 import { useRef, useContext } from 'react';
-import { useSpring, animated } from '@react-spring/three';
+import { useSpring } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { hex2rgb } from "../../colorUtils";
