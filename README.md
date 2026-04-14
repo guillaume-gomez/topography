@@ -33,3 +33,7 @@ https://perspective-gray.vercel.app/
 
 // for blop animation
 https://www.blobmaker.app/
+
+ref
+https://www.boilise.com/en/products/lac-dannecy
+https://css-tip.com/3d-parallax-effect/
