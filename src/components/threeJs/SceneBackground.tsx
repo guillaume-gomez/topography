@@ -2,6 +2,7 @@ import { useRef, useContext } from 'react';
 import { useSpring } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { Stars, Sky } from '@react-three/drei';
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
 
@@ -27,7 +28,7 @@ function SceneBackground() {
     scene.background = colorRef.current;
   });
 
-  return null;
+  return isLight ? null : <Stars radius={100} depth={100} count={5000} factor={4} saturation={0} fade speed={1} />;
 }
 
 export default SceneBackground;
