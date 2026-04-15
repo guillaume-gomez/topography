@@ -82,8 +82,8 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   }, [from, to, layers]);
 
   function randomColors() {
-    const colorFrom = sample(COLORS);
-    const colorTo = sample(COLORS);
+    const colorFrom = sample(COLORS) as string;
+    const colorTo = sample(COLORS) as string;
     setFrom(colorFrom);
     setTo(colorTo);
   }
