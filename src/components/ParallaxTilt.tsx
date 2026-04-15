@@ -13,8 +13,6 @@ interface ParallaxTiltProps {
   style?: React.CSSProperties;
 }
 
-const translateZArray = [-40, 40, 80, 120, 160, 200]
-
 function ParallaxTilt({
   children,
   maxTilt = 20,
@@ -41,8 +39,8 @@ function ParallaxTilt({
   const firstLayerProps = useSpring(
     {
       ref: firstLayerPropsRef,
-      from: { top: 2000, left: 0, opacity: 0 },
-      to: { top: -120, left: -150, opacity: 1 },
+      from: { top: 2000, left: 0, opacity: 0, translateZ: -40 },
+      to: { top: -120, left: -150, opacity: 1, translateZ: -40 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -51,8 +49,8 @@ function ParallaxTilt({
   const secondLayerProps = useSpring(
     {
       ref: secondLayerPropsRef,
-      from: { top: 0, left: 2000, opacity: 0 },
-      to: { top: -100, left: -60,  opacity: 1 },
+      from: { top: 0, left: 2000, opacity: 0, translateZ: 40 },
+      to: { top: -100, left: -60,  opacity: 1, translateZ: 40 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -61,8 +59,8 @@ function ParallaxTilt({
   const thirdLayerProps = useSpring(
     {
       ref: thirdLayerPropsRef,
-      from: { top: -2000, left: 0, opacity: 0 },
-      to: { top: 0, left: 0, opacity: 1 },
+      from: { top: -2000, left: 0, opacity: 0, translateZ: 80 },
+      to: { top: 0, left: 0, opacity: 1, translateZ: 80 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -71,8 +69,8 @@ function ParallaxTilt({
   const fourthLayerProps = useSpring(
     {
       ref: fourthLayerPropsRef,
-      from: { top: 60, left: -2000, opacity: 0 },
-      to: { top: 60, left: 60, opacity: 1 },
+      from: { top: 60, left: -2000, opacity: 0, translateZ: 120 },
+      to: { top: 60, left: 60, opacity: 1, translateZ: 120 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -129,18 +127,17 @@ function ParallaxTilt({
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width/2;
     const y = e.clientY - rect.top - rect.height/2;
-  
+
     const rotateX = (y/rect.height) * 40;
     const rotateY = (x/rect.width) * 40;
     cardRef.current.style.transform = `rotateX(${-rotateX}deg)  rotateY(${rotateY}deg)`;
 
-    const { children } = cardRef.current;
-    fifthLayerPropsRef.start({
-      translateZ: 200, config: { duration: 500 }
-    });
-    sixthLayerPropsRef.start({
-      translateZ: 240, config: { duration: 500 }
-    });
+    firstLayerPropsRef.start({ translateZ: 0,   delay: 0,    config: { duration: 100 } });
+    secondLayerPropsRef.start({ translateZ: 80,  delay: 100,  config: { duration: 100 } });
+    thirdLayerPropsRef.start({ translateZ: 120, delay: 200, config: { duration: 100 } });
+    fourthLayerPropsRef.start({ translateZ: 160, delay: 300, config: { duration: 100 } });
+    fifthLayerPropsRef.start({ translateZ: 200,  delay: 400, config: { duration: 100 } });
+    sixthLayerPropsRef.start({ translateZ: 240,  delay: 500, config: { duration: 100 } });
 
     //cardRef.current.style.background = "yellow";
   }
@@ -151,16 +148,14 @@ function ParallaxTilt({
     }
     cardRef.current.style.transform = `rotateX(0deg) rotateY(0deg)`;
     //cardRef.current.style.background = "blue";
-    
-    fifthLayerPropsRef.start({
-      translateZ: 160, config: { duration: 500 }
-    });
-    sixthLayerPropsRef.start({
-      translateZ: 200, config: { duration: 500 }
-    });
-  }
 
-  console.log(fifthLayerProps)
+    firstLayerPropsRef.start({ translateZ: -40, delay: 0,    config: { duration: 100 } });
+    secondLayerPropsRef.start({ translateZ: 40,  delay: 100,  config: { duration: 100 } });
+    thirdLayerPropsRef.start({ translateZ: 80,  delay: 200, config: { duration: 100 } });
+    fourthLayerPropsRef.start({ translateZ: 120, delay: 300, config: { duration: 100 } });
+    fifthLayerPropsRef.start({ translateZ: 160,  delay: 400, config: { duration: 100 } });
+    sixthLayerPropsRef.start({ translateZ: 200,  delay: 500, config: { duration: 100 } });
+  }
 
   return (
     <div className="p-24 perspective-[800px]" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
@@ -220,10 +215,7 @@ function ParallaxTilt({
         <animated.svg viewBox="0 0 200 200"
              xmlns="http://www.w3.org/2000/svg"
              className="box"
-             style={{
-              transform: "translate3d(0, 0, 80px)",
-              ...thirdLayerProps
-              }}
+             style={thirdLayerProps}
              width="500px"
              height="500px"
         >
@@ -237,10 +229,7 @@ function ParallaxTilt({
 
        <animated.svg viewBox="0 0 200 200"
              xmlns="http://www.w3.org/2000/svg"
-             className="box" style={{
-              transform: "translate3d(0, 0, 120px)",
-              ...fourthLayerProps
-             }}
+             className="box" style={fourthLayerProps}
              width="350px"
              height="350px"
         >
@@ -257,8 +246,7 @@ function ParallaxTilt({
              style={{
               top: 110,
               left: 130,
-              transform: fifthLayerProps.translateZ.to(v => `translate3d(0, 0, ${v}px)`),
-              opacity: firstLayerProps.opacity
+              ...fifthLayerProps
              }}
              width="200px"
              height="200px"
@@ -276,8 +264,7 @@ function ParallaxTilt({
              style={{
               top: 200,
               left: 200,
-              transform: sixthLayerProps.translateZ.to(v => `translate3d(0, 0, ${v}px)`),
-              opacity: sixthLayerProps.opacity
+              ...sixthLayerProps
              }}
              width="50px"
              height="50px"
