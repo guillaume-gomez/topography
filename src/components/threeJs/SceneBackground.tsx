@@ -1,5 +1,5 @@
 import { useRef, useContext } from 'react';
-import { useSpring } from '@react-spring/three';
+import { useSpring, animated } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { hex2rgb } from "../../colorUtils";
@@ -18,6 +18,7 @@ function SceneBackground() {
 
   const spring = useSpring({
     color: isLight ? FROM : TO,
+    intensity: isLight ? 1.5 : 0.5,
     config: { duration: timerSwitch }
   });
 
@@ -27,7 +28,7 @@ function SceneBackground() {
     scene.background = colorRef.current;
   });
 
-  return null;
+  return <animated.ambientLight intensity={spring.intensity} />;
 }
 
 export default SceneBackground;
