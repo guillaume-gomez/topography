@@ -1,5 +1,5 @@
 import { useRef, useContext } from 'react';
-import { useSpring } from '@react-spring/three';
+import { useSpring, animated } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { Stars, Sky } from '@react-three/drei';
@@ -19,6 +19,7 @@ function SceneBackground() {
 
   const spring = useSpring({
     color: isLight ? FROM : TO,
+    intensity: isLight ? 1.5 : 0.5,
     config: { duration: timerSwitch }
   });
 
@@ -28,7 +29,10 @@ function SceneBackground() {
     scene.background = colorRef.current;
   });
 
-  return isLight ? null : <Stars radius={100} depth={100} count={5000} factor={4} saturation={0} fade speed={1} />;
+  return <>
+    <animated.ambientLight intensity={spring.intensity} />
+    { isLight ? null : <Stars radius={100} depth={100} count={5000} factor={4} saturation={0} fade speed={1} /> }
+   </>;
 }
 
 export default SceneBackground;
