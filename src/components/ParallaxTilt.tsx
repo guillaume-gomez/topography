@@ -1,6 +1,6 @@
 import React, { useRef, useState, useContext } from "react";
 import { SceneContext } from "../context/SceneContextWrapper";
-import { useSpring, useSpringRef, animated, easings, useChain } from '@react-spring/web';
+import { useSpring, useSpringRef, animated, easings, useChain, to } from '@react-spring/web';
 import "./ParallaxTilt.css"
 
 https://www.youtube.com/watch?v=x-7EAgNII50
@@ -12,6 +12,8 @@ interface ParallaxTiltProps {
   className?: string;
   style?: React.CSSProperties;
 }
+
+const translateZByLayer = [0, 40, 80, 120, 160, 200]
 
 function ParallaxTilt({
   children,
@@ -39,8 +41,8 @@ function ParallaxTilt({
   const firstLayerProps = useSpring(
     {
       ref: firstLayerPropsRef,
-      from: { top: 2000, left: 0, opacity: 0, translateZ: -40 },
-      to: { top: -120, left: -150, opacity: 1, translateZ: -40 },
+      from: { top: 2000, left: 0, opacity: 0, translateZ: 0 },
+      to: { top: -120, left: -150, opacity: 1, translateZ: 0 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -92,15 +94,12 @@ function ParallaxTilt({
       from: { translateZ: 2000, opacity: 0 },
       to: { translateZ: 200, opacity: 1 },
       config: { easing: easings.easeInBack },
-    }
-  );
-
-  const baseProps = useSpring(
-    {
-      ref: basePropsRef,
-      from: { angle: - Math.PI },
-      to: { angle: 2.1 * Math.PI },
-      config: { duration: 3000, easing: easings.easeInBack },
+      onRest: () => {
+        tiltApi.start({
+          rotateX: 10,
+          rotateY: 20,
+        });
+      }
     }
   );
 
@@ -114,11 +113,16 @@ function ParallaxTilt({
   )
 
   useChain(
-    [firstLayerPropsRef, secondLayerPropsRef, thirdLayerPropsRef, fourthLayerPropsRef, fifthLayerPropsRef, sixthLayerPropsRef, basePropsRef, titlePropsRef],
-    [0, 1, 2, 3, 4, 5, 6],
+    [firstLayerPropsRef, secondLayerPropsRef, thirdLayerPropsRef, fourthLayerPropsRef, fifthLayerPropsRef, sixthLayerPropsRef, titlePropsRef],
+    [0, 1, 2, 3, 4, 5, 8],
     400
   );
 
+  const [tiltProps, tiltApi] = useSpring(() => ({
+    rotateX: 0,
+    rotateY: 0,
+    config: { mass: 1, tension: 180, friction: 30 },
+  }));
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if(!cardRef || !cardRef.current) {
@@ -128,33 +132,14 @@ function ParallaxTilt({
     const x = e.clientX - rect.left - rect.width/2;
     const y = e.clientY - rect.top - rect.height/2;
 
-    const rotateX = (y/rect.height) * 40;
-    const rotateY = (x/rect.width) * 40;
-    cardRef.current.style.transform = `rotateX(${-rotateX}deg)  rotateY(${rotateY}deg)`;
-
-    firstLayerPropsRef.start({ translateZ: 0,   delay: 0,    config: { duration: 100 } });
-    secondLayerPropsRef.start({ translateZ: 80,  delay: 100,  config: { duration: 100 } });
-    thirdLayerPropsRef.start({ translateZ: 120, delay: 200, config: { duration: 100 } });
-    fourthLayerPropsRef.start({ translateZ: 160, delay: 300, config: { duration: 100 } });
-    fifthLayerPropsRef.start({ translateZ: 200,  delay: 400, config: { duration: 100 } });
-    sixthLayerPropsRef.start({ translateZ: 240,  delay: 500, config: { duration: 100 } });
-
-    //cardRef.current.style.background = "yellow";
+    tiltApi.start({
+      rotateX: -(y / rect.height) * 40,
+      rotateY: (x / rect.width) * 40,
+    });
   }
 
   function handleMouseLeave() {
-    if(!cardRef || !cardRef.current) {
-      return;
-    }
-    cardRef.current.style.transform = `rotateX(0deg) rotateY(0deg)`;
-    //cardRef.current.style.background = "blue";
-
-    firstLayerPropsRef.start({ translateZ: -40, delay: 0,    config: { duration: 100 } });
-    secondLayerPropsRef.start({ translateZ: 40,  delay: 100,  config: { duration: 100 } });
-    thirdLayerPropsRef.start({ translateZ: 80,  delay: 200, config: { duration: 100 } });
-    fourthLayerPropsRef.start({ translateZ: 120, delay: 300, config: { duration: 100 } });
-    fifthLayerPropsRef.start({ translateZ: 160,  delay: 400, config: { duration: 100 } });
-    sixthLayerPropsRef.start({ translateZ: 200,  delay: 500, config: { duration: 100 } });
+    tiltApi.start({ rotateX: 0, rotateY: 0 });
   }
 
   return (
@@ -164,18 +149,15 @@ function ParallaxTilt({
         className="card relative bg-red"
         style={{
           transformStyle: "preserve-3d",
-          transition: "transform 0.1s ease",
           width: 500,
           height: 500,
-          transform: baseProps.angle.to(v => {
-            if(v < 0) {
-              return `rotateX(0deg) rotateY(0deg)`
-            }
+          transform: to(
+            [tiltProps.rotateX, tiltProps.rotateY],
+            (tiltX, tiltY) => {
+              return `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
 
-            const rx = Math.sin(v) * 40;
-            const ry = Math.cos(v) * 40;
-            return `rotateX(${rx}deg) rotateY(${ry}deg)`
-          })
+            }
+          )
         }}
       >
         <animated.svg viewBox="0 0 200 200"

@@ -94,7 +94,7 @@ function App() {
       </div>
 
       <div className="w-full h-screen p-5">
-        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() && !animationColorChoiceEnd ? "block" : "none" }}>
+        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() || !animationColorChoiceEnd ? "block" : "none" }}>
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
             setColorFrom(colorFrom);
