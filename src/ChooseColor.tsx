@@ -42,7 +42,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [to, setTo] = useState<string>("#A0522D");
   const [layers, setLayers] = useState<number>(5);
   const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
-  const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
+  const [playSubmit] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
 
   const [trails,] = useTrail(
     layers,
@@ -82,8 +82,8 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   }, [from, to, layers]);
 
   function randomColors() {
-    const colorFrom = sample(COLORS);
-    const colorTo = sample(COLORS);
+    const colorFrom = sample(COLORS) as string;
+    const colorTo = sample(COLORS) as string;
     setFrom(colorFrom);
     setTo(colorTo);
   }

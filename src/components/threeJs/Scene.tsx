@@ -1,4 +1,4 @@
-import { useContext, Suspense, type Ref, useEffect } from 'react';
+import { useContext, Suspense, type Ref } from 'react';
 import { type Mesh} from "three";
 import useSound from 'use-sound';
 import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
@@ -47,7 +47,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
 
   const durationByLayer = timerGeneration / numberOfLayers;
 
-  const [springs, apiLayers] = useSprings(
+  const [springs,] = useSprings(
     numberOfLayers,
     (springIndex) => {
       // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes 
@@ -84,7 +84,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     [animationState]
   );
 
-  const [rotationSpring, apiRotation] = useSpring(
+  const [rotationSpring,] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
     to: { y: 0, rotationY: Math.PI * 2,},

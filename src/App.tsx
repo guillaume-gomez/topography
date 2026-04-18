@@ -55,7 +55,7 @@ function App() {
         },
         onRest: (result, spring, item) => {
           apiTransitionThreeJsRenderer.start();
-          setAnimationEnd("color-choice", true);  
+          setAnimationEnd("color-choice", true);
         }
       }
   );
@@ -116,7 +116,7 @@ function App() {
               {isLight ? "Light" : "Dark"}
             </button>
           </Card>
-          <ThreejsRenderer shapes={shapes} rendered={is3DScene()}/> 
+          <ThreejsRenderer shapes={shapes}/> 
         </animated.div> 
       </div>
     </>
