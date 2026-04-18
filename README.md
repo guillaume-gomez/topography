@@ -36,3 +36,11 @@ https://perspective-gray.vercel.app/
 
   droppping a pin on wood : http://pixabay.com/fr/sound-effects/films-et-effets-sp%C3%A9ciaux-dropping-a-pen-on-wood-103665/
 
+https://perspective-gray.vercel.app/
+
+// for blop animation
+https://www.blobmaker.app/
+
+ref
+https://www.boilise.com/en/products/lac-dannecy
+https://css-tip.com/3d-parallax-effect/

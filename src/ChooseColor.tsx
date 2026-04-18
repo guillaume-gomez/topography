@@ -47,7 +47,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [trails,] = useTrail(
     layers,
     (index) => ({
-      from: { opacity: 0, height: 0,  },
+      from: { opacity: 0, height: 0, },
       to: async (next) => {
             const minHeight = 20; // 20%
             const height = Math.sin(Math.PI * index/layers) * 100;

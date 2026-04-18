@@ -7,6 +7,11 @@ export interface SceneContextParams {
   is3DScene: () => boolean;
   isColorChoose: () => boolean;
   setSceneName: (sceneName: SceneName) => void;
+  animationIntroEnd: boolean;
+  animationColorChoiceEnd: boolean;
+  animationScene3DEnd: boolean;
+  setAnimationEnd: (sceneName: SceneName, value: boolean) => void;
+
 }
 export const SceneContext = createContext<SceneContextParams>(null);
 
@@ -16,6 +21,23 @@ interface Props {
 
 function SceneContextWrapper({children}: Props) {
   const [sceneName, setSceneName] = useState<SceneName>("intro");
+  const [animationIntroEnd, setAnimationIntroEnd] = useState<boolean>(false);
+  const [animationColorChoiceEnd, setAnimationColorChoiceEnd] = useState<boolean>(false);
+  const [animationScene3DEnd, setAnimationScene3DEnd] = useState<boolean>(false);
+
+  function setAnimationEnd(sceneName: SceneName, value: boolean) {
+    switch(sceneName) {
+      case "intro":
+        setAnimationIntroEnd(value);
+        return;
+      case "color-choice":
+        setAnimationColorChoiceEnd(value);
+        return;
+      case "3d-scene":
+        setAnimationScene3DEnd(value);
+        return;
+    }
+  }
 
   function is3DScene() {
     return sceneName == "3d-scene";
@@ -34,7 +56,11 @@ function SceneContextWrapper({children}: Props) {
       setSceneName,
       is3DScene,
       isIntro, 
-      isColorChoose
+      isColorChoose,
+      animationIntroEnd,
+      animationColorChoiceEnd,
+      animationScene3DEnd,
+      setAnimationEnd
     }}>
       {children}
     </SceneContext >
