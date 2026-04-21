@@ -40,6 +40,26 @@ function App() {
     fromToColors: [colorFrom, colorTo]
   });
 
+  const apiTransitionIntro = useSpringRef();
+  const transitionIntroProps  = useSpring(
+      {
+        ref: apiTransitionIntro,
+        from: { position: "relative", top: "0%", },
+        to: [
+          { position: "relative", top: "-200%" },
+          { position: "relative" },
+        ],
+        config: { duration: 500, easing: easings.easeInBack },
+        onStart: () => {
+          setSceneName("color-choice");
+        },
+        onRest: (result, spring, item) => {
+          //apiTransitionThreeJsRenderer.start();
+          setAnimationEnd("intro", true);
+        }
+      }
+  );
+
   const apiTransitionChooseColor = useSpringRef();
   const transitionChooseColorProps  = useSpring(
       {
@@ -75,6 +95,7 @@ function App() {
         }
       }
   );
+
 
   return (
     <>
