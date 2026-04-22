@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useSound from 'use-sound';
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
-import Range from "./components/Range";
+import NumberInput from "./components/NumberInput";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
@@ -131,13 +131,13 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
             value={to}
             onChange={(newColor) => setTo(newColor)}
           />
-          <Range
+          <NumberInput
               label="Layers"
               onChange={(newValue) => setLayers(newValue)}
               value={layers}
               min={5}
               max={15}
-              size={"range-normal"}
+              size={"input-md"}
             />
           <button
             className="btn btn-soft btn-secondary"
