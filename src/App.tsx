@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
@@ -40,13 +40,19 @@ function App() {
     fromToColors: [colorFrom, colorTo]
   });
 
+  useEffect(() => {
+    if(isColorChoose()) {
+      apiTransitionIntro.start();
+    }
+  }, [isColorChoose])
+
   const apiTransitionIntro = useSpringRef();
   const transitionIntroProps  = useSpring(
       {
         ref: apiTransitionIntro,
         from: { position: "relative", top: "0%", },
         to: [
-          { position: "relative", top: "-200%" },
+          { position: "relative", top: "-300%" },
           { position: "relative" },
         ],
         config: { duration: 500, easing: easings.easeInBack },
@@ -105,17 +111,19 @@ function App() {
         bg-[size:30px_30px]"
       />
       {/*<TiltCard />*/}
-      <div 
-        className="w-full h-screen p-5 flex flex-row items-center justify-center"
-        style={{
-          display: isIntro() && !animationIntroEnd ? "flex" : "none",
-        }}
-      >
-        <ParallaxTilt/>
-      </div>
-
-      <div className="w-full h-screen p-5">
-        <animated.div style={{...transitionChooseColorProps, display: isColorChoose() || !animationColorChoiceEnd ? "block" : "none" }}>
+      <div className="w-screen h-screen p-5 flex">
+        
+        <animated.div className="w-full h-full p-5 items-center justify-center" style={{...transitionIntroProps, display: isIntro() || !animationIntroEnd ? "flex" : "none"}}>
+          <ParallaxTilt/>      
+        </animated.div>
+        
+        <animated.div 
+            className="w-full"
+            style={{
+              ...transitionChooseColorProps,
+              display: isColorChoose() && !animationColorChoiceEnd ? "block" : "none"
+            }}
+        >
           <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
             // Handle the color submission
             setColorFrom(colorFrom);
