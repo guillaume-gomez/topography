@@ -50,7 +50,7 @@ function App() {
   const transitionIntroProps  = useSpring(
       {
         ref: apiTransitionIntro,
-        from: { position: "relative", top: "0%", },
+        from: { position: "relative", top: "0%" },
         to: [
           { position: "relative", top: "-300%" },
           { position: "relative" },
