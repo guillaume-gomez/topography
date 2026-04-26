@@ -63,7 +63,6 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     }
 
     const thresholdsContrained = thresholds.map(threshold => mapRange(threshold, 0.0, 1.0, 0.1, 0.90));
-    console.log(thresholdsContrained)
     return thresholdsContrained;
   }
 
@@ -73,7 +72,6 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     const gridHeight = gridWidth;
     
     const grid = generateGrid(gridWidth, gridHeight);
-    showGrid(grid);
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
     .thresholds(computeThresholds())
