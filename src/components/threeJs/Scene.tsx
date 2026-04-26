@@ -116,7 +116,8 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
                 key={index}
                 points={shape.points}
                 color={shape.color}
-                position={[0, 0, springs[index].y as unknown as number]}
+                //position={[0, 0, springs[index].y as unknown as number]}
+                position={[0, 0, shape.elevation * (Thickness * 2.)]}
                 thickness={Thickness}
                 opacity={shapeToDisplay.opacity}
               />

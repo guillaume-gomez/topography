@@ -2,10 +2,9 @@ import { useContext, useEffect } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings } from '@react-spring/web';
-
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopography from "./components/hooks/useTopography";
+import useTopographies from "./components/hooks/useTopographies";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -33,7 +32,7 @@ function App() {
     setAnimationEnd
   } = useContext(SceneContext);
 
-  const { generate, shapes } = useTopography({
+  const { generate, shapes } = useTopographies({
     width, 
     height,
     numberOfLayers,
@@ -44,7 +43,8 @@ function App() {
     if(isColorChoose()) {
       apiTransitionIntro.start();
     }
-  }, [isColorChoose])
+  }, [isColorChoose]);
+
 
   const apiTransitionIntro = useSpringRef();
   const transitionIntroProps  = useSpring(
@@ -101,7 +101,6 @@ function App() {
         }
       }
   );
-
 
   return (
     <>
