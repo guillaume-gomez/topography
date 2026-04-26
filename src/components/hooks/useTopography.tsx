@@ -18,6 +18,7 @@ interface Point {
 export interface Shape {
   color: Color;
   points: Vector2[];
+  elevation: number;
 }
 
 const COLORS_SAMPLE = [
@@ -131,7 +132,8 @@ function useTopography({ width, height, numberOfLayers, fromToColors } : Topogra
 
       const shape = { 
         color: colorByElevation(elevation),
-        points: shapePoints.map(point => new Vector2(point.x, point.y))
+        points: shapePoints.map(point => new Vector2(point.x, point.y)),
+        elevation
       }
 
       shapes.push(shape);
