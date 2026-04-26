@@ -53,7 +53,19 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
   useEffect(() => {
     generate();
-  }, [width, height, numberOfLayers])
+  }, [width, height, numberOfLayers]);
+
+  function computeThresholds() : number[] {
+    const step = 1.0 / numberOfLayers;
+    const thresholds = [];
+    for(let i = step, j = 0; i <= 1.0; i += step, j++) {
+      thresholds[j] = i;
+    }
+
+    const thresholdsContrained = thresholds.map(threshold => mapRange(threshold, 0.0, 1.0, 0.1, 0.90));
+    console.log(thresholdsContrained)
+    return thresholdsContrained;
+  }
 
   function generate(): Shape[] {
     const shapes = [];
@@ -64,7 +76,7 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     showGrid(grid);
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
-    .thresholds([0.1, 0.2,0.3, 0.4, 0.5, 0.6, 0.7, 0.8])
+    .thresholds(computeThresholds())
     .smooth(true);
 
     const result = contours(grid.flat());
