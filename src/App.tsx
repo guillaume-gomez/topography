@@ -70,7 +70,7 @@ function App() {
   const transitionChooseColorProps  = useSpring(
       {
         ref: apiTransitionChooseColor,
-        from: { position: "relative", top: "0%", },
+        from: { position: "relative", top: "0%" },
         to: [
           { position: "relative", top: "-200%" },
           { position: "relative" },
@@ -110,7 +110,6 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)] 
         bg-[size:30px_30px]"
       />
-      {/*<TiltCard />*/}
       <div className="w-screen h-screen p-5 flex">
         
         <animated.div className="w-full h-full p-5 items-center justify-center" style={{...transitionIntroProps, display: isIntro() || !animationIntroEnd ? "flex" : "none"}}>
