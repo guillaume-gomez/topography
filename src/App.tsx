@@ -1,7 +1,7 @@
-import { useContext, useEffect, type CSSProperties } from 'react';
+import { useEffect, useContext, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
-import { useSpring, useSpringRef, animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
+import { useSpringRef, animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
@@ -30,8 +30,8 @@ function App() {
     isColorChoose,
     isIntro,
     is3DScene,
-    animationColorChoiceEnd,
-    setAnimationEnd
+    setAnimationEnd,
+    sceneArray
   } = useContext(SceneContext);
 
   const { generate, shapes } = useTopography({
@@ -42,68 +42,42 @@ function App() {
   });
 
   useEffect(() => {
-    if(isColorChoose()) {
-      apiTransitionIntro.start();
-    }
-  }, [isColorChoose])
+    setSceneName("intro")
+  }, []);
 
-  const apiTransitionIntro = useSpringRef();
+  console.log(isIntro(), isColorChoose(), is3DScene());
   const transitionIntroProps  = useTransition(
-      isIntro(),
+      isIntro() ? [1] : [],
       {
-        ref: apiTransitionIntro,
-        from: { position: "relative", top: "0%", display: "flex" },
-        enter: [
-          { position: "relative", top: "-300%", display: "flex" },
-          { position: "static", top: "-300%", display: "none" }
-        ],
-        //leave: { position: "relative", top: "-300%", display: "none" },
+        from: { position: "relative", top: "-100%", display: "flex", opacity: 1 },
+        enter: { position: "relative", top: "0%", display: "flex", opacity: 1 },
+        leave: { position: "relative", top: "-100%", display: "flex", background: "red" },
         config: { duration: 500, easing: easings.easeInBack },
-        onStart: () => {
-          setSceneName("color-choice");
-        },
-        onRest: () => {
-          setAnimationEnd("intro", true);
-        }
       }
   );
 
-  const apiTransitionChooseColor = useSpringRef();
   const transitionChooseColorProps  = useTransition(
-      isColorChoose(),
+      isColorChoose() ? [2] : [],
       {
-        ref: apiTransitionChooseColor,
-        from: { position: "relative", top: "0%", display: "flex " },
-        enter: { position: "relative", top: "200%", display: "flex" },
+        from: { position: "relative", top: "-100%", display: "block" },
+        enter: { position: "relative", top: "0%", display: "block" },
         leave: [
-          { position: "relative", top: "-200%", display: "flex" },
+          { position: "relative", top: "-100%", display: "block" },
           { position: "relative", display: "none" },
         ],
         config: { duration: 500, easing: easings.easeInBack },
-        onStart: () => {
-          setSceneName("3d-scene");
-        },
-        onRest: () => {
-          apiTransitionThreeJsRenderer.start();
-          setAnimationEnd("color-choice", true);
-        }
       }
   );
 
-  const apiTransitionThreeJsRenderer = useSpringRef();
   const transitionThreeJsRendererProps  = useTransition(
-      is3DScene(),
+      is3DScene() ? [3] : [],
       {
-        ref: apiTransitionThreeJsRenderer,
-        from: { position: "relative", opacity: 0.3, top: "-210%" },
+        from: { position: "relative", opacity: 0.3, top: "-100%", display: "none" },
         enter: [
-          { position: "relative", opacity: 1, top: "0%" },
-          { position: "static", opacity: 1, top: "0%" }
+          { position: "relative", opacity: 1, top: "0%", display: "block" },
+          { position: "static", opacity: 1, top: "0%", display: "block" }
         ],
         config: { duration: 500, easing: easings.easeOutBack  },
-        onRest: () => {
-          setAnimationEnd("3d-scene", true);
-        }
       }
   );
 
@@ -135,7 +109,7 @@ function App() {
                 setColorTo(colorTo);
                 setNumberOfLayers(layers);
 
-                apiTransitionChooseColor.start();
+                setSceneName("3d-scene");
               }} />
             </animated.div>
           ))
