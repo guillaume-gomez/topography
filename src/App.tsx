@@ -100,7 +100,7 @@ function App() {
         {
           transitionChooseColorProps(style => (
             <animated.div
-            className="w-full"
+            className="w-full h-screen"
             style={style as AnimationProps}
             >
               <ChooseColor onSubmit={(colorFrom, colorTo, layers) => {
