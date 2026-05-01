@@ -45,13 +45,12 @@ function App() {
     setSceneName("intro")
   }, []);
 
-  console.log(isIntro(), isColorChoose(), is3DScene());
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
       {
-        from: { position: "relative", top: "-100%", display: "flex", opacity: 1 },
-        enter: { position: "relative", top: "0%", display: "flex", opacity: 1 },
-        leave: { position: "relative", top: "-100%", display: "flex", background: "red" },
+        from: { position: "relative", top: "-100%", display: "flex" },
+        enter: { position: "relative", top: "0%", display: "flex" },
+        leave: { position: "relative", top: "-100%", display: "flex" },
         config: { duration: 500, easing: easings.easeInBack },
       }
   );
@@ -61,10 +60,7 @@ function App() {
       {
         from: { position: "relative", top: "-100%", display: "block" },
         enter: { position: "relative", top: "0%", display: "block" },
-        leave: [
-          { position: "relative", top: "-100%", display: "block" },
-          { position: "relative", display: "none" },
-        ],
+        leave: { position: "relative", top: "-100%", display: "block" },
         config: { duration: 500, easing: easings.easeInBack },
       }
   );
@@ -73,10 +69,7 @@ function App() {
       is3DScene() ? [3] : [],
       {
         from: { position: "relative", opacity: 0.3, top: "-100%", display: "none" },
-        enter: [
-          { position: "relative", opacity: 1, top: "0%", display: "block" },
-          { position: "static", opacity: 1, top: "0%", display: "block" }
-        ],
+        enter: { position: "relative", opacity: 1, top: "0%", display: "block" },
         config: { duration: 500, easing: easings.easeOutBack  },
       }
   );
@@ -89,7 +82,7 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)]
         bg-[size:30px_30px]"
       />
-      <div className="w-screen h-screen p-5 flex">
+      <div className="w-screen h-screen p-5 flex flex-col">
         {
           transitionIntroProps(style => (
             <animated.div className="w-full h-full p-5 items-center justify-center" style={style as AnimationProps}>
