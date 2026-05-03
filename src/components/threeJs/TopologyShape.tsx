@@ -35,6 +35,7 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: 
       position-z={position[2]}
       castShadow
       receiveShadow
+      visible={opacity.to(v => v > 0.001)}
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
