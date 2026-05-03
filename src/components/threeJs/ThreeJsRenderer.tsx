@@ -47,7 +47,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   }
 
   function onAnimationStart() {
-    recenterCamera();
+    //recenterCamera();
   }
 
   return (

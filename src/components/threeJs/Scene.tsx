@@ -6,6 +6,7 @@ import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopologyShape from './TopologyShape';
+import TopologyLine from "./TopologyLine";
 import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -41,9 +42,15 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
   const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
 
   const shapeToDisplay = useSpring({
-    opacity: isLight ? 1.0 : 1.0,
+    opacity: isLight ? 1.0 : 0.0,
     config: { duration: timerSwitch}
   });
+
+  const lineToDisplay = useSpring({
+    opacity: isLight ? 0.0 : 1.0,
+    config: { duration: timerSwitch}
+  });
+
 
   const durationByLayer = timerGeneration / numberOfLayers;
 
@@ -112,15 +119,27 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
         {
           shapes.map((shape, index) => {
             return (
-              <TopologyShape
-                key={index}
-                points={shape.points}
-                color={shape.color}
-                //position={[0, 0, springs[index].y as unknown as number]}
-                position={[0, 0, shape.elevation * (Thickness * 2.)]}
-                thickness={Thickness}
-                opacity={shapeToDisplay.opacity}
-              />
+              <>
+                <TopologyShape
+                  key={index + "shape"}
+                  points={shape.points}
+                  color={shape.color}
+                  //position={[0, 0, springs[index].y as unknown as number]}
+                  position={[0, 0, shape.elevation * (Thickness * 2.)]}
+                  thickness={Thickness}
+                  opacity={shapeToDisplay.opacity}
+                />
+                <TopologyLine
+                  key={index + "line"}
+                  points={shape.points}
+                  color={shape.color}
+                  //position={[0, 0, springs[index].y as unknown as number]}
+                  position={[0, 0, shape.elevation * (Thickness * 2.)]}
+                  thickness={Thickness}
+                  opacity={lineToDisplay.opacity}
+                />
+
+              </>
             )
           })
         }

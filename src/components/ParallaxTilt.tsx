@@ -143,7 +143,11 @@ function ParallaxTilt({
   }
 
   return (
-    <div className="p-24 perspective-[800px]" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+    <div
+      className="perspective-[800px]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <animated.div 
         ref={cardRef}
         className="card relative bg-red"
