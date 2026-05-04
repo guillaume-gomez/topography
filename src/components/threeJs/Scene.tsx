@@ -1,6 +1,5 @@
 import { useContext, Suspense, type Ref } from 'react';
 import { type Mesh} from "three";
-import useSound from 'use-sound';
 import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
 
 import SceneBackground from "./SceneBackground";
@@ -9,6 +8,7 @@ import TopologyShape from './TopologyShape';
 import TopologyLine from "./TopologyLine";
 import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { SoundsContext } from "../../context/SoundsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
 
@@ -39,7 +39,10 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     numberOfLayers,
     animationState
   } = useContext(SettingsContext);
-  const [play, { stop }] = useSound('/sounds/44062__feegle__gamepiece.wav', { volume: 1. });
+  const {
+    playTopographyPieceSound,
+    stopTopographyPieceSound
+  } = useContext(SoundsContext);
 
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 0.0,
@@ -82,8 +85,9 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
             if(springIndex === numberOfLayers-1) {
               onAnimationEnd();
             }
-            stop();
-            play();
+
+            stopTopographyPieceSound();
+            playTopographyPieceSound();
           },
         }
       );
