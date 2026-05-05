@@ -6,6 +6,8 @@ import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopologyShape from './TopologyShape';
 import TopologyLine from "./TopologyLine";
+import TopographyWrapper from "./TopographyWrapper";
+
 import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { SoundsContext } from "../../context/SoundsContextWrapper";
@@ -21,15 +23,13 @@ Globals.assign({
 interface SceneProps {
   shapes: Shape[];
   meshRef: Ref<Mesh>;
-  onAnimationStart: () => void;
-  onAnimationEnd: () => void;
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 const Thickness = 5;
 const OriginalPosition = 400;
 
-function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps) {
+function Scene({ shapes, meshRef } : SceneProps) {
   const {
     isLight,
     width,
@@ -43,57 +43,6 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
     playTopographyPieceSound,
     stopTopographyPieceSound
   } = useContext(SoundsContext);
-
-  const shapeToDisplay = useSpring({
-    opacity: isLight ? 1.0 : 0.0,
-    config: { duration: timerSwitch}
-  });
-
-  const lineToDisplay = useSpring({
-    opacity: isLight ? 0.0 : 1.0,
-    config: { duration: timerSwitch}
-  });
-
-
-  const durationByLayer = timerGeneration / numberOfLayers;
-
-  const [springs,] = useSprings(
-    numberOfLayers,
-    (springIndex) => {
-      // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes 
-      if(animationState === "ended") {
-        return { y: springIndex * (Thickness * 2.), delay: springIndex * durationByLayer };
-      };
-
-      return (
-        {
-          from: { y: OriginalPosition },
-          to: async (next, _cancel) => {
-            await next({ y: OriginalPosition, immediate: true });
-            await next({ y: springIndex * (Thickness * 2.), delay: springIndex * durationByLayer });
-          },
-          config: {
-            duration: durationByLayer
-          },
-          reset: true,
-          onStart: () => {
-            if(springIndex === 0) {
-              onAnimationStart();
-            }
-          },
-          onRest: () => {
-            if(springIndex === numberOfLayers-1) {
-              onAnimationEnd();
-            }
-
-            stopTopographyPieceSound();
-            playTopographyPieceSound();
-          },
-        }
-      );
-    },
-    [animationState]
-  );
 
   const [rotationSpring,] = useSpring(
   {
@@ -123,25 +72,7 @@ function Scene({ shapes, meshRef, onAnimationStart, onAnimationEnd} : SceneProps
         {
           shapes.map((shape, index) => {
             return (
-              <>
-                <TopologyShape
-                  key={index + "shape"}
-                  points={shape.points}
-                  color={shape.color}
-                  position={[0, 0, springs[index].y as unknown as number]}
-                  thickness={Thickness}
-                  opacity={shapeToDisplay.opacity}
-                />
-                <TopologyLine
-                  key={index + "line"}
-                  points={shape.points}
-                  color={shape.color}
-                  position={[0, 0, springs[index].y as unknown as number]}
-                  thickness={Thickness * 0.5}
-                  opacity={lineToDisplay.opacity}
-                />
-
-              </>
+              <TopographyWrapper shape={shape} key={index} />
             )
           })
         }

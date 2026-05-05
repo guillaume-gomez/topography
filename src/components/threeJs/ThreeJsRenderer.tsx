@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
@@ -18,9 +18,19 @@ interface ThreeJsRendererProps {
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const {
     setAnimationState,
+    animationState
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
+
+  useEffect(() => {
+    if(animationState === "started") {
+      onAnimationStart();
+    }
+    if(animationState === "ended") {
+      onAnimationEnd();
+    }
+  },[animationState]);
   
   async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
@@ -42,11 +52,12 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   }
 
   async function onAnimationEnd() {
+     console.log("ended")
      recenterCamera();
-     setAnimationState("ended")
   }
 
   function onAnimationStart() {
+    console.log("started")
     //recenterCamera();
   }
 
@@ -65,8 +76,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
          <Scene
             shapes={shapes}
             meshRef={meshRef}
-            onAnimationStart={onAnimationStart}
-            onAnimationEnd={onAnimationEnd}
           />
         </Stage>
         { MODE === "development" &&

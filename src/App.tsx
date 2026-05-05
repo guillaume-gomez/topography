@@ -23,7 +23,8 @@ function App() {
     setNumberOfLayers,
     setAnimationState,
     colorFrom, 
-    colorTo
+    colorTo,
+    timerGeneration
   } = useContext(SettingsContext);
   const {
     setSceneName,
@@ -74,6 +75,11 @@ function App() {
       }
   );
 
+  function onGenerate() {
+    generate();
+    setAnimationState("started");
+  }
+
 
   return (
     <>
@@ -114,7 +120,7 @@ function App() {
               style={style as AnimationProps}
             >
               <Card kustomClass="absolute left-10 top-10 z-10 opacity-70">
-                <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
+                <button className="btn btn-primary" onClick={onGenerate}>
                   Generate
                 </button>
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
