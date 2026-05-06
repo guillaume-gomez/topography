@@ -1,7 +1,7 @@
 import { useEffect, useContext, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
-import { useSpringRef, animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
+import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
@@ -23,16 +23,13 @@ function App() {
     setNumberOfLayers,
     setAnimationState,
     colorFrom, 
-    colorTo,
-    timerGeneration
+    colorTo
   } = useContext(SettingsContext);
   const {
     setSceneName,
     isColorChoose,
     isIntro,
     is3DScene,
-    setAnimationEnd,
-    sceneArray
   } = useContext(SceneContext);
 
   const { generate, shapes } = useTopography({

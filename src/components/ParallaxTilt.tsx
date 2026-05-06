@@ -1,27 +1,11 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useContext } from "react";
 import { SceneContext } from "../context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings, useChain, to } from '@react-spring/web';
 import "./ParallaxTilt.css"
 
-https://www.youtube.com/watch?v=x-7EAgNII50
+// https://www.youtube.com/watch?v=x-7EAgNII50
 
-interface ParallaxTiltProps {
-  children: React.ReactNode;
-  maxTilt?: number; // Maximum tilt in degrees
-  scale?: number; // Scale on hover
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-const translateZByLayer = [0, 40, 80, 120, 160, 200]
-
-function ParallaxTilt({
-  children,
-  maxTilt = 20,
-  scale = 1.05,
-  className = "",
-  style = {},
-}) {
+function ParallaxTilt() {
   const cardRef = useRef<HTMLDivElement>(null);
   const {
     setSceneName
@@ -33,7 +17,6 @@ function ParallaxTilt({
   const fourthLayerPropsRef = useSpringRef();
   const fifthLayerPropsRef = useSpringRef();
   const sixthLayerPropsRef = useSpringRef();
-  const basePropsRef = useSpringRef();
   const titlePropsRef = useSpringRef();
 
 

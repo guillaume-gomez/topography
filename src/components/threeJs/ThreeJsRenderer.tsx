@@ -5,7 +5,7 @@ import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
-import { Shape } from "../hooks/useTopography";
+import { type Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 
@@ -17,7 +17,6 @@ interface ThreeJsRendererProps {
 
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const {
-    setAnimationState,
     animationState
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);

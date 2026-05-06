@@ -1,16 +1,13 @@
 import { useContext, Suspense, type Ref } from 'react';
 import { type Mesh} from "three";
-import { animated, useSprings, useSpring, Globals } from '@react-spring/three';
+import { animated, useSpring, Globals } from '@react-spring/three';
 
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
-import TopologyShape from './TopologyShape';
-import TopologyLine from "./TopologyLine";
 import TopographyWrapper from "./TopographyWrapper";
 
 import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
-import { SoundsContext } from "../../context/SoundsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
 
@@ -26,23 +23,13 @@ interface SceneProps {
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
-const Thickness = 5;
-const OriginalPosition = 400;
 
 function Scene({ shapes, meshRef } : SceneProps) {
   const {
-    isLight,
     width,
     height,
-    timerSwitch,
-    timerGeneration,
-    numberOfLayers,
     animationState
   } = useContext(SettingsContext);
-  const {
-    playTopographyPieceSound,
-    stopTopographyPieceSound
-  } = useContext(SoundsContext);
 
   const [rotationSpring,] = useSpring(
   {

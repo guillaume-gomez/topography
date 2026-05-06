@@ -1,8 +1,6 @@
-import { Vector2, Vector3, BufferGeometry, Color } from 'three';
-import { useMemo, type ReactElement } from 'react';
+import { Vector2, Color } from 'three';
+import { type ReactElement } from 'react';
 import { animated } from '@react-spring/three';
-import TopologyMaterial from "./Material/TopologyMaterial";
-import WavyPhysicalMaterial from './Material/WavyPhysicalMaterial';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { extend } from '@react-three/fiber'
 
@@ -18,18 +16,12 @@ const MeshLineMaterialAnimated = animated(MeshLineMaterialComponent) as any
 interface TopologyLineProps {
     points: Vector2[];
     color: Color;
-		position?: [number, number, number];
+		position: [number, number, number];
     thickness?: number;
     opacity?: number;
 };
 
 function TopologyLine({ points, color, position, thickness = 1, opacity }: TopologyLineProps): ReactElement {
-	const geometry = useMemo(() => {
-      return new BufferGeometry().setFromPoints( points );
-    },
-    [points]
-  );
-
   return (
     <animated.mesh
       position-x={position[0]}
