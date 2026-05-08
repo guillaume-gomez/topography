@@ -1,9 +1,14 @@
 import { Vector2, Color } from 'three';
 import { type ReactElement } from 'react';
-import { animated } from '@react-spring/three';
+import { animated, SpringValue } from '@react-spring/three';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend } from '@react-three/fiber'
+import { extend, type ThreeElement } from '@react-three/fiber'
 
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    meshLineGeometry: ThreeElement<typeof MeshLineGeometry>;
+  }
+}
 
 extend({ MeshLineGeometry });
 
@@ -18,10 +23,10 @@ interface TopologyLineProps {
     color: Color;
 		position: [number, number, number];
     thickness?: number;
-    opacity?: number;
+    opacity?: SpringValue<number>;
 };
 
-function TopologyLine({ points, color, position, thickness = 1, opacity }: TopologyLineProps): ReactElement {
+function TopologyLine({ points, color, position, thickness = 1, opacity = new SpringValue(1) }: TopologyLineProps): ReactElement {
   return (
     <animated.mesh
       position-x={position[0]}
@@ -29,7 +34,7 @@ function TopologyLine({ points, color, position, thickness = 1, opacity }: Topol
       position-z={position[2]}
       visible={opacity.to(v => v > 0.001)}
     >
-      <meshLineGeometry points={points} />
+      <meshLineGeometry points={points as any} />
       <MeshLineMaterialAnimated
         transparent
         lineWidth={thickness}

@@ -8,7 +8,7 @@ export interface SoundsContextParams {
   playChangeColorSound: () => void;
   playSubmitSound: () => void;
 }
-export const SoundsContext = createContext<SoundsContextParams>(null);
+export const SoundsContext = createContext<SoundsContextParams>(null!);
 
 interface Props {
   children: ReactNode;

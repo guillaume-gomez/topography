@@ -34,20 +34,20 @@ const COLORS = [
   "#DE541E",
   "#FF9FE5",
   "#FF858D",
-]
+];
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [colors, setColors] = useState<string[]>([]);
   const [from, setFrom] = useState<string>("#006400");
   const [to, setTo] = useState<string>("#A0522D");
   const [layers, setLayers] = useState<number>(5);
-  
+
   const {
     playSubmitSound,
     playChangeColorSound
   } = useContext(SoundsContext);
 
-  const [trails,] = useTrail(
+  const [trails,] = useTrail<{ opacity: number; height: number }>(
     layers,
     (index) => ({
       from: { opacity: 0, height: 0, },

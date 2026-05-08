@@ -133,7 +133,7 @@ function ParallaxTilt() {
     >
       <animated.div 
         ref={cardRef}
-        className="card relative bg-red"
+        className="card relative"
         style={{
           transformStyle: "preserve-3d",
           width: 500,

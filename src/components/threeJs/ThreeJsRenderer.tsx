@@ -17,7 +17,8 @@ interface ThreeJsRendererProps {
 
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const {
-    animationState
+    animationState,
+    isLight
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
@@ -30,6 +31,12 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       onAnimationEnd();
     }
   },[animationState]);
+
+  useEffect(() => {
+    if(!isLight) {
+      moveTopDown();
+    }
+  }, [isLight])
   
   async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
