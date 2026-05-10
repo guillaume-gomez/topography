@@ -30,6 +30,9 @@ export function generateGrid(
 export function showGrid(grid: number[][]): void {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext('2d');
+  if(!context) {
+    throw new Error("Cannot get context in showGrid(grid: number[][]): void)");
+  }
   const canvasWidth = grid.length;
   const canvasHeight = grid.length;
 

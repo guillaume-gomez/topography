@@ -1,9 +1,11 @@
+import type { Vector2 } from "three";
+
 const SPACE = 15;
 const green = '#0BDA51';
 
 export function line(
-  point1: Vertex,
-  point2: Vertex,
+  point1: Vector2,
+  point2: Vector2,
   ctx: CanvasRenderingContext2D,
   colour = green,
   space = SPACE,
