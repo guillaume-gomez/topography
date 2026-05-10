@@ -2,7 +2,7 @@ import { useRef, useContext } from 'react';
 import { useSpring, animated } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
-import { Stars, Sky } from '@react-three/drei';
+import { Stars } from '@react-three/drei';
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
 

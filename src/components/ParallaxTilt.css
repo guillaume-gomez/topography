@@ -2,9 +2,6 @@
 .box {
 	position: absolute;
 	border-radius: inherit;
-	//box-shadow: -5px 5px 10px grey;
-	//background: linear-gradient(blue, purple);
-
-	 -webkit-filter: drop-shadow( -5px 5px 5px black);
-  filter: drop-shadow( -5px 5px 5px black);
+	-webkit-filter: drop-shadow(-5px 5px 5px black);
+	filter: drop-shadow(-5px 5px 5px black);
 }

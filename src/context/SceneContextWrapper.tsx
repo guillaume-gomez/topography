@@ -9,7 +9,7 @@ export interface SceneContextParams {
   setSceneName: (sceneName: SceneName) => void;
 
 }
-export const SceneContext = createContext<SceneContextParams>(null);
+export const SceneContext = createContext<SceneContextParams>(null!);
 
 interface Props {
   children: ReactNode;

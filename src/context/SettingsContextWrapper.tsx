@@ -20,7 +20,7 @@ export interface SettingsContextParams {
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
 }
-export const SettingsContext = createContext<SettingsContextParams>(null);
+export const SettingsContext = createContext<SettingsContextParams>(null!);
 
 interface Props {
   children: ReactNode;

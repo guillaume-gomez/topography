@@ -1,7 +1,7 @@
 import { useEffect, useContext, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
-import { useSpringRef, animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
+import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
@@ -30,8 +30,6 @@ function App() {
     isColorChoose,
     isIntro,
     is3DScene,
-    setAnimationEnd,
-    sceneArray
   } = useContext(SceneContext);
 
   const { generate, shapes } = useTopographies({
@@ -75,6 +73,11 @@ function App() {
       }
   );
 
+  function onGenerate() {
+    generate();
+    setAnimationState("started");
+  }
+
   return (
     <>
       <div className="
@@ -82,7 +85,7 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)]
         bg-[size:30px_30px]"
       />
-      <div className="w-screen h-screen p-5 flex flex-col">
+      <div className="w-screen h-screen md:p-5 p-2 flex flex-col">
         {
           transitionIntroProps(style => (
             <animated.div className="w-full h-full p-5 items-center justify-center" style={style as AnimationProps}>
@@ -113,8 +116,8 @@ function App() {
               className="w-full h-screen"
               style={style as AnimationProps}
             >
-              <Card kustomClass="absolute left-10 top-10 z-10 opacity-70">
-                <button className="btn btn-primary" onClick={() => {generate(); setAnimationState("started")}}>
+              <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
+                <button className="btn btn-primary" onClick={onGenerate}>
                   Generate
                 </button>
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
