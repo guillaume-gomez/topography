@@ -1,7 +1,7 @@
 import { createNoise2D } from 'simplex-noise';
 
 const OFFSET = 512;
-const SCALE = 0.05;
+const FREQUENCY = 0.05;
 
 function scale(val: number, src: [number, number], dst: [number, number]): number {
   return ((val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
@@ -10,8 +10,8 @@ function scale(val: number, src: [number, number], dst: [number, number]): numbe
 export function generateGrid(
   width: number,
   height: number,
+  frequency = FREQUENCY,
   offset = OFFSET,
-  scaling = SCALE,
 ): number[][] {
   const grid: number[][] = [];
   const noise = createNoise2D();
@@ -19,7 +19,7 @@ export function generateGrid(
   for (let x = 0; x < width; x += 1) {
     const row: number[] = [];
     for (let y = 0; y < height; y += 1) {
-      row.push(scale((noise(offset + x * scaling, offset + y * scaling)), [-1, 1], [0, 1]));
+      row.push(scale((noise(offset + x * frequency, offset + y * frequency)), [-1, 1], [0, 1]));
     }
     grid.push(row);
   }

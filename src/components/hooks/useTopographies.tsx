@@ -41,9 +41,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
 
 function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
-  const [frequency, _setFrequency] = useState<number>(0.5);
-  const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
-  const [maxRadiusRatio, _setMaxRadiusRatio] = useState<number>(1.1);
+  const [frequency, _setFrequency] = useState<number>(0.05);
 
   useEffect(() => {
     generate();
@@ -65,7 +63,7 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     const gridWidth = 64;
     const gridHeight = gridWidth;
 
-    const grid = generateGrid(gridWidth, gridHeight);
+    const grid = generateGrid(gridWidth, gridHeight, frequency);
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
     .thresholds(computeThresholds())
@@ -75,7 +73,6 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const scaleX = (width/gridWidth);
     const scaleY = (height/gridHeight);
-    console.log(width/gridWidth, " ", height/gridHeight)
 
     result.forEach((threshold, thresholdIndex) => {
       threshold.coordinates.forEach(coordinate => {
