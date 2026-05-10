@@ -5,7 +5,7 @@ import { animated, easings, useTransition, type AnimatedProps } from '@react-spr
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopography from "./components/hooks/useTopography";
+import useTopographies from "./components/hooks/useTopographies";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -32,8 +32,8 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { generate, shapes } = useTopography({
-    width,
+  const { generate, shapes } = useTopographies({
+    width, 
     height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
@@ -42,6 +42,7 @@ function App() {
   useEffect(() => {
     setSceneName("intro")
   }, []);
+
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -76,7 +77,6 @@ function App() {
     generate();
     setAnimationState("started");
   }
-
 
   return (
     <>

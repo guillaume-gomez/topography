@@ -12,7 +12,7 @@ interface TopographyWrapperProps {
   shape: Shape;
 }
 
-const Thickness = 5;
+const Thickness = 2.5;
 const OriginalPosition = 400;
 
 function TopographyWrapper({shape} : TopographyWrapperProps) {
