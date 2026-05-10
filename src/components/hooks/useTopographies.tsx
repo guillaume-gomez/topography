@@ -73,8 +73,9 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const result = contours(grid.flat());
 
-    const scaleX = Math.floor(width/gridWidth);
-    const scaleY =  Math.floor(height/gridHeight)
+    const scaleX = (width/gridWidth);
+    const scaleY = (height/gridHeight);
+    console.log(width/gridWidth, " ", height/gridHeight)
 
     result.forEach((threshold, thresholdIndex) => {
       threshold.coordinates.forEach(coordinate => {
