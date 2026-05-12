@@ -51,27 +51,27 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
 function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [frequency, _setFrequency] = useState<number>(0.05);
-  const [loadDirectFile, setDirectFile] = useState<boolean>(false);
+  const [loadDirectFile, setDirectFile] = useState<boolean>(true);
 
   useEffect(() => {
     generate();
   }, [width, height, numberOfLayers]);
 
-  function computeThresholds() : number[] {
+  function computeThresholds(min:number, max :number) : number[] {
     const step = 1.0 / numberOfLayers;
     const thresholds = [];
     for(let i = step, j = 0; i <= 1.0; i += step, j++) {
       thresholds[j] = i;
     }
 
-    const thresholdsContrained = thresholds.map(threshold => mapRange(threshold, 0.0, 1.0, 0.1, 0.90));
+    const thresholdsContrained = thresholds.map(threshold => mapRange(threshold, 0.0, 1.0, min, max));
     return thresholdsContrained;
   }
 
   async function computeGrid(): Grid {
     if(loadDirectFile) {
       const { width, height, values } = await getData(`${BASE_URL}/volcano.json`);
-      return { gridWidth: width, gridHeight: height, data: values };  
+      return { gridWidth: width, gridHeight: height, data: values, min: 80, max: 200 };  
     }
 
     // fallback generate noise to create a grid
@@ -79,15 +79,15 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     const gridHeight = gridWidth;
     const grid = generateGrid(gridWidth, gridHeight, frequency);
 
-    return {gridWidth, gridHeight, data: grid.flat() };
+    return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90 };
   }
 
   async function generate(): Shape[] {
     const shapes : Shape[] = [];
-    const { gridWidth, gridHeight, data } = await computeGrid();
+    const { gridWidth, gridHeight, data, min, max } = await computeGrid();
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
-    .thresholds(computeThresholds())
+    .thresholds(computeThresholds(min, max))
     .smooth(true);
 
     const result = contours(data.flat());
