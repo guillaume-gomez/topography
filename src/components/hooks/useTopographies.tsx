@@ -70,8 +70,8 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
   async function computeGrid(): Grid {
     if(loadDirectFile) {
-      const { width, height, values } = await getData(`${BASE_URL}/volcano.json`);
-      return { gridWidth: width, gridHeight: height, data: values, min: 80, max: 200 };  
+      const { width, height, values } = await getData(`${BASE_URL}/presets/bretagne.json`);
+      return { gridWidth: width, gridHeight: height, data: values, min: 0, max: 69 };
     }
 
     // fallback generate noise to create a grid
