@@ -4,7 +4,7 @@ export async function getData(url: string): any {
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-    
+
     const result = await response.json();
     console.log(result);
     return result;
