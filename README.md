@@ -46,3 +46,8 @@ https://www.boilise.com/en/products/lac-dannecy
 https://css-tip.com/3d-parallax-effect/
 
 https://3d-mapper.com/
+
+
+### convert tif file
+
+`python3 convert.py output_be.tif`
