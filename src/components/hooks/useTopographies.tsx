@@ -70,8 +70,8 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
   async function computeGrid(): Grid {
     if(loadDirectFile) {
-      const { width, height, values } = await getData(`${BASE_URL}/presets/vesuvio.json`);
-      return { gridWidth: width, gridHeight: height, data: values, min: 0, max: 1252 };
+      const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/mont-blanc.json`);
+      return { gridWidth: width, gridHeight: height, data: values, min, max };
     }
 
     // fallback generate noise to create a grid
