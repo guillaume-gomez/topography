@@ -30,7 +30,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
     height,
     animationState
   } = useContext(SettingsContext);
-  const [optimized, setOptimized] = useState<boolean>(true);
+  const [optimized, setOptimized] = useState<boolean>(false);
 
   usePerformanceMonitor({ onIncline: () => { setOptimized(false) }, onFallback: () => { setOptimized(true) } })
 
@@ -62,7 +62,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
         {
           shapes.map((shape, index) => {
             return (
-              <TopographyWrapper shape={shape} key={index} />
+              <TopographyWrapper shape={shape} key={index} optimized={optimized} />
             )
           })
         }
