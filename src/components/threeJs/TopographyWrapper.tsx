@@ -10,12 +10,13 @@ import { type Shape } from "../hooks/useTopography";
 
 interface TopographyWrapperProps {
   shape: Shape;
+  optimized: boolean;
 }
 
 const Thickness = 5;
 const OriginalPosition = 400;
 
-function TopographyWrapper({shape} : TopographyWrapperProps) {
+function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
   const {
     isLight,
     timerSwitch,
@@ -85,6 +86,7 @@ function TopographyWrapper({shape} : TopographyWrapperProps) {
         //position={[0, 0, shape.elevation * Thickness]}
         thickness={Thickness}
         opacity={shapeToDisplay.opacity}
+        optimized={optimized}
       />
       <TopologyLine
         points={shape.points}
