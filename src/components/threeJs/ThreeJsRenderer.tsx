@@ -1,7 +1,7 @@
-import { useRef, useContext, useEffect } from 'react';
+import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
@@ -22,6 +22,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
+  const [dpr, setDpr] = useState<number>(1);
 
   useEffect(() => {
     if(animationState === "started") {
@@ -70,19 +71,28 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   return (
       <Canvas
         camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
-        dpr={window.devicePixelRatio}
+        dpr={Math.max(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
         id="three-js-renderer"
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+        <ambientLight intensity={1.5} />
         <fog attach="fog" args={['red', 20, -5]} />
         <pointLight position={[10, 10, 10]} intensity={1} castShadow />
         <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-         <Scene
-            shapes={shapes}
-            meshRef={meshRef}
-          />
+          <PerformanceMonitor
+              bounds={() => [30, 500]} // frame/second limit to trigger functions
+              flipflops={1} // maximum changes before onFallback
+              onDecline={() => {
+                setDpr(dpr * 0.8); // lower dpr by 20%
+              }}
+          >
+            <Scene
+              shapes={shapes}
+              meshRef={meshRef}
+            />
+          </PerformanceMonitor>
         </Stage>
         { MODE === "development" &&
           <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
