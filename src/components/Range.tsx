@@ -7,7 +7,7 @@ interface RangeProps {
   step?: number;
   float?: boolean
   onChange: (newValue: number) => void;
-  size: string;
+  size?: string;
 }
 
 function Range({label, onChange, value, min, max, step = 1, size = "range-xs", float = false} : RangeProps) {

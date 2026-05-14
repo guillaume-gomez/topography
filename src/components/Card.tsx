@@ -1,11 +1,12 @@
 
 interface CardProps {
   children: React.ReactNode;
+  kustomClass?: string
 }
 
-function Card({children}: CardProps) {
+function Card({ children, kustomClass = "" }: CardProps) {
   return (
-    <div className="bg-neutral card shadow-sm">
+    <div className={"bg-neutral card shadow-sm " + kustomClass}>
       <div className="card-body">
         {children}
       </div>

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import useSound from 'use-sound';
+import { useState, useEffect, useContext } from "react";
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
-import Range from "./components/Range";
+import NumberInput from "./components/NumberInput";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
+import { SoundsContext } from "./context/SoundsContextWrapper";
 
 interface ChooseColorProps {
   onSubmit: (colorFrom: string, colorTo: string, layers: number) => void;
@@ -34,20 +34,23 @@ const COLORS = [
   "#DE541E",
   "#FF9FE5",
   "#FF858D",
-]
+];
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [colors, setColors] = useState<string[]>([]);
   const [from, setFrom] = useState<string>("#006400");
   const [to, setTo] = useState<string>("#A0522D");
   const [layers, setLayers] = useState<number>(5);
-  const [play, { stop }] = useSound('/sounds/freesound_community-paper-slide-89980.mp3', { volume: .5 });
-  const [playSubmit, { _stop }] = useSound('/sounds/freesound_community-backpack-sound-96166.mp3', { volume: .5 });
 
-  const [trails,] = useTrail(
+  const {
+    playSubmitSound,
+    playChangeColorSound
+  } = useContext(SoundsContext);
+
+  const [trails,] = useTrail<{ opacity: number; height: number }>(
     layers,
     (index) => ({
-      from: { opacity: 0, height: 0,  },
+      from: { opacity: 0, height: 0, },
       to: async (next) => {
             const minHeight = 20; // 20%
             const height = Math.sin(Math.PI * index/layers) * 100;
@@ -69,7 +72,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
       reset: true,
       onStart: () => {
         if(index === 0) {
-          play();
+          playChangeColorSound();
         }
       }
     }),
@@ -82,23 +85,22 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
   }, [from, to, layers]);
 
   function randomColors() {
-    const colorFrom = sample(COLORS);
-    const colorTo = sample(COLORS);
+    const colorFrom = sample(COLORS) as string;
+    const colorTo = sample(COLORS) as string;
     setFrom(colorFrom);
     setTo(colorTo);
   }
 
   function submit() {
     onSubmit(from, to, layers);
-    stop();
-    playSubmit();
+    playSubmitSound();
   }
 
 	return (
-    <div className="flex flex-col gap-2 p-5">
+    <div className="flex flex-col gap-2">
       <p className="self-center text-3xl">Pick two colours</p>
       <Card>
-        <div className="flex flex-row gap-1 items-end h-100">
+        <div className="flex flex-row gap-1 items-end h-100" style={{minHeight: "50vh"}}>
           {
             trails.map((props, index) => {
               const color = colors[index];
@@ -131,13 +133,13 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
             value={to}
             onChange={(newColor) => setTo(newColor)}
           />
-          <Range
+          <NumberInput
               label="Layers"
               onChange={(newValue) => setLayers(newValue)}
               value={layers}
               min={5}
               max={15}
-              size={"range-normal"}
+              size={"input-md"}
             />
           <button
             className="btn btn-soft btn-secondary"
