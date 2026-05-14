@@ -77,6 +77,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         id="three-js-renderer"
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+        <ambientLight intensity={1.5} />
         <fog attach="fog" args={['red', 20, -5]} />
         <pointLight position={[10, 10, 10]} intensity={1} castShadow />
         <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
@@ -86,8 +87,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               onDecline={() => {
                 setDpr(dpr * 0.8); // lower dpr by 20%
               }}
-           >
-           <Scene
+          >
+            <Scene
               shapes={shapes}
               meshRef={meshRef}
             />
