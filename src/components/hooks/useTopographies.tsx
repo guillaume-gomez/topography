@@ -70,7 +70,7 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
   async function computeGrid(): Grid {
     if(loadDirectFile) {
-      const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/mont-blanc.json`);
+      const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/volcano.json`);
       return { gridWidth: width, gridHeight: height, data: values, min, max };
     }
 
