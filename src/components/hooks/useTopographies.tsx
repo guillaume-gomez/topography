@@ -55,15 +55,13 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
   useEffect(() => {
     generate();
-  }, [width, height, numberOfLayers]);
+  }, [numberOfLayers]);
 
   function computeThresholds(min:number, max :number) : number[] {
-    const step = 1.0 / numberOfLayers;
     const thresholds = [];
-    for(let i = step, j = 0; i <= 1.0; i += step, j++) {
-      thresholds[j] = i;
+    for(let i = 0; i < numberOfLayers; i++) {
+      thresholds.push(i / (numberOfLayers - 1));
     }
-
     const thresholdsContrained = thresholds.map(threshold => mapRange(threshold, 0.0, 1.0, min, max));
     return thresholdsContrained;
   }
@@ -92,8 +90,10 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const result = contours(data.flat());
 
-    const scaleX = (width/gridWidth);
-    const scaleY = (height/gridHeight);
+    const [newWidth, newHeight] = [width, height]; //computeSizeBaseOnData(gridWidth, gridHeight);
+
+    const scaleX = (newWidth/gridWidth);
+    const scaleY = (newHeight/gridHeight);
 
     result.forEach((threshold, thresholdIndex) => {
       threshold.coordinates.forEach(coordinate => {
@@ -120,6 +120,11 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     }
 
     return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])
+  }
+
+  function computeSizeBaseOnData(gridWidth, gridHeight): [number, number] {
+    const ratio = (gridWidth/gridHeight).toFixed(2);
+    return [width * ratio, height];
   }
 
   return { generate, shapes };
