@@ -118,7 +118,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           minAzimuthAngle={-Math.PI}
           maxAzimuthAngle={Math.PI}
           minDistance={200}
-          maxDistance={400}
+          maxDistance={500}
         />
       </Canvas>
   );
