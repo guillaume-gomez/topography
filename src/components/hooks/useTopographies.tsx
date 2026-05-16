@@ -9,6 +9,7 @@ import * as d3 from "d3-contour";
 const { BASE_URL } = import.meta.env;
 
 interface TopographyProps {
+  grid: Grid;
   width: number;
   height: number;
   numberOfLayers: number;
@@ -44,14 +45,13 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
+function useTopographies({ grid, width, height, numberOfLayers, fromToColors } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
-  const [frequency, _setFrequency] = useState<number>(0.05);
   const [loadDirectFile, setDirectFile] = useState<boolean>(true);
 
   useEffect(() => {
     generate();
-  }, [numberOfLayers]);
+  }, [grid, numberOfLayers]);
 
   function computeThresholds(min:number, max :number) : number[] {
     const thresholds = [];
@@ -62,23 +62,9 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     return thresholdsContrained;
   }
 
-  async function computeGrid(): Grid {
-    if(loadDirectFile) {
-      const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/volcano.json`);
-      return { gridWidth: width, gridHeight: height, data: values, min, max };
-    }
-
-    // fallback generate noise to create a grid
-    const gridWidth = 64;
-    const gridHeight = gridWidth;
-    const grid = generateGrid(gridWidth, gridHeight, frequency);
-
-    return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90 };
-  }
-
   async function generate(): Shape[] {
     const shapes : Shape[] = [];
-    const { gridWidth, gridHeight, data, min, max } = await computeGrid();
+    const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
     .thresholds(computeThresholds(min, max))
@@ -86,7 +72,7 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const result = contours(data.flat());
 
-    const [newWidth, newHeight] = [width, height]; //computeSizeBaseOnData(gridWidth, gridHeight);
+    const [newWidth, newHeight] = [width, height];
 
     const scaleX = (newWidth/gridWidth);
     const scaleY = (newHeight/gridHeight);
@@ -116,11 +102,6 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     }
 
     return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])
-  }
-
-  function computeSizeBaseOnData(gridWidth, gridHeight): [number, number] {
-    const ratio = (gridWidth/gridHeight).toFixed(2);
-    return [width * ratio, height];
   }
 
   return { generate, shapes };

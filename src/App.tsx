@@ -13,6 +13,7 @@ type AnimationProps = AnimatedProps<CSSProperties>
 
 function App() {
   const {
+    grid,
     isLight,
     setLight,
     width,
@@ -33,6 +34,7 @@ function App() {
   } = useContext(SceneContext);
 
   const { generate, shapes } = useTopographies({
+    grid,
     width, 
     height,
     numberOfLayers,
