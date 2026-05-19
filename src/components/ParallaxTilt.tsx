@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { SceneContext } from "../context/SceneContextWrapper";
 import { useSpring, useSpringRef, animated, easings, useChain, to } from '@react-spring/web';
 import "./ParallaxTilt.css"
@@ -18,6 +18,7 @@ function ParallaxTilt() {
   const fifthLayerPropsRef = useSpringRef();
   const sixthLayerPropsRef = useSpringRef();
   const titlePropsRef = useSpringRef();
+  const [ratio, ] = useState<number>(1);
 
 
   // top
@@ -25,7 +26,7 @@ function ParallaxTilt() {
     {
       ref: firstLayerPropsRef,
       from: { top: 2000, left: 0, opacity: 0, translateZ: 0 },
-      to: { top: -120, left: -150, opacity: 1, translateZ: 0 },
+      to: { top: -120 * ratio, left: -150 * ratio, opacity: 1, translateZ: 0 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -35,7 +36,7 @@ function ParallaxTilt() {
     {
       ref: secondLayerPropsRef,
       from: { top: 0, left: 2000, opacity: 0, translateZ: 40 },
-      to: { top: -100, left: -60,  opacity: 1, translateZ: 40 },
+      to: { top: -100 * ratio, left: -60 * ratio,  opacity: 1, translateZ: 40 * ratio },
       config: { easing: easings.easeInBack },
     }
   );
@@ -45,7 +46,7 @@ function ParallaxTilt() {
     {
       ref: thirdLayerPropsRef,
       from: { top: -2000, left: 0, opacity: 0, translateZ: 80 },
-      to: { top: 0, left: 0, opacity: 1, translateZ: 80 },
+      to: { top: 0, left: 0, opacity: 1, translateZ: 80 * ratio },
       config: { easing: easings.easeInBack },
     }
   );
@@ -55,7 +56,7 @@ function ParallaxTilt() {
     {
       ref: fourthLayerPropsRef,
       from: { top: 60, left: -2000, opacity: 0, translateZ: 120 },
-      to: { top: 60, left: 60, opacity: 1, translateZ: 120 },
+      to: { top: 60 * ratio, left: 60 * ratio, opacity: 1, translateZ: 120 * ratio },
       config: { easing: easings.easeInBack },
     }
   );
@@ -65,7 +66,7 @@ function ParallaxTilt() {
     {
       ref: fifthLayerPropsRef,
       from: { translateZ: -2000, opacity: 0 },
-      to: { translateZ: 160, opacity: 1 },
+      to: { translateZ: 160 * ratio, opacity: 1 },
       config: { easing: easings.easeInBack },
     }
   );
@@ -75,7 +76,7 @@ function ParallaxTilt() {
     {
       ref: sixthLayerPropsRef,
       from: { translateZ: 2000, opacity: 0 },
-      to: { translateZ: 200, opacity: 1 },
+      to: { translateZ: 200 * ratio, opacity: 1 },
       config: { easing: easings.easeInBack },
       onRest: () => {
         tiltApi.start({
@@ -116,8 +117,8 @@ function ParallaxTilt() {
     const y = e.clientY - rect.top - rect.height/2;
 
     tiltApi.start({
-      rotateX: -(y / rect.height) * 40,
-      rotateY: (x / rect.width) * 40,
+      rotateX: -(y / rect.height) * (40 * ratio),
+      rotateY: (x / rect.width) * (40 * ratio),
     });
   }
 
@@ -127,7 +128,7 @@ function ParallaxTilt() {
 
   return (
     <div
-      className="perspective-[800px]"
+      className={`perspective-[${800 * ratio}px]`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -136,8 +137,8 @@ function ParallaxTilt() {
         className="card relative"
         style={{
           transformStyle: "preserve-3d",
-          width: 500,
-          height: 500,
+          width: 500 * ratio,
+          height: 500 * ratio,
           transform: to(
             [tiltProps.rotateX, tiltProps.rotateY],
             (tiltX, tiltY) => {
@@ -151,11 +152,11 @@ function ParallaxTilt() {
             xmlns="http://www.w3.org/2000/svg"
             className="box"
             style={{
-              transform: "translate3d(0, 0, -40px)",
+              transform: `translate3d(0, 0, -${40 * ratio}px)`,
               ...firstLayerProps
             }}
-            width="800px"
-            height="800px"
+            width={`${(800 * ratio)}px`}
+            height={`${(800 * ratio)}px`}
         >
           <path
             fill="#cad2c5"
@@ -168,11 +169,11 @@ function ParallaxTilt() {
              xmlns="http://www.w3.org/2000/svg"
              className="box"
              style={{
-              transform: "translate3d(0, 0, 40px)",
+              transform: `translate3d(0, 0, ${40 * ratio}px)`,
               ...secondLayerProps
              }}
-             width="650px"
-             height="650px"
+             width={`${(650 * ratio)}px`}
+             height={`${(650 * ratio)}px`}
         >
           <path
             fill="#84a98c"
@@ -185,8 +186,8 @@ function ParallaxTilt() {
              xmlns="http://www.w3.org/2000/svg"
              className="box"
              style={thirdLayerProps}
-             width="500px"
-             height="500px"
+             width={`${(500 * ratio)}px`}
+             height={`${(500 * ratio)}px`}
         >
           <path
             fill="#52796f"
@@ -199,8 +200,8 @@ function ParallaxTilt() {
        <animated.svg viewBox="0 0 200 200"
              xmlns="http://www.w3.org/2000/svg"
              className="box" style={fourthLayerProps}
-             width="350px"
-             height="350px"
+             width={`${(350 * ratio)}px`}
+             height={`${(350 * ratio)}px`}
         >
           <path
             fill="#354f52"
@@ -213,12 +214,12 @@ function ParallaxTilt() {
              xmlns="http://www.w3.org/2000/svg"
              className="box"
              style={{
-              top: 110,
-              left: 130,
+              top: 110 * ratio,
+              left: 130 * ratio,
               ...fifthLayerProps
              }}
-             width="200px"
-             height="200px"
+             width={`${(200 * ratio)}px`}
+             height={`${(200 * ratio)}px`}
         >
           <path 
               fill="#2f3e46"
@@ -231,12 +232,12 @@ function ParallaxTilt() {
              xmlns="http://www.w3.org/2000/svg"
              className="box"
              style={{
-              top: 200,
-              left: 200,
+              top: 200 * ratio,
+              left: 200 * ratio,
               ...sixthLayerProps
              }}
-             width="50px"
-             height="50px"
+             width={`${(50 * ratio)}px`}
+             height={`${(50 * ratio)}px`}
         >
           <path
               fill="#D8A47F"
