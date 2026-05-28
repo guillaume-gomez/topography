@@ -24,6 +24,7 @@
     "d3-contour": "^4.0.2",
     "gh-pages": "^6.3.0",
     "lodash": "^4.17.23",
+    "postprocessing": "^6.39.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "rooks": "^9.5.0",
