@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Vector2, Color } from "three";
-import { createNoise2D } from 'simplex-noise';
 import { lerpColors } from "../../colorUtils";
-import { generateGrid, showGrid } from "../../libs/generateGrid";
+import { generateGrid } from "../../libs/generateGrid";
 import * as d3 from "d3-contour";
 
 interface TopographyProps {
@@ -10,11 +9,6 @@ interface TopographyProps {
   height: number;
   numberOfLayers: number;
   fromToColors?: [string, string];
-}
-
-interface Point {
-  x: number;
-  y: number;
 }
 
 export interface Shape {
@@ -47,9 +41,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
 
 function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
-  const [frequency, _setFrequency] = useState<number>(0.5);
-  const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
-  const [maxRadiusRatio, _setMaxRadiusRatio] = useState<number>(1.1);
+  const [frequency, _setFrequency] = useState<number>(0.05);
 
   useEffect(() => {
     generate();
@@ -67,11 +59,11 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
   }
 
   function generate(): Shape[] {
-    const shapes = [];
+    const shapes : Shape[] = [];
     const gridWidth = 64;
     const gridHeight = gridWidth;
-    
-    const grid = generateGrid(gridWidth, gridHeight);
+
+    const grid = generateGrid(gridWidth, gridHeight, frequency);
     const contours = d3.contours()
     .size([gridWidth, gridHeight])
     .thresholds(computeThresholds())
@@ -79,15 +71,15 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const result = contours(grid.flat());
 
-    const scaleX = Math.floor(width/gridWidth);
-    const scaleY =  Math.floor(height/gridHeight)
-    
+    const scaleX = (width/gridWidth);
+    const scaleY = (height/gridHeight);
+
     result.forEach((threshold, thresholdIndex) => {
       threshold.coordinates.forEach(coordinate => {
         const vertexes = coordinate[0];
         const points  = vertexes.map(([x, y]) => ({x, y}));
-        
-        const shape = { 
+
+        const shape = {
           color: colorByElevation(thresholdIndex),
           points: points.map(point => new Vector2(point.x * scaleX, point.y * scaleY)),
           elevation: thresholdIndex
@@ -100,13 +92,13 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
     return shapes;
   }
 
-  function colorByElevation(number: index): Color {
+  function colorByElevation(index: number): Color {
     if(fromToColors) {
       const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
-      return new Color(...colors[number % colors.length]);
+      return new Color(...colors[index % colors.length]);
     }
 
-    return new Color(COLORS_SAMPLE[number % COLORS_SAMPLE.length])
+    return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])
   }
 
   return { generate, shapes };

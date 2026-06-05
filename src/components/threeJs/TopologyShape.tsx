@@ -9,10 +9,10 @@ interface TopologyShapeProps {
     color: Color;
 		position: [number, number, number];
     thickness?: number;
-    opacity?: SpringValue<number> | number;
+    opacity?: SpringValue<number>;
 };
 
-function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: TopologyShapeProps): ReactElement {
+function TopologyShape({ points, color, position, thickness = 1, opacity = new SpringValue(1) }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => {
     return new Shape(points);
   },
@@ -35,7 +35,7 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = 1 }: 
       position-z={position[2]}
       castShadow
       receiveShadow
-      visible={opacity.to(v => v > 0.001)}
+      visible={opacity.to((v: number) => v > 0.001)}
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />

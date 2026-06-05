@@ -21,7 +21,7 @@ function NumberInput({label, onChange, value, min, max, step = 1, size = "input-
         min={min}
         max={max}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(parseInt(e.target.value))}
       />
       {min && max && <p className="validator-hint">{`Must be between be ${min} to ${max}`}</p>}
     </div>

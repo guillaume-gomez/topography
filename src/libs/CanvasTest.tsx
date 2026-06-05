@@ -1,30 +1,13 @@
 import { useRef, useEffect } from "react";
-import { generateGrid } from "./generateGrid";
-import { marchingSquares, line } from "./marchingSquares";
-import * as d3 from "d3-contour";
+import { line } from "./drawLine";
+import type { Shape } from "../components/hooks/useTopographies";
 
-
-const COLORS_SAMPLE = [
-"#F05D5E",
-"#0F7173",
-"#E7ECEF",
-"#272932",
-"#D8A47F",
-"#CA2E55",
-"#FFE0B5",
-"#8A6552",
-"#462521",
-"#BDB246",
-"#394053",
-"#4E4A59",
-"#6E6362",
-"#839073",
-"#7CAE7A"
-]
-
-function CanvasTest({shapes}) {
-  const canvasRef = useRef<HTMLCanvasElement>();
-  const contextRef = useRef<CanvasRenderingContext2D>();
+interface CanvasTest {
+  shapes: Shape[];
+}
+function CanvasTest({shapes} : CanvasTest) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const contextRef = useRef<CanvasRenderingContext2D>(null);
 
   useEffect(() => {
     if(canvasRef.current) {
@@ -33,6 +16,9 @@ function CanvasTest({shapes}) {
   }, [canvasRef.current])
 
 	useEffect(() => {
+    if(!contextRef.current) {
+      return;
+    }
     // standalone
     // const grid = generateGrid(512, 512);
     // const contours = d3.contours()
@@ -49,19 +35,14 @@ function CanvasTest({shapes}) {
     //     }
     //   });
     // })
-    
+
     // from the params shapes
     //console.log(shapes)
     shapes.forEach(shape => {
       for(let i = 0; i < shape.points.length - 1; i++) {
-        line(shape.points[i], shape.points[i+1], contextRef.current, "#" + shape.color.getHexString())
+        line(shape.points[i], shape.points[i+1], contextRef.current!, "#" + shape.color.getHexString())
       }
     });
-
-
-    //const segments = marchingSquares(grid, /*[0.2, 0.4, 0.5, 0.8]*/ [0.8], contextRef.current, true, "#FBDA51");
-
-    //console.log(segments)
   }, [contextRef.current]);
 
 

@@ -17,17 +17,17 @@ function linear(x: number): number {
   return x;
 }
 
-function easeInQuint(x: number): number {
-  return x * x * x * x * x;
-}
+// function easeInQuint(x: number): number {
+//   return x * x * x * x * x;
+// }
 
-function easeOutQuint(x: number): number {
-  return 1 - Math.pow(1 - x, 5);
-}
+// function easeOutQuint(x: number): number {
+//   return 1 - Math.pow(1 - x, 5);
+// }
 
-function easeInOutQuint(x: number): number {
-  return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
-}
+// function easeInOutQuint(x: number): number {
+//   return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2;
+// }
 
 function lerpColor(starColor: RGBNormalizedColor, endColor: RGBNormalizedColor, amt: number): RGBNormalizedColor {
   const [redFrom, greenFrom, blueFrom] = starColor;

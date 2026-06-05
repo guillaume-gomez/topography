@@ -22,7 +22,7 @@ export interface SettingsContextParams {
   hasSingleTopograhy: boolean;
 
 }
-export const SettingsContext = createContext<SettingsContextParams>(null);
+export const SettingsContext = createContext<SettingsContextParams>(null!);
 
 interface Props {
   children: ReactNode;
