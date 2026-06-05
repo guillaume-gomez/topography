@@ -105,6 +105,8 @@ function App() {
                 setColorTo(colorTo);
                 setNumberOfLayers(layers);
 
+                onGenerate();
+
                 setSceneName("3d-scene");
               }} />
             </animated.div>
