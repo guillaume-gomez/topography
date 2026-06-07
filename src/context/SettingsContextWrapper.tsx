@@ -35,7 +35,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorTo, setColorTo] = useState<string>("");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
-  const { grid, width, height } = useGrid({filepath: "volcano.json", loadDirectFile: true });
+  const { grid, width, height } = useGrid({filepath: "volcano.json", typeOfFile: "real-data" });
 
 
   return (
