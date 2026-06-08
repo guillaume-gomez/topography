@@ -1,2 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@font-face {
+  font-family: 'WorkSans';
+  src: local("WorkSans"),
+    url("/fonts/WorkSans.ttf") format("truetype");
+}
+
+@layer base {
+  html {
+    font-family: WorkSans, system-ui;
+  }
+}
