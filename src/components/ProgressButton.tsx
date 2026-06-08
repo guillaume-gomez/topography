@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, MutableRefObject, useContext } from 'react';
-import { SettingsContext } from "./SettingsContextWrapper";
+import { SettingsContext } from "../context/SettingsContextWrapper";
 
 interface ProgressButtonProps {
   label: string;
