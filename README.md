@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# Intention Note
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+As I am passionate about topography map. I would created a simple "3d topography" map.
+It enphasizes the beauty of natural nivellations and shapes made by mother nature.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Inspirations
 
-## React Compiler
+https://editor.p5js.org/StevesMakerspace/sketches/h39Za5FoN
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--parallax-effect
 
-## Expanding the ESLint configuration
+https://perspective-gray.vercel.app/
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## typography:
+  WorkSans : https://fonts.google.com/specimen/Work+Sans?preview.script=Latn
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  Assets used:
+    44062__feegle__gamepiece
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Sounds
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+  paper sound : https://floraphonic.gumroad.com/
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+  montain song : https://pixabay.com/fr/users/freesound_community-46691455/
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  paper slide: https://pixabay.com/fr/users/freesound_community-46691455/
+
+  backpack : https://pixabay.com/fr/users/freesound_community-46691455/
+
+  closing zipper : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-closing-zipper-325443/
+
+  wood impact : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-wood-impact-84721/
+
+
+  droppping a pin on wood : http://pixabay.com/fr/sound-effects/films-et-effets-sp%C3%A9ciaux-dropping-a-pen-on-wood-103665/
+
+https://perspective-gray.vercel.app/
+
+// for blop animation
+https://www.blobmaker.app/
+
+ref
+https://www.boilise.com/en/products/lac-dannecy
+https://css-tip.com/3d-parallax-effect/
+
+https://3d-mapper.com/
