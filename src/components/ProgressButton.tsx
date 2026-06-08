@@ -29,15 +29,13 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   }
 
   useEffect(() => {
-    if(animationState === "started") {
-      handleClick();
-    } else {
-        if(animationRef.current) {
-           cancelAnimationFrame(animationRef.current)
-        }
-        setPlay(false);
-        setMilliseconds(0);
-        previousTimeRef.current = undefined;
+    if(animationState !== "started") {
+      if(animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+      setPlay(false);
+      setMilliseconds(0);
+      previousTimeRef.current = undefined;
     }
   }, [animationState])
 
@@ -51,9 +49,9 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
 
   function handleClick() {
     if(play === false) {
-        setPlay(true);
-        onClick();
-        requestAnimationFrame(animate);
+      setPlay(true);
+      onClick();
+      requestAnimationFrame(animate);
     }
   }
 
@@ -61,7 +59,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
 
   return (
     <button
-      className="btn btn-secondary flex flex-row justify-start px-0 w-full"
+      className="btn btn-secondary flex flex-row justify-start w-full min-w-24 px-0"
       onClick={handleClick}
     >
         <div
