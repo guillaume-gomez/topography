@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { getData } from "../../readJson";
 import { generateGrid } from "../../libs/generateGrid";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
-import { loadImage, pixelsDataConvertedToGray } from "../../libs/imageProcessingUtils";
+import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../../libs/imageProcessingUtils";
 
 const { BASE_URL } = import.meta.env;
 
@@ -39,6 +39,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
     }
+    console.log(typeOfFile)
 
     if(typeOfFile === "image") {
       return gridFromImage();  
@@ -63,9 +64,10 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
 
   async function gridFromImage() : Grid {
     const image = await loadImage(`${BASE_URL}/presets-images/${filepath}`);
-    const greyImageData = pixelsDataConvertedToGray(image);
+    const greyImageData = resizeImageAndConvertToGrey(image);
     const greyData = fromImageDataToGridData(greyImageData);
-    return { gridWidth: image.width, gridHeight: image.height, data: greyData, min: 0, max: 255 };
+    const { expectedWidth, expectedHeight} = resizeImageSize(image.width, image.height);
+    return { gridWidth: expectedWidth, gridHeight: expectedHeight, data: greyData, min: 0, max: 255 };
   }
 
   function fromImageDataToGridData(greyImageData: ImageData): number[] {
