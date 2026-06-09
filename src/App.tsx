@@ -6,6 +6,7 @@ import { animated, easings, useTransition, type AnimatedProps } from '@react-spr
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
+import ProgressButton from "./components/ProgressButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -119,9 +120,7 @@ function App() {
               style={style as AnimationProps}
             >
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <button className="btn btn-primary" onClick={onGenerate}>
-                  Generate
-                </button>
+                <ProgressButton label="Generate" onClick={() => {generate(); setAnimationState("started")}} />
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
                   {isLight ? "Light" : "Dark"}
                 </button>
