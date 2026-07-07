@@ -103,7 +103,7 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)]
         bg-[size:30px_30px]"
       />
-      <div className="w-screen h-screen md:p-5 p-2 flex flex-col">
+      <div className="w-full h-screen md:p-5 p-2 flex flex-col">
         {
           transitionIntroProps(style => (
             <animated.div className="w-full h-full p-5 items-center justify-center" style={style as AnimationProps}>
