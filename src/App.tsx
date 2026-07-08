@@ -7,6 +7,7 @@ import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopography from "./components/hooks/useTopography";
 import ProgressButton from "./components/ProgressButton";
+import Legend from "./components/Legend";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -125,6 +126,7 @@ function App() {
                   {isLight ? "Light" : "Dark"}
                 </button>
               </Card>
+              <Legend />
               <ThreejsRenderer shapes={shapes}/>
             </animated.div>
           ))
