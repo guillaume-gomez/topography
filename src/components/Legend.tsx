@@ -42,10 +42,10 @@ function Legend() {
         </div>
         <div className="flex flex-row justify-between">
           <span className="font-bold">
-            0
+            0 m
           </span>
           <span className="font-bold">
-            100
+            100 m
           </span>
         </div>
       </div>
