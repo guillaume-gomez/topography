@@ -1,4 +1,7 @@
+import { useMemo } from "react";
 import { Text } from '@react-three/drei';
+import { useLoader } from '@react-three/fiber';
+import { MeshStandardMaterial, TextureLoader } from "three";
 
 interface FrameProps {
 	width: number;
@@ -8,27 +11,51 @@ interface FrameProps {
 }
 
 function Frame({width, height, depth, position } : FrameProps) {
+  const [normalMap, aoMap, map] = useLoader(TextureLoader, [
+    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-normal.png`,
+    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-ao.png`,
+    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-albedo.png`,
+  ]);
+
+  const material = useMemo(() => {
+    return new MeshStandardMaterial({map, normalMap, aoMap, /*color: "white"*/})
+  }, []);
+
   const frameDepth = 40;
 	return (
     <group position={position}>
-      <mesh position={[0, 30, frameDepth/2]} >
+      <mesh
+        position={[0, 30, frameDepth/2]}
+        material={material}
+      >
         <boxGeometry args={[width, depth, frameDepth]} />
-        <meshStandardMaterial color="blue" />
+        {/*<meshStandardMaterial color="blue" />*/}
       </mesh>
 
-      <mesh position={[0, 30, -height - frameDepth/2]} >
+      <mesh
+        position={[0, 30, -height - frameDepth/2]}
+        material={material}
+      >
         <boxGeometry args={[width, depth, frameDepth]} />
-        <meshStandardMaterial color="red" />
+        {/*<meshStandardMaterial color="red" />*/}
       </mesh>
 
-      <mesh position={[width/2 + frameDepth/2, 30, -height/2]} rotation={[0, Math.PI/2, 0]} >
+      <mesh
+        position={[width/2 + frameDepth/2, 30, -height/2]}
+        rotation={[0, Math.PI/2, 0]}
+        material={material}
+      >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
-        <meshStandardMaterial color="orange" />
+        {/*<meshStandardMaterial color="orange" />*/}
       </mesh>
 
-      <mesh position={[-width/2 - frameDepth/2, 30, -height/2]} rotation={[0, Math.PI/2, 0]} >
+      <mesh
+        position={[-width/2 - frameDepth/2, 30, -height/2]}
+        rotation={[0, Math.PI/2, 0]}
+        material={material}
+      >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
-        <meshStandardMaterial color="purple" />
+        {/*<meshStandardMaterial color="purple" />*/}
       </mesh>
 
       <group position={[150, 30, 0]}>
