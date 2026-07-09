@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
+import LeatherText from "./LeatherText";
 
 interface FrameProps {
 	width: number;
@@ -11,14 +12,26 @@ interface FrameProps {
 }
 
 function Frame({width, height, depth, position } : FrameProps) {
-  const [normalMap, aoMap, map] = useLoader(TextureLoader, [
-    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-normal.png`,
-    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-ao.png`,
-    `textures/bamboo-wood-semigloss-Unity/bamboo-wood-semigloss-albedo.png`,
+  const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
+    `textures/dark-wood-stain-unity/dark-wood-stain_height.png`,
+    `textures/dark-wood-stain-unity/dark-wood-stain_normal-ogl.png`,
+    `textures/dark-wood-stain-unity/dark-wood-stain_ao.png`,
+    `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
+  ]);
+
+  const [displacementMap2, normalMap2, aoMap2, map2] = useLoader(TextureLoader, [
+    `textures/brown-leather-unity/brown-leather_height.png`,
+    `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
+    `textures/brown-leather-unity/brown-leather_ao.png`,
+    `textures/brown-leather-unity/brown-leather_albedo.png`,
   ]);
 
   const material = useMemo(() => {
-    return new MeshStandardMaterial({map, normalMap, aoMap, /*color: "white"*/})
+    return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
+  }, []);
+
+  const material2 = useMemo(() => {
+    return new MeshStandardMaterial({map:map2, normalMap: normalMap2, aoMap: aoMap2, displacementMap: displacementMap2, displacementScale:0 /*color: "white"*/})
   }, []);
 
   const frameDepth = 40;
@@ -58,27 +71,8 @@ function Frame({width, height, depth, position } : FrameProps) {
         {/*<meshStandardMaterial color="purple" />*/}
       </mesh>
 
-      <group position={[150, 30, 0]}>
-        <mesh position={[0, 0, frameDepth]} >
-          <boxGeometry args={[200, depth - 15, 1]} />
-          <meshStandardMaterial color="red" />
-        </mesh>
-
-
-        <Text
-          //font={`${BASE_URL}/fonts/good-bakwan.woff`}
-          color={0x000000}
-          fontSize={30}
-          letterSpacing={0}
-          anchorY="center"
-          anchorX="center"
-          lineHeight={0.8}
-          position={[0, 15, frameDepth + 5]}
-        >
-          Seed 68787
-        </Text>
-      </group>
-
+      <LeatherText position={[150, 30, frameDepth]} depth={depth} />
+      
     </group>
   );
 };

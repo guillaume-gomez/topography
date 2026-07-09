@@ -51,6 +51,8 @@ https://3d-mapper.com/
 
 Frame texture
 https://freepbr.com/product/bamboo-wood-pbr-material/
+https://freepbr.com/product/brown-leather/
+https://freepbr.com/product/semi-gloss-wood-pbr/
 
 # Rendering
 
