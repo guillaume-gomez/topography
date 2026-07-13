@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Text } from '@react-three/drei';
+import { uniqueId } from "lodash";
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
 
@@ -37,7 +38,7 @@ function LeatherText({position, depth} : FrameProps) {
           lineHeight={0.8}
           position={[0, 15, 5]}
         >
-          Seed 68787
+          {uniqueId("Seed 67")}
         </Text>
       </group>
   );

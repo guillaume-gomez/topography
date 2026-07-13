@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Text } from '@react-three/drei';
+import { animated, useSpring } from '@react-spring/three';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
 import LeatherText from "./LeatherText";
@@ -11,6 +12,8 @@ interface FrameProps {
   position: [number, number, number]
 }
 
+const duration = 5000;
+
 function Frame({width, height, depth, position } : FrameProps) {
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/dark-wood-stain-unity/dark-wood-stain_height.png`,
@@ -19,59 +22,102 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
-  const [displacementMap2, normalMap2, aoMap2, map2] = useLoader(TextureLoader, [
-    `textures/brown-leather-unity/brown-leather_height.png`,
-    `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
-    `textures/brown-leather-unity/brown-leather_ao.png`,
-    `textures/brown-leather-unity/brown-leather_albedo.png`,
-  ]);
+  const frameDepth = 40;
+
+  const [frontFrame,] = useSpring(
+  {
+    from: { z: 10000 },
+    to: { z: frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [backFrame,] = useSpring(
+  {
+    from: { z: -10000 },
+    to: { z: -height - frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [rightFrame,] = useSpring(
+  {
+    from: { x: 10000 },
+    to: { x: width/2 + frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [leftFrame,] = useSpring(
+  {
+    from: { x: -10000 },
+    to: { x: -width/2 - frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
 
   const material = useMemo(() => {
     return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
   }, []);
 
-  const material2 = useMemo(() => {
-    return new MeshStandardMaterial({map:map2, normalMap: normalMap2, aoMap: aoMap2, displacementMap: displacementMap2, displacementScale:0 /*color: "white"*/})
-  }, []);
-
-  const frameDepth = 40;
 	return (
     <group position={position}>
-      <mesh
-        position={[0, 30, frameDepth/2]}
-        material={material}
-      >
-        <boxGeometry args={[width, depth, frameDepth]} />
-        {/*<meshStandardMaterial color="blue" />*/}
-      </mesh>
-
-      <mesh
-        position={[0, 30, -height - frameDepth/2]}
+      {/* Front */}
+      <animated.mesh
+        position-x={0}
+        position-y={30}
+        position-z={frontFrame.z}
         material={material}
       >
         <boxGeometry args={[width, depth, frameDepth]} />
         {/*<meshStandardMaterial color="red" />*/}
-      </mesh>
+        <LeatherText position={[175, 0, frameDepth -20]} depth={depth} />
+      </animated.mesh>
 
-      <mesh
-        position={[width/2 + frameDepth/2, 30, -height/2]}
+      {/* Back */}
+      <animated.mesh
+        position-x={0}
+        position-y={30}
+        position-z={backFrame.z}
+        material={material}
+      >
+        <boxGeometry args={[width, depth, frameDepth]} />
+        {/*<meshStandardMaterial color="red" />*/}
+      </animated.mesh>
+
+      {/* Right */}
+      <animated.mesh
+        position-x={rightFrame.x}
+        position-y={30}
+        position-z={-height/2}
         rotation={[0, Math.PI/2, 0]}
         material={material}
       >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
         {/*<meshStandardMaterial color="orange" />*/}
-      </mesh>
+      </animated.mesh>
 
-      <mesh
-        position={[-width/2 - frameDepth/2, 30, -height/2]}
+      {/* Left */}
+      <animated.mesh
+        position-x={leftFrame.x}
+        position-y={30}
+        position-z={-height/2}
         rotation={[0, Math.PI/2, 0]}
         material={material}
       >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
         {/*<meshStandardMaterial color="purple" />*/}
-      </mesh>
+      </animated.mesh>
 
-      <LeatherText position={[150, 30, frameDepth]} depth={depth} />
+      
       
     </group>
   );
