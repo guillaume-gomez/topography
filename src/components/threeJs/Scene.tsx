@@ -5,6 +5,7 @@ import { animated, useSpring, Globals } from '@react-spring/three';
 import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
+import Frame from "./Frame";
 
 import { Grid, usePerformanceMonitor } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
@@ -23,7 +24,9 @@ interface SceneProps {
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
-const BaseHeight = 50;
+
+const BaseHeight = 30;
+//const BaseHeight = 50;
 
 function Scene({ shapes, meshRef } : SceneProps) {
   const {
@@ -38,7 +41,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
   const [rotationSpring,] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
-    to: { y: 0, rotationY: Math.PI * 2,},
+    to: { y: -5, rotationY: Math.PI * 2,},
     config: {
       duration: 800
     },
@@ -76,6 +79,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
         {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
+      <Frame width={width} height={height} depth={50} position={[0, -25, height/2]}/>
     </Suspense>
   );
 };
