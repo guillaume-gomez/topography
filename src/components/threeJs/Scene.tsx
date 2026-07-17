@@ -25,8 +25,8 @@ interface SceneProps {
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 
-const BaseHeight = 30;
-//const BaseHeight = 50;
+//const BaseHeight = 30;
+const BaseHeight = 50;
 
 function Scene({ shapes, meshRef } : SceneProps) {
   const {
