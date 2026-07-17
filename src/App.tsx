@@ -137,7 +137,13 @@ function App() {
               style={style as AnimationProps}
             >
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <ProgressButton label="Generate" onClick={() => {generate(); setAnimationState("started")}} />
+                <ProgressButton
+                  label="Generate"
+                  onClick={() => {
+                      generateTopographies();
+                      setAnimationState("started")
+                    }
+                  } />
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
                   {isLight ? "Light" : "Dark"}
                 </button>
