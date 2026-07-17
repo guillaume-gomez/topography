@@ -25,6 +25,9 @@ interface SceneProps {
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
 
+//const BaseHeight = 30;
+const BaseHeight = 50;
+
 function Scene({ shapes, meshRef } : SceneProps) {
   const {
     width,
@@ -47,7 +50,6 @@ function Scene({ shapes, meshRef } : SceneProps) {
   [animationState]
   );
 
-
   return (
     <Suspense fallback={<FallBackLoader/>} >
      <SceneBackground/>
@@ -56,7 +58,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
       }
 
       <group
-        position={[-width/2, 15, height/2]}
+        position={[-width/2, BaseHeight/2, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -68,8 +70,12 @@ function Scene({ shapes, meshRef } : SceneProps) {
           })
         }
       </group>
-      <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
-        <boxGeometry args={[width, 30, height]} />
+      <animated.mesh
+        position-x={0}
+        position-y={rotationSpring.y}
+        rotation-y={rotationSpring.rotationY}
+      >
+        <boxGeometry args={[width, BaseHeight, height]} />
         {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
