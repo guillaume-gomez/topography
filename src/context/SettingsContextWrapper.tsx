@@ -37,7 +37,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorTo, setColorTo] = useState<string>("");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
-  const [hasSingleTopograhy, ] = useState<boolean>(true);
+  const [hasSingleTopograhy, ] = useState<boolean>(false);
 
   return (
     <SettingsContext value={{

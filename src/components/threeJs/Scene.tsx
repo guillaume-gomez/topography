@@ -79,7 +79,7 @@ function Scene({ shapes, meshRef } : SceneProps) {
         {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
-      <Frame width={width} height={height} depth={50} position={[0, -25, height/2]}/>
+      <Frame width={width} height={height} depth={50} position={[0, -25, (height)/2]}/>
     </Suspense>
   );
 };
