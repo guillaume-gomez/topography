@@ -1,13 +1,14 @@
-import { useEffect, useContext, type CSSProperties } from 'react';
+import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
 
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopography from "./components/hooks/useTopography";
+import useTopographies from "./components/hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import Legend from "./components/Legend";
+import useTopography from "./components/hooks/useTopography";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -25,7 +26,8 @@ function App() {
     setNumberOfLayers,
     setAnimationState,
     colorFrom, 
-    colorTo
+    colorTo,
+    hasSingleTopograhy
   } = useContext(SettingsContext);
   const {
     setSceneName,
@@ -34,8 +36,15 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { generate, shapes } = useTopography({
-    width,
+  const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
+    width, 
+    height,
+    numberOfLayers,
+    fromToColors: [colorFrom, colorTo]
+  });
+
+  const { generate: generateTopography, shapes: shapesTopography } = useTopography({
+    width, 
     height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
@@ -44,6 +53,11 @@ function App() {
   useEffect(() => {
     setSceneName("intro")
   }, []);
+
+  const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
+    [hasSingleTopograhy, shapesTopography, shapesTopographies]
+    );
+
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -75,10 +89,13 @@ function App() {
   );
 
   function onGenerate() {
-    generate();
-    setAnimationState("started");
+    if(hasSingleTopograhy) {
+      generateTopography();
+    } else {
+      generateTopographies();
+    }
+    setAnimationState("started")
   }
-
 
   return (
     <>
@@ -121,7 +138,13 @@ function App() {
               style={style as AnimationProps}
             >
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <ProgressButton label="Generate" onClick={() => {generate(); setAnimationState("started")}} />
+                <ProgressButton
+                  label="Generate"
+                  onClick={() => {
+                      generateTopographies();
+                      setAnimationState("started")
+                    }
+                  } />
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
                   {isLight ? "Light" : "Dark"}
                 </button>
