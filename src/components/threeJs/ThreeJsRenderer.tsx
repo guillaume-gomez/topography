@@ -78,7 +78,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
         <ambientLight intensity={1.5} />
-        <fog attach="fog" args={['red', 20, -5]} />
         <pointLight position={[10, 10, 10]} intensity={1} castShadow />
         <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
           <PerformanceMonitor
