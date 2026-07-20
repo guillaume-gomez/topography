@@ -122,33 +122,36 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
         </div>
       </Card>
       <Card>
-        <div className="flex md:flex-row flex-col items-center justify-between">
+        <div className="flex lg:flex-row flex-col items-center justify-between gap-5">
+         
+          <div className="flex md:flex-row flex-col md:gap-10 gap-5 items-center justify-between">
             <ColorInput
-              label={"Start Color"}
-              value={from}
-              onChange={(newColor) => setFrom(newColor)}
-            />
-            <button
-              className="btn btn-soft btn-accent"
-              onClick={() => {
-                setFrom(to);
-                setTo(from);
-              }}
+                label={"Start Color"}
+                value={from}
+                onChange={(newColor) => setFrom(newColor)}
+              />
+              <button
+                className="btn btn-xs btn-soft btn-accent"
+                onClick={() => {
+                  setFrom(to);
+                  setTo(from);
+                }}
+              >
+                Switch Color
+              </button>
+              <ColorInput
+                label={"End Color"}
+                value={to}
+                onChange={(newColor) => setTo(newColor)}
+              />
+             <button
+              className="btn btn-soft btn-secondary"
+              onClick={randomColors}
             >
-              Switch Color
+              Random colors
             </button>
-            <ColorInput
-              label={"End Color"}
-              value={to}
-              onChange={(newColor) => setTo(newColor)}
-            />
-            <button
-            className="btn btn-soft btn-secondary"
-            onClick={randomColors}
-          >
-            Random colors
-          </button>
-          
+          </div>
+
           <NumberInput
               label="Layers"
               onChange={(newValue) => setLayers(newValue)}
