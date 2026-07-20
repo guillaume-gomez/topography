@@ -13,8 +13,8 @@ interface TopographyWrapperProps {
   optimized: boolean;
 }
 
-const Thickness = 5;
-const OriginalPosition = -20;
+const Thickness = 2.5;
+const OriginalPosition = 400;
 
 function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
   const {
