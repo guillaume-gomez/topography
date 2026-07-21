@@ -53,6 +53,11 @@ Frame texture
 https://freepbr.com/product/bamboo-wood-pbr-material/
 https://freepbr.com/product/brown-leather/
 https://freepbr.com/product/semi-gloss-wood-pbr/
+https://www.texturecan.com/details/364/
+
+
+icons:
+https://thenounproject.com/icon/reverse-6292257/
 
 # Rendering
 
