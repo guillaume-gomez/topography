@@ -69,11 +69,11 @@ function Scene({ shapes, meshRef } : SceneProps) {
         }
       </group>
       <animated.mesh position-y={rotationSpring.y} rotation-y={rotationSpring.rotationY}>
-        <boxGeometry args={[width * 1.1, 30, height * 1.1]} />
+        <boxGeometry args={[width, 30, height]} />
         {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
-      <Frame width={width * 1.1} height={height * 1.1} depth={50} position={[0, -25, (height * 1.1)/2]}/>
+      <Frame width={width} height={height} depth={50} position={[0, -25, (height)/2]}/>
     </Suspense>
   );
 };
