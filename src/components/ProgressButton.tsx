@@ -63,7 +63,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
       onClick={handleClick}
     >
         <div
-          className="bg-primary w-full h-full flex items-center justify-center"
+          className="bg-primary w-full h-full flex items-center justify-center rounded-lg"
           style={{width: `${progressPercentage}%`}}
         >
         </div>
