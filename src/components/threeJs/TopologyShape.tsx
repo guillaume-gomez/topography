@@ -9,7 +9,7 @@ interface TopologyShapeProps {
     color: Color;
 		position: [number, number, number];
     thickness?: number;
-    opacity?: SpringValue<number> | number;
+    opacity?: SpringValue<number>;
     optimized?: boolean;
 };
 
