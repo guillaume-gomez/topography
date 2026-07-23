@@ -1,4 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
+import useGrid from "../components/hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
@@ -19,8 +20,8 @@ export interface SettingsContextParams {
   setColorTo: (color: string) => void;
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
+  grid: Grid;
   hasSingleTopograhy: boolean;
-
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -30,13 +31,12 @@ interface Props {
 
 function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
-  const [width, _setWidth] = useState<number>(500);
-  const [height, _setHeight] = useState<number>(500);
   const [numberOfLayers, setNumberOfLayers] = useState<number>(7);
   const [colorFrom, setColorFrom] = useState<string>("");
   const [colorTo, setColorTo] = useState<string>("");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
+  const { grid, width, height } = useGrid({filepath: "volcano.json", typeOfFile: "real-data" });
   const [hasSingleTopograhy, ] = useState<boolean>(false);
 
   return (
@@ -51,7 +51,8 @@ function SettingsContextWrapper({children}: Props) {
       numberOfLayers, setNumberOfLayers,
       colorFrom, setColorFrom,
       colorTo, setColorTo,
-      colorChosen, setColorChosen
+      colorChosen, setColorChosen,
+      grid
     }}>
       {children}
     </SettingsContext >
