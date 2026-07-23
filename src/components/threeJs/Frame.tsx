@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
 import LeatherText from "./LeatherText";
@@ -19,19 +18,8 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
-  const [displacementMap2, normalMap2, aoMap2, map2] = useLoader(TextureLoader, [
-    `textures/brown-leather-unity/brown-leather_height.png`,
-    `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
-    `textures/brown-leather-unity/brown-leather_ao.png`,
-    `textures/brown-leather-unity/brown-leather_albedo.png`,
-  ]);
-
   const material = useMemo(() => {
     return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
-  }, []);
-
-  const material2 = useMemo(() => {
-    return new MeshStandardMaterial({map:map2, normalMap: normalMap2, aoMap: aoMap2, displacementMap: displacementMap2, displacementScale:0 /*color: "white"*/})
   }, []);
 
   const frameDepth = 40;

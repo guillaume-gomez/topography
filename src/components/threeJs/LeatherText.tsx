@@ -32,7 +32,7 @@ function LeatherText({position, depth} : FrameProps) {
           color={0x000000}
           fontSize={30}
           letterSpacing={0}
-          anchorY="center"
+          anchorY="middle"
           anchorX="center"
           lineHeight={0.8}
           position={[0, 15, 5]}

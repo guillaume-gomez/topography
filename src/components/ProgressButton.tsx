@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MutableRefObject, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { SettingsContext } from "../context/SettingsContextWrapper";
 
 interface ProgressButtonProps {
@@ -9,7 +9,7 @@ interface ProgressButtonProps {
 function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const [milliseconds, setMilliseconds] = useState<number>(0);
   const [play, setPlay] = useState<boolean>(false);
-  const animationRef : MutableRefObject<number | undefined> = useRef<number | undefined>(undefined);
+  const animationRef = useRef<number | undefined>(undefined);
   const previousTimeRef = useRef<number|undefined>(undefined);
   const {
     animationState,
