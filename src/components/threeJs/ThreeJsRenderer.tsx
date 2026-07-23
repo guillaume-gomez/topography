@@ -70,7 +70,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, far: 750 }}
+        camera={{ position: [0, 200, 250], fov: 75, far: 1000 }}
         dpr={Math.max(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -78,7 +78,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
         <ambientLight intensity={1.5} />
-        <fog attach="fog" args={['red', 20, -5]} />
         <pointLight position={[10, 10, 10]} intensity={1} castShadow />
         <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
           <PerformanceMonitor
@@ -118,7 +117,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           minAzimuthAngle={-Math.PI}
           maxAzimuthAngle={Math.PI}
           minDistance={200}
-          maxDistance={400}
+          maxDistance={500}
         />
       </Canvas>
   );

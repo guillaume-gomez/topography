@@ -39,7 +39,6 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
     }
-    console.log(typeOfFile)
 
     if(typeOfFile === "image") {
       return gridFromImage();  

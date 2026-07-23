@@ -21,6 +21,7 @@ export interface SettingsContextParams {
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
   grid: Grid;
+  hasSingleTopograhy: boolean;
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -36,10 +37,11 @@ function SettingsContextWrapper({children}: Props) {
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const { grid, width, height } = useGrid({filepath: "volcano.json", typeOfFile: "real-data" });
-
+  const [hasSingleTopograhy, ] = useState<boolean>(false);
 
   return (
     <SettingsContext value={{
+      hasSingleTopograhy,
       isLight, setLight,
       timerSwitch: 2000,
       timerGeneration: 4000,
