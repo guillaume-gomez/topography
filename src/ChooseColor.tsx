@@ -122,17 +122,36 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
         </div>
       </Card>
       <Card>
-        <div className="flex md:flex-row flex-col items-center justify-between">
-          <ColorInput
-            label={"Start Color"}
-            value={from}
-            onChange={(newColor) => setFrom(newColor)}
-          />
-          <ColorInput
-            label={"End Color"}
-            value={to}
-            onChange={(newColor) => setTo(newColor)}
-          />
+        <div className="flex lg:flex-row flex-col items-center justify-between gap-5">
+         
+          <div className="flex md:flex-row flex-col md:gap-10 gap-5 items-center justify-between">
+            <ColorInput
+                label={"Start Color"}
+                value={from}
+                onChange={(newColor) => setFrom(newColor)}
+              />
+              <button
+                className="btn btn-xs btn-soft btn-accent"
+                onClick={() => {
+                  setFrom(to);
+                  setTo(from);
+                }}
+              >
+                Switch Color
+              </button>
+              <ColorInput
+                label={"End Color"}
+                value={to}
+                onChange={(newColor) => setTo(newColor)}
+              />
+             <button
+              className="btn btn-soft btn-secondary"
+              onClick={randomColors}
+            >
+              Random colors
+            </button>
+          </div>
+
           <NumberInput
               label="Layers"
               onChange={(newValue) => setLayers(newValue)}
@@ -141,12 +160,6 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
               max={15}
               size={"input-md"}
             />
-          <button
-            className="btn btn-soft btn-secondary"
-            onClick={randomColors}
-          >
-            Random colors
-          </button>
           <button
             className="btn btn-lg btn-primary"
             disabled={from === "" || to === ""}
