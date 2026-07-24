@@ -14,7 +14,9 @@ const { BASE_URL, MODE } = import.meta.env;
 
 const LAMP_LIGHTS: { name: string; position: [number, number, number] }[] = [
   { name: "icosphereLamp", position: [-120, 165, 0.0] }, // ampoule/suspension ronde
-  { name: "cube047Lamp", position: [220, 262, 15],},
+  { name: "cube047Lamp", position: [220, 262, 15]},
+  { name: "lamp001", position: [82.90, 226.86, -68.49] }, // pied + abat-jour
+  { name: "cube061Lamp002", position: [245.43, 141.47, 217.94] },
 ];
 
 interface ThreeJsRendererProps {
