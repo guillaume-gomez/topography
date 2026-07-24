@@ -22,7 +22,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
-  const [dpr, setDpr] = useState<number>(1);
+  const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
+  const [optimized, setOptimized] = useState<boolean>(false);
 
   useEffect(() => {
     if(animationState === "started") {
@@ -71,7 +72,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   return (
       <Canvas
         camera={{ position: [0, 200, 250], fov: 75, far: 1000 }}
-        dpr={Math.max(dpr, window.devicePixelRatio)}
+        dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
         id="three-js-renderer"
@@ -79,33 +80,43 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
         <ambientLight intensity={1.5} />
         <pointLight position={[10, 10, 10]} intensity={1} castShadow />
-        <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
-          <PerformanceMonitor
-              bounds={() => [30, 500]} // frame/second limit to trigger functions
-              flipflops={1} // maximum changes before onFallback
-              onDecline={() => {
-                setDpr(dpr * 0.8); // lower dpr by 20%
-              }}
-          >
+        <PerformanceMonitor
+            bounds={() => [30, 500]} // frame/second limit to trigger functions
+            flipflops={1} // maximum changes before onFallback
+            onDecline={() => {
+              setDpr((currentDpr) => Math.max(0.5, currentDpr * 0.8)); // lower dpr by 20%
+              onOptimizedChange(true);
+            }}
+            onIncline={() => {
+              setDpr((currentDpr) => Math.min(window.devicePixelRatio, currentDpr * 1.2));
+              onOptimizedChange(false);
+            }}
+        >
+          <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
             <Scene
               shapes={shapes}
               meshRef={meshRef}
+              optimized={optimized}
             />
-          </PerformanceMonitor>
-        </Stage>
+          </Stage>
+        </PerformanceMonitor>
         { MODE === "development" &&
           <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
             <GizmoViewport labelColor="white" axisHeadScale={1} />
           </GizmoHelper>
         }
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur luminanceThreshold={1.0} />
+          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           {/*<ChromaticAberration
             blendFunction={BlendFunction.NORMAL} // blend mode
             offset={[0.001, 0.001]} // color offset
           />*/}
           {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
-          <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          { optimized ?
+            <></>
+            :
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
         </EffectComposer>
         <CameraControls
