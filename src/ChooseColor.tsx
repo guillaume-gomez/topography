@@ -137,6 +137,37 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                   setTo(from);
                 }}
               >
+                <svg viewBox="0 0 32 32"
+                  width={20}
+                  height={20}
+                >
+                  <path
+                    style={{
+                        stroke: "white",
+                      }}
+                    d="
+                      M 8,10
+                      L 22,10
+                      M 22,10
+                      L 16, 6
+                      M 22, 10
+                      L 16, 14
+                    "
+                  />
+                  <path
+                    style={{
+                        stroke: "white",
+                      }}
+                    d="M 22, 22
+                       L 8, 22
+                       M 8, 22
+                       L 14, 18
+                       M 8, 22
+                       L 14, 26
+                       M 8, 22
+                  "
+                  />
+                </svg>
                 Switch Color
               </button>
               <ColorInput
