@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized Workplace
+* source:	https://sketchfab.com/3d-models/stylized-workplace-0860a86d4d644b2184e301bab28b5267
+* author:	SantyFrow (https://sketchfab.com/santyfrow)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized Workplace" (https://sketchfab.com/3d-models/stylized-workplace-0860a86d4d644b2184e301bab28b5267) by SantyFrow (https://sketchfab.com/santyfrow) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
