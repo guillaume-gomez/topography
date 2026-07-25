@@ -71,7 +71,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, far: 1000 }}
+        camera={{ position: [0, 200, 250], fov: 75, far: 1500 }}
         dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -107,14 +107,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         }
         <EffectComposer enableNormalPass={false}>
           <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
-          {/*<ChromaticAberration
-            blendFunction={BlendFunction.NORMAL} // blend mode
-            offset={[0.001, 0.001]} // color offset
-          />*/}
-          {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
-          { optimized ?
-            <></>
-            :
+          { !optimized && 
             <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
@@ -128,7 +121,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           minAzimuthAngle={-Math.PI}
           maxAzimuthAngle={Math.PI}
           minDistance={200}
-          maxDistance={500}
+          maxDistance={800}
         />
       </Canvas>
   );
