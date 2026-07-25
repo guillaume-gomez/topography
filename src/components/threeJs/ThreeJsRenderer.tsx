@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
+import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { type Shape } from "../hooks/useTopography";
@@ -24,6 +25,13 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   const meshRef = useRef<Mesh|null>(null);
   const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
   const [optimized, setOptimized] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!cameraControllerRef.current) return;
+    //disable pan on mobile
+    cameraControllerRef.current.touches.two = CameraControlsImpl.ACTION.TOUCH_DOLLY; // garde le zoom, retire le pan
+    cameraControllerRef.current.touches.three = CameraControlsImpl.ACTION.NONE; // désactive complètement
+  }, [cameraControllerRef.current]);
 
   useEffect(() => {
     if(animationState === "started") {
