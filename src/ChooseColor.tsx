@@ -131,7 +131,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                 onChange={(newColor) => setFrom(newColor)}
               />
               <button
-                className="btn btn-xs btn-soft btn-accent"
+                className="btn btn-xs btn-soft btn-accent text-accent"
                 onClick={() => {
                   setFrom(to);
                   setTo(from);
@@ -143,7 +143,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                 >
                   <path
                     style={{
-                        stroke: "white",
+                        stroke: "currentColor",
                       }}
                     d="
                       M 8,10
@@ -156,7 +156,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                   />
                   <path
                     style={{
-                        stroke: "white",
+                        stroke: "currentColor",
                       }}
                     d="M 22, 22
                        L 8, 22
