@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import NumberInput from "./components/NumberInput";
+import SwitchButton from "./components/SwitchButton";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
@@ -130,46 +131,12 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                 value={from}
                 onChange={(newColor) => setFrom(newColor)}
               />
-              <button
-                className="btn btn-xs btn-soft btn-accent text-accent"
+              <SwitchButton
                 onClick={() => {
                   setFrom(to);
                   setTo(from);
                 }}
-              >
-                <svg viewBox="0 0 32 32"
-                  width={20}
-                  height={20}
-                >
-                  <path
-                    style={{
-                        stroke: "currentColor",
-                      }}
-                    d="
-                      M 8,10
-                      L 22,10
-                      M 22,10
-                      L 16, 6
-                      M 22, 10
-                      L 16, 14
-                    "
-                  />
-                  <path
-                    style={{
-                        stroke: "currentColor",
-                      }}
-                    d="M 22, 22
-                       L 8, 22
-                       M 8, 22
-                       L 14, 18
-                       M 8, 22
-                       L 14, 26
-                       M 8, 22
-                  "
-                  />
-                </svg>
-                Switch Color
-              </button>
+              />
               <ColorInput
                 label={"End Color"}
                 value={to}
