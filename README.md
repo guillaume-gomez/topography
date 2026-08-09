@@ -67,3 +67,5 @@ https://thenounproject.com/icon/reverse-6292257/
 # Other Rendering
 
 <img width="967" height="895" alt="Capture d’écran 2026-07-01 à 15 12 47" src="https://github.com/user-attachments/assets/2999e8bb-bf6f-4e45-9764-312f1b0d4358" />
+
+<img width="991" height="596" alt="Capture d’écran 2026-08-09 à 11 49 28" src="https://github.com/user-attachments/assets/c4f5ec95-a922-43c5-ab06-dbff59b943b9" />
