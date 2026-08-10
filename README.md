@@ -56,9 +56,6 @@ https://freepbr.com/product/semi-gloss-wood-pbr/
 https://www.texturecan.com/details/364/
 
 
-icons:
-https://thenounproject.com/icon/reverse-6292257/
-
 # Rendering
 
 <img width="967" height="895" alt="Capture d’écran 2026-07-01 à 15 12 47" src="https://github.com/user-attachments/assets/2999e8bb-bf6f-4e45-9764-312f1b0d4358" />
