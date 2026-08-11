@@ -6,7 +6,7 @@ interface SwitchButtonProps {
 }
 
 function SwitchButton({ onClick }: SwitchButtonProps) {
-  const [hover, setHover] = useState<boolean>(false);
+  const [hover, setHover] = useState<boolean>(true);
   const propsUp = useSpring(
     { d: hover ?
       "M 8,10 L 22,10 M 22,10 L 16, 6 M 22, 10 L 16, 14" :
