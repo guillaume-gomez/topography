@@ -6,20 +6,22 @@ interface SwitchButtonProps {
 }
 
 function SwitchButton({ onClick }: SwitchButtonProps) {
-  const [hover, setHover] = useState<boolean>(true);
+  const [hover, setHover] = useState<boolean>(true); // it's false but to run the first default anim. Set it to true
+
   const propsUp = useSpring(
     { d: hover ?
       "M 8,10 L 22,10 M 22,10 L 16, 6 M 22, 10 L 16, 14" :
       "M 14,10 L 28,10 M 28,10 L 22, 6 M 28, 10 L 22, 14"
       
     }
-  )
+  );
+
   const propsDown = useSpring(
     { d: hover ? 
       "M 22, 22 L 8, 22 M 8, 22 L 14, 18 M 8, 22 L 14, 26 M 8, 22" :
       "M 16, 22 L 2, 22 M 2, 22 L 8, 18 M 2, 22 L 8, 26 M 2, 22"
     }
-  )
+  );
 
   return (
     <button
