@@ -39,9 +39,9 @@ const COLORS = [
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [colors, setColors] = useState<string[]>([]);
-  const [from, setFrom] = useState<string>("#006400");
-  const [to, setTo] = useState<string>("#A0522D");
-  const [layers, setLayers] = useState<number>(5);
+  const [from, setFrom] = useState<string>("#abe2ab");
+  const [to, setTo] = useState<string>("#742906");
+  const [layers, setLayers] = useState<number>(7);
 
   const {
     playSubmitSound,
