@@ -93,11 +93,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             flipflops={1} // maximum changes before onFallback
             onDecline={() => {
               setDpr((currentDpr) => Math.max(0.5, currentDpr * 0.8)); // lower dpr by 20%
-              onOptimizedChange(true);
+              setOptimized(true);
             }}
             onIncline={() => {
               setDpr((currentDpr) => Math.min(window.devicePixelRatio, currentDpr * 1.2));
-              onOptimizedChange(false);
+              setOptimized(false);
             }}
         >
           <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
