@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import NumberInput from "./components/NumberInput";
+import SwitchButton from "./components/SwitchButton";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
@@ -38,9 +39,9 @@ const COLORS = [
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
   const [colors, setColors] = useState<string[]>([]);
-  const [from, setFrom] = useState<string>("#006400");
-  const [to, setTo] = useState<string>("#A0522D");
-  const [layers, setLayers] = useState<number>(5);
+  const [from, setFrom] = useState<string>("#abe2ab");
+  const [to, setTo] = useState<string>("#742906");
+  const [layers, setLayers] = useState<number>(7);
 
   const {
     playSubmitSound,
@@ -130,15 +131,12 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                 value={from}
                 onChange={(newColor) => setFrom(newColor)}
               />
-              <button
-                className="btn btn-xs btn-soft btn-accent"
+              <SwitchButton
                 onClick={() => {
                   setFrom(to);
                   setTo(from);
                 }}
-              >
-                Switch Color
-              </button>
+              />
               <ColorInput
                 label={"End Color"}
                 value={to}

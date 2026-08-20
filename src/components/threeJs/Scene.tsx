@@ -1,4 +1,4 @@
-import { useContext, Suspense, useState, type Ref } from 'react';
+import { useContext, Suspense, type Ref } from 'react';
 import { type Mesh} from "three";
 import { animated, useSpring, Globals } from '@react-spring/three';
 
@@ -7,7 +7,7 @@ import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 
-import { Grid, usePerformanceMonitor } from '@react-three/drei';
+import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
@@ -21,6 +21,7 @@ Globals.assign({
 interface SceneProps {
   shapes: Shape[];
   meshRef: Ref<Mesh>;
+  optimized: boolean;
 }
 
 const { /*BASE_URL,*/ MODE } = import.meta.env;
@@ -28,15 +29,12 @@ const { /*BASE_URL,*/ MODE } = import.meta.env;
 //const BaseHeight = 30;
 const BaseHeight = 50;
 
-function Scene({ shapes, meshRef } : SceneProps) {
+function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
     width,
     height,
     animationState
   } = useContext(SettingsContext);
-  const [optimized, setOptimized] = useState<boolean>(false);
-
-  usePerformanceMonitor({ onIncline: () => { setOptimized(false) }, onFallback: () => { setOptimized(true) } })
 
   const [rotationSpring,] = useSpring(
   {

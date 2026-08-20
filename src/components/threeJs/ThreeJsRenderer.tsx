@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor, Gltf } from '@react-three/drei';
 import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
+import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import { type Shape } from "../hooks/useTopography";
@@ -30,7 +31,15 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
-  const [dpr, setDpr] = useState<number>(1);
+  const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
+  const [optimized, setOptimized] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!cameraControllerRef.current) return;
+    //disable pan on mobile
+    cameraControllerRef.current.touches.two = CameraControlsImpl.ACTION.TOUCH_DOLLY; // garde le zoom, retire le pan
+    cameraControllerRef.current.touches.three = CameraControlsImpl.ACTION.NONE; // désactive complètement
+  }, [cameraControllerRef.current]);
 
   useEffect(() => {
     if(animationState === "started") {
@@ -85,7 +94,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         id="three-js-renderer"
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-        {/*<Stage adjustCamera={false} preset="soft" intensity={0} shadows="contact" environment={"warehouse"}>*/}
           <group scale={10} position={[-1500,-1150,-700]}>
             <Gltf src={`${BASE_URL}/stylized_workplace/scene.gltf`} rotation={[ 0, 0, 0]}/>
             {LAMP_LIGHTS.map((lamp) => (
@@ -95,31 +103,33 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             ))}
           </group>
           <PerformanceMonitor
-              bounds={() => [30, 500]} // frame/second limit to trigger functions
-              flipflops={1} // maximum changes before onFallback
-              onDecline={() => {
-                setDpr(dpr * 0.8); // lower dpr by 20%
-              }}
-          >
+            bounds={() => [30, 500]} // frame/second limit to trigger functions
+            flipflops={1} // maximum changes before onFallback
+            onDecline={() => {
+              setDpr((currentDpr) => Math.max(0.5, currentDpr * 0.8)); // lower dpr by 20%
+              setOptimized(true);
+            }}
+            onIncline={() => {
+              setDpr((currentDpr) => Math.min(window.devicePixelRatio, currentDpr * 1.2));
+              setOptimized(false);
+            }}
+        >
             <Scene
               shapes={shapes}
               meshRef={meshRef}
+              optimized={optimized}
             />
           </PerformanceMonitor>
-        {/*</Stage>*/}
         { MODE === "development" &&
           <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
             <GizmoViewport labelColor="white" axisHeadScale={1} />
           </GizmoHelper>
         }
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur luminanceThreshold={1.0} />
-          {/*<ChromaticAberration
-            blendFunction={BlendFunction.NORMAL} // blend mode
-            offset={[0.001, 0.001]} // color offset
-          />*/}
-          {/*<Grid scale={2} lineWidth={1}  blendFunction={BlendFunction.OVERLAY}/>*/}
-          <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
+          { !optimized && 
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
         </EffectComposer>
         <CameraControls
