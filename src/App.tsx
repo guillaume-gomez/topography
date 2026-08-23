@@ -145,7 +145,7 @@ function App() {
                     }
                   } />
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
-                  {isLight ? "Light" : "Dark"}
+                  {isLight ? "Dark" : "Light"}
                 </button>
               </Card>
               <ThreejsRenderer shapes={shapes}/>
