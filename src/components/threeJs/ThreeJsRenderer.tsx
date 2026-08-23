@@ -100,7 +100,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               setOptimized(false);
             }}
         >
-          <Stage adjustCamera={false} intensity={1} shadows="contact" environment={"park"}>
+          <Stage adjustCamera={false} intensity={5} shadows="contact" environment={"park"}>
             <Scene
               shapes={shapes}
               meshRef={meshRef}
