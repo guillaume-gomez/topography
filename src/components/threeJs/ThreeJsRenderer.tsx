@@ -87,7 +87,18 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       >
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
         <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} castShadow />
+        <directionalLight
+          position={[0, 200, 0]}
+          intensity={3}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-camera-far={1500}
+          shadow-camera-left={-600}
+          shadow-camera-right={600}
+          shadow-camera-top={600}
+          shadow-camera-bottom={-600}
+        />
         <PerformanceMonitor
             bounds={() => [30, 500]} // frame/second limit to trigger functions
             flipflops={1} // maximum changes before onFallback
