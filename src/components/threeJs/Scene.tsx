@@ -2,12 +2,10 @@ import { useContext, Suspense, type Ref } from 'react';
 import { type Mesh} from "three";
 import { animated, useSpring, Globals } from '@react-spring/three';
 
-import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 
-import { Grid } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
@@ -23,8 +21,6 @@ interface SceneProps {
   meshRef: Ref<Mesh>;
   optimized: boolean;
 }
-
-const { /*BASE_URL,*/ MODE } = import.meta.env;
 
 //const BaseHeight = 30;
 const BaseHeight = 50;
@@ -50,11 +46,6 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
-     <SceneBackground/>
-      { MODE === "development" &&
-        <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
-      }
-
       <group
         position={[-width/2, BaseHeight/2, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}

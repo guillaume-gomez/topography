@@ -1,11 +1,12 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
-import { EffectComposer, Bloom, /*Grid,*/ ToneMapping, TiltShift } from '@react-three/postprocessing';
+import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
+import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
+import SceneBackground from "./SceneBackground";
 import { type Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -19,7 +20,9 @@ interface ThreeJsRendererProps {
 function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
   const {
     animationState,
-    isLight
+    isLight,
+    width,
+    height
   } = useContext(SettingsContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
@@ -85,7 +88,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         className="rounded-xl hover:cursor-grabbing w-full h-full"
         id="three-js-renderer"
       >
-        { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+        <SceneBackground/>
         <ambientLight intensity={1.5} />
         <directionalLight
           position={[0, 200, 0]}
@@ -111,7 +114,22 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               setOptimized(false);
             }}
         >
-          <Stage adjustCamera={false} intensity={5} shadows="contact" environment={"park"}>
+          <Stage
+            adjustCamera={false}
+            intensity={1}
+            environment={"park"}
+            shadows={{
+              type: "contact",
+              opacity: isLight ? 0.4 : 0.0,
+              blur: 4,
+              offset: 20,
+              scale: 1,
+              width: width *1.2,
+              height: height * 1.2,
+              resolution: 1024,
+              color:"#FF0000"
+            }}
+          >
             <Scene
               shapes={shapes}
               meshRef={meshRef}
@@ -123,6 +141,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
             <GizmoViewport labelColor="white" axisHeadScale={1} />
           </GizmoHelper>
+        }
+        { import.meta.env.MODE === "development" ? <Stats/> : <></> }
+        { MODE === "development" &&
+          <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
         }
         <EffectComposer enableNormalPass={false}>
           <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
