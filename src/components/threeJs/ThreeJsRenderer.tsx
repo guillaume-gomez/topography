@@ -126,7 +126,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               scale: 1,
               width: width *1.2,
               height: height * 1.2,
-              resolution: 1024,
+              resolution: 256,
               color:"#FF0000"
             }}
           >
