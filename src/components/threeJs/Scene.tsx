@@ -22,8 +22,8 @@ interface SceneProps {
   optimized: boolean;
 }
 
-//const BaseHeight = 30;
-const BaseHeight = 50;
+const BaseHeight = 30;
+const OceanHeight = 15;
 
 function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
@@ -35,7 +35,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const [rotationSpring,] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
-    to: { y: -5, rotationY: Math.PI * 2,},
+    to: { y: BaseHeight/2, rotationY: Math.PI * 2,},
     config: {
       duration: 800
     },
@@ -46,8 +46,8 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
-      <group
-        position={[-width/2, BaseHeight/2, height/2]}
+     <group
+        position={[-width/2, BaseHeight, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -64,11 +64,10 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
         position-y={rotationSpring.y}
         rotation-y={rotationSpring.rotationY}
       >
-        <boxGeometry args={[width, BaseHeight, height]} />
-        {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
+        <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
-      <Frame width={width} height={height} depth={50} position={[0, -25, (height)/2]}/>
+      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
     </Suspense>
   );
 };

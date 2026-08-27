@@ -22,7 +22,7 @@ function Frame({width, height, depth, position } : FrameProps) {
     return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
   }, []);
 
-  const frameDepth = 40;
+  const frameDepth = 25;
 	return (
     <group position={position}>
       <mesh
