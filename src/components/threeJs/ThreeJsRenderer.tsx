@@ -49,16 +49,16 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     if(!isLight) {
       moveTopDown();
     }
-  }, [isLight])
-  
+  }, [isLight]);
+
   async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
     }
-
     await cameraControllerRef.current.fitToBox(meshRef.current, true,
       { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
     );
+
   }
 
   async function moveTopDown() {
@@ -71,13 +71,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   }
 
   async function onAnimationEnd() {
-     console.log("ended")
      recenterCamera();
   }
 
   function onAnimationStart() {
-    console.log("started")
-    //recenterCamera();
+    recenterCamera();
   }
 
   return (
@@ -122,10 +120,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
-              offset: 20,
+              offset: 5,
               scale: 1,
-              width: width *1.2,
-              height: height * 1.2,
+              width: width *1.1,
+              height: height * 1.1,
               resolution: 256,
               color:"#FF0000"
             }}
@@ -143,9 +141,9 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           </GizmoHelper>
         }
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-        { MODE === "development" &&
+        {/*{ MODE === "development" &&
           <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
-        }
+        }*/}
         <EffectComposer enableNormalPass={false}>
           <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           { !optimized && 
