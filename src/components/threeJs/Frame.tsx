@@ -59,7 +59,7 @@ function Frame({width, height, depth, position } : FrameProps) {
         {/*<meshStandardMaterial color="purple" />*/}
       </mesh>
 
-      <LeatherText position={[150, 30, frameDepth]} depth={depth} />
+      <LeatherText position={[170, 30, frameDepth]} depth={depth} />
       
     </group>
   );
