@@ -3,6 +3,8 @@ import { useTrail, animated } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import NumberInput from "./components/NumberInput";
 import SwitchButton from "./components/SwitchButton";
+import ColorCard from "./components/colorCard/ColorCard";
+import ColorCardButton from "./components/colorCard/ColorCardButton";
 import Card from "./components/Card";
 import { lerpColors, rgbToHex } from "./colorUtils";
 import { sample } from "lodash";
@@ -105,18 +107,46 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
           {
             trails.map((props, index) => {
               const color = colors[index];
+
+              if(index === 0) {
+                return (
+                  <ColorCardButton
+                    style={{
+                      opacity: props.opacity,
+                      height: props.height.to(v => v + "%"),
+                      background:color,
+                      transformOrigin: "50% 100%",
+                    }}
+                    value={from}
+                    onChange={(newColor: string) => setFrom(newColor)}
+                  />
+                );
+              }
+
+              if(index === (layers - 1) ){
+                return (
+                  <ColorCardButton
+                    style={{
+                      opacity: props.opacity,
+                      height: props.height.to(v => v + "%"),
+                      background:color,
+                      transformOrigin: "50% 100%",
+                    }}
+                    value={to}
+                    onChange={(newColor: string) => setTo(newColor)}
+                  />
+                );
+              }
+
               return (
-                <animated.div
-                  className="w-100 h-100 rounded-md border border-black"
+                <ColorCard
                   style={{
                     opacity: props.opacity,
                     height: props.height.to(v => v + "%"),
                     background:color,
                     transformOrigin: "50% 100%",
                   }}
-                  key={index}
-                >
-                </animated.div>
+                />
               );
             })
           }
@@ -124,7 +154,6 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
       </Card>
       <Card>
         <div className="flex lg:flex-row flex-col items-center justify-between gap-5">
-         
           <div className="flex md:flex-row flex-col md:gap-10 gap-5 items-center justify-between">
             <ColorInput
                 label={"Start Color"}
