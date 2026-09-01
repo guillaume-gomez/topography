@@ -8,7 +8,8 @@ interface TopographyProps {
   width: number;
   height: number;
   numberOfLayers: number;
-  fromToColors?: [string, string];
+  colorFrom?: string;
+  colorTo?: string;
 }
 
 export interface Shape {
@@ -39,13 +40,13 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
+function useTopographies({ width, height, numberOfLayers, colorFrom, colorTo } : TopographyProps) {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [frequency, _setFrequency] = useState<number>(0.05);
 
   useEffect(() => {
     generate();
-  }, [width, height, numberOfLayers]);
+  }, [width, height, numberOfLayers, colorFrom, colorTo]);
 
   function computeThresholds() : number[] {
     const step = 1.0 / numberOfLayers;
@@ -93,8 +94,8 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
   }
 
   function colorByElevation(index: number): Color {
-    if(fromToColors) {
-      const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
+    if(colorFrom && colorTo) {
+      const colors = lerpColors(colorFrom, colorTo, numberOfLayers);
       return new Color(...colors[index % colors.length]);
     }
 
