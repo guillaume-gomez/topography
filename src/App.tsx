@@ -2,7 +2,7 @@ import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
-
+import ColorBlobInput from "./components/ColorBlobInput";
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./components/hooks/useTopographies";
@@ -147,6 +147,18 @@ function App() {
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
                   {isLight ? "Dark" : "Light"}
                 </button>
+                <div className="flex flex-row gap-1">
+                  <ColorBlobInput
+                    value={colorFrom}
+                    onChange={(newColor) => setColorFrom(newColor)}
+                    animate={false}
+                  />
+                  <ColorBlobInput
+                    value={colorTo}
+                    onChange={(newColor) => setColorTo(newColor)}
+                    animate={false}
+                  />
+                </div>
               </Card>
               <ThreejsRenderer shapes={shapes}/>
             </animated.div>

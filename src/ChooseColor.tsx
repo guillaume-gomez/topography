@@ -118,6 +118,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                       transformOrigin: "50% 100%",
                     }}
                     value={from}
+                    key={index}
                     onChange={(newColor: string) => setFrom(newColor)}
                   />
                 );
@@ -133,6 +134,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                       transformOrigin: "50% 100%",
                     }}
                     value={to}
+                    key={index}
                     onChange={(newColor: string) => setTo(newColor)}
                   />
                 );
@@ -146,6 +148,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
                     background:color,
                     transformOrigin: "50% 100%",
                   }}
+                  key={index}
                 />
               );
             })
