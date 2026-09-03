@@ -71,6 +71,7 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
           playTopographyPieceSound();
         },
         reset: true,
+        delay: 1000
       }
     },
     [animationState]
