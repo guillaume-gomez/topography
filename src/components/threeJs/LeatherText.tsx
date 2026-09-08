@@ -23,19 +23,19 @@ function LeatherText({position, depth} : FrameProps) {
   return (
       <group position={position}>
         <mesh position={[0, 0, 0]} material={material} >
-          <boxGeometry args={[200, depth - 15, 1]} />
+          <boxGeometry args={[150, depth - 15, 1]} />
           {/*<meshStandardMaterial color="red" />*/}
         </mesh>
 
         <Text
           //font={`${BASE_URL}/fonts/good-bakwan.woff`}
           color={0x000000}
-          fontSize={30}
+          fontSize={16}
           letterSpacing={0}
           anchorY="center"
           anchorX="center"
           lineHeight={0.8}
-          position={[0, 15, 5]}
+          position={[0, 12, 5]}
         >
           Seed 68787
         </Text>

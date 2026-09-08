@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
-import { getData } from "../../readJson";
-import { generateGrid } from "../../libs/generateGrid";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
-import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../../libs/imageProcessingUtils";
+import { getData } from "../readJson";
+import { generateGrid } from "../libs/generateGrid";
+import { SettingsContext } from "../context/SettingsContextWrapper";
+import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../libs/imageProcessingUtils";
 
 const { BASE_URL } = import.meta.env;
 
@@ -22,7 +22,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   const [width, setWidth] = useState<number>(500);
   const [height, setHeight] = useState<number>(500);
-  
+
   useEffect(() => {
     async function call () {
       const grid = await computeGrid();
@@ -34,14 +34,14 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
 
     call();
   }, [filepath, typeOfFile])
-	
+
   async function computeGrid(): Grid {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
     }
 
     if(typeOfFile === "image") {
-      return gridFromImage();  
+      return gridFromImage();
     }
 
     // fallback generate noise to create a grid
