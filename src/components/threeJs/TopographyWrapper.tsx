@@ -14,12 +14,10 @@ interface TopographyWrapperProps {
 }
 
 const Thickness = 2.5;
-const OriginalPosition = -50;
+const OriginalPosition = 400;
 
 function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
   const {
-    width,
-    height,
     isLight,
     timerSwitch,
     timerGeneration,
@@ -45,18 +43,17 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
 
   const durationByLayer = timerGeneration / numberOfLayers;
 
-  const [spring, ] = useSpring(() => {
+  const [springPosition, ] = useSpring(() => {
       // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes
       if(animationState === "ended") {
-        return { x: 0, y: 0, z: shape.elevation * (Thickness * 2.), delay: shape.elevation * durationByLayer, scale: 1 };
+        return { y: shape.elevation * (Thickness * 2.), delay: shape.elevation * durationByLayer };
       }
 
       return {
         from: { y: OriginalPosition },
         to: async (next, _cancel) => {
-          await next({ x: width/2 * 0.1, y: height/2 * 0.1, z: OriginalPosition, scale: 0.9, immediate: true });
-          await next({ x: 0, y: 0, z: 0, scale: 1, delay: shape.elevation * durationByLayer });
-          await next({ x: 0, y: 0, z: shape.elevation * (Thickness * 2.), scale: 1 });
+          await next({ y: OriginalPosition, immediate: true });
+          await next({ y: shape.elevation * (Thickness * 2.), delay: shape.elevation * durationByLayer });
         },
         config: {
           duration: durationByLayer
@@ -81,13 +78,12 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
   );
 
 
-	return (
+  return (
     <>
       <TopologyShape
         points={shape.points}
         color={shape.color}
-        position={[spring.x, spring.y, spring.z as unknown as number]}
-        scale={spring.scale}
+        position={[0, 0, springPosition.y as unknown as number]}
         //position={[0, 0, shape.elevation * Thickness]}
         thickness={Thickness}
         opacity={shapeToDisplay.opacity}
@@ -96,7 +92,7 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
       <TopologyLine
         points={shape.points}
         color={shape.color}
-        position={[0, 0, spring.z as unknown as number]}
+        position={[0, 0, springPosition.y as unknown as number]}
         //position={[0, 0, shape.elevation * Thickness]}
         thickness={Thickness * 0.5}
         opacity={lineToDisplay.opacity}
