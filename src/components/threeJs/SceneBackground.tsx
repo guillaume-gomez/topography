@@ -6,7 +6,7 @@ import { Stars } from '@react-three/drei';
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
 
-const FROM = hex2rgb("#ffcfde");
+const FROM = hex2rgb("#b2bf9c");
 const TO = hex2rgb("#050505");
 
 function SceneBackground() {

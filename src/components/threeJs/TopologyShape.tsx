@@ -10,9 +10,11 @@ interface TopologyShapeProps {
 		position: [number, number, number];
     thickness?: number;
     opacity?: SpringValue<number>;
+    optimized?: boolean;
 };
 
-function TopologyShape({ points, color, position, thickness = 1, opacity = new SpringValue(1) }: TopologyShapeProps): ReactElement {
+
+function TopologyShape({ points, color, position, thickness = 1, opacity = new SpringValue(1), optimized = true  }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => {
     return new Shape(points);
   },
@@ -28,6 +30,7 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = new S
     bevelSegments: 10
 	}), []);
 
+
   return (
     <animated.mesh
       position-x={position[0]}
@@ -39,6 +42,28 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = new S
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
+      {optimized ?
+        <animated.meshLambertMaterial
+          wireframe={false}
+          color={color}
+          emissive={"black"}
+          opacity={opacity}
+          transparent={true}
+        />
+        :
+        <animated.meshPhysicalMaterial
+          wireframe={false}
+          opacity={opacity}
+          transparent={true}
+          color={color}
+          emissive={"black"}
+          roughness={1}
+          metalness={0.1}
+          clearcoat={1.0}
+          clearcoatRoughness={0.1}
+        />
+      }
+      {/*<meshNormalMaterial/>*/}
       {/*<WavyPhysicalMaterial
         color={color}
         emissive={"black"}
@@ -47,18 +72,6 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = new S
         amplitude={4}
         frequency={10}
       />*/}
-      <animated.meshPhysicalMaterial
-        wireframe={false}
-        opacity={opacity}
-        transparent={true}
-        color={color}
-        emissive={"black"}
-        roughness={1}
-        metalness={0.1}
-        clearcoat={1.0}
-        clearcoatRoughness={0.1}
-      />
-      {/*<meshNormalMaterial/>*/}
     </animated.mesh>
   );
 };
