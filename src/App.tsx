@@ -39,14 +39,16 @@ function App() {
     width, 
     height,
     numberOfLayers,
-    fromToColors: [colorFrom, colorTo]
+    colorFrom, 
+    colorTo
   });
 
   const { generate: generateTopography, shapes: shapesTopography } = useTopography({
     width, 
     height,
     numberOfLayers,
-    fromToColors: [colorFrom, colorTo]
+    colorFrom,
+    colorTo
   });
 
   useEffect(() => {
@@ -124,7 +126,7 @@ function App() {
                 setNumberOfLayers(layers);
 
                 onGenerate();
-
+                
                 setSceneName("3d-scene");
               }} />
             </animated.div>
@@ -140,8 +142,7 @@ function App() {
                 <ProgressButton
                   label="Generate"
                   onClick={() => {
-                      generateTopographies();
-                      setAnimationState("started")
+                      onGenerate();
                     }
                   } />
                 <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
