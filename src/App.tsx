@@ -8,6 +8,8 @@ import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
+//import ToggleSoundButton from "./components/ToggleSoundButton";
+//import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -16,8 +18,6 @@ type AnimationProps = AnimatedProps<CSSProperties>
 function App() {
   const {
     grid,
-    isLight,
-    setLight,
     width,
     height,
     numberOfLayers,
@@ -146,9 +146,8 @@ function App() {
                       setAnimationState("started")
                     }
                   } />
-                <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
-                  {isLight ? "Dark" : "Light"}
-                </button>
+                {/*<ToggleDayButton />
+                <ToggleSoundButton />*/}
                 <div className="flex flex-row gap-1">
                   <ColorBlobInput
                     value={colorFrom}

@@ -17,16 +17,13 @@ https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--p
 
 https://perspective-gray.vercel.app/
 
+https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
+
 ## typography:
+
   WorkSans : https://fonts.google.com/specimen/Work+Sans?preview.script=Latn
 
-
-  Assets used:
-    44062__feegle__gamepiece
-
 ## Sounds
-
-  paper sound : https://floraphonic.gumroad.com/
 
   montain song : https://pixabay.com/fr/users/freesound_community-46691455/
 
@@ -35,11 +32,6 @@ https://perspective-gray.vercel.app/
   backpack : https://pixabay.com/fr/users/freesound_community-46691455/
 
   closing zipper : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-closing-zipper-325443/
-
-  wood impact : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-wood-impact-84721/
-
-
-  droppping a pin on wood : http://pixabay.com/fr/sound-effects/films-et-effets-sp%C3%A9ciaux-dropping-a-pen-on-wood-103665/
 
 https://perspective-gray.vercel.app/
 
