@@ -95,10 +95,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-far={1500}
-          shadow-camera-left={-600}
-          shadow-camera-right={600}
-          shadow-camera-top={600}
-          shadow-camera-bottom={-600}
+          shadow-camera-left={-(width + 100)}
+          shadow-camera-right={(width + 100)}
+          shadow-camera-top={(height + 100)}
+          shadow-camera-bottom={-(height + 100)}
         />
         <PerformanceMonitor
             bounds={() => [30, 500]} // frame/second limit to trigger functions
@@ -115,7 +115,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Stage
             adjustCamera={false}
             intensity={1}
-            environment={"park"}
+            environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
