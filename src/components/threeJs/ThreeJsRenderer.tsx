@@ -115,7 +115,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Stage
             adjustCamera={false}
             intensity={1}
-            environment={"park"}
+            environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
