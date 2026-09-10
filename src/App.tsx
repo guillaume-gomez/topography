@@ -136,6 +136,7 @@ function App() {
               className="w-full h-screen"
               style={style as AnimationProps}
             >
+              <ToggleSoundButton />
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
                 <ProgressButton
                   label="Generate"
@@ -145,7 +146,6 @@ function App() {
                     }
                   } />
                 <ToggleDayButton />
-                <ToggleSoundButton />
                 <div className="flex flex-row gap-1">
                   <ColorBlobInput
                     value={colorFrom}
