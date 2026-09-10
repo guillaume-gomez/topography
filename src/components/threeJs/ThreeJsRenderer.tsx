@@ -1,7 +1,7 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor, Gltf } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
@@ -11,7 +11,7 @@ import { type Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 
-const { /*BASE_URL,*/ MODE } = import.meta.env;
+const { BASE_URL, MODE } = import.meta.env;
 
 interface ThreeJsRendererProps {
   shapes: Shape[];
@@ -80,7 +80,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, far: 1500 }}
+        camera={{ position: [0, 200, 250], fov: 75, near: 10, far: 3000 }}
         dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -112,6 +112,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               setOptimized(false);
             }}
         >
+          <Gltf src={`${BASE_URL}/vr_gallery/scene.gltf`} scale={280.0} position={[0,-450, 0]}  />
           <Stage
             adjustCamera={false}
             intensity={1}

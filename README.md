@@ -53,6 +53,10 @@ https://www.texturecan.com/details/364/
 
 https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
 
+Room
+
+https://sketchfab.com/3d-models/vr-gallery-1e087aa25dc742e680accb15249bd6be
+
 # Other Rendering
 
 <img width="967" height="895" alt="Capture d’écran 2026-07-01 à 15 12 47" src="https://github.com/user-attachments/assets/2999e8bb-bf6f-4e45-9764-312f1b0d4358" />
