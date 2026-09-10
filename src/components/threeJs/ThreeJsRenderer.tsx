@@ -10,7 +10,6 @@ import SceneBackground from "./SceneBackground";
 import { type Shape } from "../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
-
 const { BASE_URL, MODE } = import.meta.env;
 
 interface ThreeJsRendererProps {
@@ -112,7 +111,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               setOptimized(false);
             }}
         >
-          <Gltf src={`${BASE_URL}/vr_gallery/scene.gltf`} scale={280.0} position={[0,-450, 0]}  />
           <Stage
             adjustCamera={false}
             intensity={1}
