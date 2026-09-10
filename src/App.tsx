@@ -8,8 +8,8 @@ import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
-//import ToggleSoundButton from "./components/ToggleSoundButton";
-//import ToggleDayButton from "./components/ToggleDayButton";
+import ToggleSoundButton from "./components/ToggleSoundButton";
+import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -146,8 +146,8 @@ function App() {
                       setAnimationState("started")
                     }
                   } />
-                {/*<ToggleDayButton />
-                <ToggleSoundButton />*/}
+                <ToggleDayButton />
+                <ToggleSoundButton />
                 <div className="flex flex-row gap-1">
                   <ColorBlobInput
                     value={colorFrom}
