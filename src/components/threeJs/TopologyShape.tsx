@@ -10,7 +10,7 @@ interface TopologyShapeProps {
 		position: [number, number, number];
     scale: SpringValue<number> | number;
     thickness?: number;
-    opacity?: SpringValue<number> | number;
+    opacity?: SpringValue<number>;
     optimized?: boolean;
 };
 
@@ -31,6 +31,7 @@ function TopologyShape({ points, color, position, scale = new SpringValue(1), th
     bevelSegments: 10
 	}), []);
 
+
   return (
     <animated.mesh
       position-x={position[0]}
@@ -43,14 +44,6 @@ function TopologyShape({ points, color, position, scale = new SpringValue(1), th
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
-      {/*<WavyPhysicalMaterial
-        color={color}
-        emissive={"black"}
-        roughness={1.}
-        metalness={0.1}
-        amplitude={4}
-        frequency={10}
-      />*/}
       {optimized ?
         <animated.meshLambertMaterial
           wireframe={false}
@@ -73,6 +66,14 @@ function TopologyShape({ points, color, position, scale = new SpringValue(1), th
         />
       }
       {/*<meshNormalMaterial/>*/}
+      {/*<WavyPhysicalMaterial
+        color={color}
+        emissive={"black"}
+        roughness={1.}
+        metalness={0.1}
+        amplitude={4}
+        frequency={10}
+      />*/}
     </animated.mesh>
   );
 };

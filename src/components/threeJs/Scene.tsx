@@ -1,13 +1,12 @@
-import { useContext, Suspense, useState, type Ref } from 'react';
-import { type Mesh} from "three";
+import { useContext, Suspense, type Ref, useMemo } from 'react';
+import { type Mesh } from "three";
 import { animated, useSpring, Globals } from '@react-spring/three';
+import { maxBy } from "lodash";
 
-import SceneBackground from "./SceneBackground";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 
-import { Grid, usePerformanceMonitor } from '@react-three/drei';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 import { type Shape } from "../hooks/useTopography";
@@ -21,27 +20,23 @@ Globals.assign({
 interface SceneProps {
   shapes: Shape[];
   meshRef: Ref<Mesh>;
+  optimized: boolean;
 }
 
-const { /*BASE_URL,*/ MODE } = import.meta.env;
+const BaseHeight = 30;
+const OceanHeight = 15;
 
-//const BaseHeight = 30;
-const BaseHeight = 50;
-
-function Scene({ shapes, meshRef } : SceneProps) {
+function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
     width,
     height,
     animationState
   } = useContext(SettingsContext);
-  const [optimized, setOptimized] = useState<boolean>(false);
-
-  usePerformanceMonitor({ onIncline: () => { setOptimized(false) }, onFallback: () => { setOptimized(true) } })
 
   const [rotationSpring,] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
-    to: { y: -5, rotationY: Math.PI * 2,},
+    to: { y: BaseHeight/2, rotationY: Math.PI * 2,},
     config: {
       duration: 800
     },
@@ -50,22 +45,25 @@ function Scene({ shapes, meshRef } : SceneProps) {
   [animationState]
   );
 
+  const maxElevation = useMemo(() => {
+    return maxBy(shapes, "elevation").elevation;
+  }, [shapes.length]);
+
   return (
     <Suspense fallback={<FallBackLoader/>} >
-     <SceneBackground/>
-      { MODE === "development" &&
-        <Grid args={[1000, 1000]} position={[0,0,0]} cellColor='green' />
-      }
-
-      <group
-        position={[-width/2, BaseHeight/2, height/2]}
+     <group
+        position={[-width/2, BaseHeight, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
         {
           shapes.map((shape, index) => {
             return (
-              <TopographyWrapper shape={shape} key={index} optimized={optimized} />
+              <TopographyWrapper
+                key={index} 
+                shape={shape}
+                maxElevation={maxElevation}
+                optimized={optimized}/>
             )
           })
         }
@@ -75,11 +73,10 @@ function Scene({ shapes, meshRef } : SceneProps) {
         position-y={rotationSpring.y}
         rotation-y={rotationSpring.rotationY}
       >
-        <boxGeometry args={[width, BaseHeight, height]} />
-        {/*<cylinderGeometry args={[1.25 * width + 25, 1.25 * width + 25, 20, 64]} />*/}
+        <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
-      <Frame width={width} height={height} depth={50} position={[0, -25, (height)/2]}/>
+      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
     </Suspense>
   );
 };

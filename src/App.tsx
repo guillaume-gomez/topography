@@ -2,12 +2,14 @@ import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
-
+import ColorBlobInput from "./components/ColorBlobInput";
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopographies from "./components/hooks/useTopographies";
+import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
-import useTopography from "./components/hooks/useTopography";
+import useTopography from "./hooks/useTopography";
+import ToggleSoundButton from "./components/ToggleSoundButton";
+import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
@@ -16,8 +18,6 @@ type AnimationProps = AnimatedProps<CSSProperties>
 function App() {
   const {
     grid,
-    isLight,
-    setLight,
     width,
     height,
     numberOfLayers,
@@ -25,7 +25,7 @@ function App() {
     setColorTo,
     setNumberOfLayers,
     setAnimationState,
-    colorFrom, 
+    colorFrom,
     colorTo,
     hasSingleTopograhy,
   } = useContext(SettingsContext);
@@ -57,8 +57,7 @@ function App() {
 
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
-    );
-
+  );
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -105,7 +104,7 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)]
         bg-[size:30px_30px]"
       />
-      <div className="w-screen h-screen md:p-5 p-2 flex flex-col">
+      <div className="w-full h-screen md:p-5 p-2 flex flex-col">
         {
           transitionIntroProps(style => (
             <animated.div className="w-full h-full p-5 items-center justify-center" style={style as AnimationProps}>
@@ -146,9 +145,20 @@ function App() {
                       setAnimationState("started")
                     }
                   } />
-                <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
-                  {isLight ? "Light" : "Dark"}
-                </button>
+                <ToggleDayButton />
+                <ToggleSoundButton />
+                <div className="flex flex-row gap-1">
+                  <ColorBlobInput
+                    value={colorFrom}
+                    onChange={(newColor) => setColorFrom(newColor)}
+                    animate={false}
+                  />
+                  <ColorBlobInput
+                    value={colorTo}
+                    onChange={(newColor) => setColorTo(newColor)}
+                    animate={false}
+                  />
+                </div>
               </Card>
               <ThreejsRenderer shapes={shapes}/>
             </animated.div>

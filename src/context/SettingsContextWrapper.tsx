@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
-import useGrid from "../components/hooks/useGrid";
+import useGrid from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
@@ -31,13 +31,13 @@ interface Props {
 
 function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
-  const [numberOfLayers, setNumberOfLayers] = useState<number>(7);
-  const [colorFrom, setColorFrom] = useState<string>("");
-  const [colorTo, setColorTo] = useState<string>("");
+  const [numberOfLayers, setNumberOfLayers] = useState<number>(7); // expected number of layers
+  const [colorFrom, setColorFrom] = useState<string>("#abe2ab");
+  const [colorTo, setColorTo] = useState<string>("#742906");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
-  const { grid, width, height } = useGrid({filepath: "volcano.json", typeOfFile: "real-data" });
   const [hasSingleTopograhy, ] = useState<boolean>(false);
+  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
 
   return (
     <SettingsContext value={{

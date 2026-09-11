@@ -6,10 +6,8 @@ export async function getData(url: string): any {
     }
 
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
-    console.error(error.message);
     return error.message;
   }
 }

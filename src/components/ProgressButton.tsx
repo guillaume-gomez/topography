@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MutableRefObject, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { SettingsContext } from "../context/SettingsContextWrapper";
 
 interface ProgressButtonProps {
@@ -9,7 +9,7 @@ interface ProgressButtonProps {
 function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const [milliseconds, setMilliseconds] = useState<number>(0);
   const [play, setPlay] = useState<boolean>(false);
-  const animationRef : MutableRefObject<number | undefined> = useRef<number | undefined>(undefined);
+  const animationRef = useRef<number | undefined>(undefined);
   const previousTimeRef = useRef<number|undefined>(undefined);
   const {
     animationState,
@@ -63,7 +63,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
       onClick={handleClick}
     >
         <div
-          className="bg-primary w-full h-full flex items-center justify-center"
+          className="bg-primary w-full h-full flex items-center justify-center rounded-lg"
           style={{width: `${progressPercentage}%`}}
         >
         </div>
