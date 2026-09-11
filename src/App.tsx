@@ -45,7 +45,7 @@ function App() {
   });
 
   const { generate: generateTopography, shapes: shapesTopography } = useTopography({
-    width, 
+    width,
     height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
