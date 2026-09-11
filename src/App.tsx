@@ -5,9 +5,9 @@ import { animated, easings, useTransition, type AnimatedProps } from '@react-spr
 import ColorBlobInput from "./components/ColorBlobInput";
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopographies from "./components/hooks/useTopographies";
+import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
-import useTopography from "./components/hooks/useTopography";
+import useTopography from "./hooks/useTopography";
 import ToggleSoundButton from "./components/ToggleSoundButton";
 import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
@@ -17,6 +17,7 @@ type AnimationProps = AnimatedProps<CSSProperties>
 
 function App() {
   const {
+    grid,
     width,
     height,
     numberOfLayers,
@@ -36,6 +37,7 @@ function App() {
   } = useContext(SceneContext);
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
+    grid,
     width,
     height,
     numberOfLayers,
@@ -55,8 +57,7 @@ function App() {
 
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
-    );
-
+  );
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
