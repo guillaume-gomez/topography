@@ -1,6 +1,6 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { type Mesh } from "three";
+import { type Mesh, NoToneMapping } from "three";
 import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor, Gltf } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
@@ -144,11 +144,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
         }*/}
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.5} intensity={2} levels={10} />
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}

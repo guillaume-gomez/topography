@@ -95,7 +95,7 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
         color={shape.color}
         position={[0, 0, springPosition.y as unknown as number]}
         //position={[0, 0, shape.elevation * Thickness]}
-        thickness={Thickness * 0.5}
+        thickness={Thickness}
         opacity={lineToDisplay.opacity}
       />
     </>

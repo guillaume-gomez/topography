@@ -38,7 +38,7 @@ function TopologyLine({ points, color, position, thickness = 1, opacity = new Sp
       <MeshLineMaterialAnimated
         transparent
         lineWidth={thickness}
-        color={color}
+        color={color.clone().multiplyScalar(2)}
         dashArray={0.}
         opacity={opacity}
       />
