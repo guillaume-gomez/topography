@@ -11,12 +11,13 @@ import { type Shape } from "../hooks/useTopography";
 interface TopographyWrapperProps {
   shape: Shape;
   optimized: boolean;
+  maxElevation: number;
 }
 
 const Thickness = 2.5;
 const OriginalPosition = 400;
 
-function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
+function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrapperProps) {
   const {
     isLight,
     timerSwitch,
@@ -64,7 +65,7 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
           }
         },
         onRest: () => {
-          if(shape.elevation === numberOfLayers-1) {
+          if(shape.elevation === maxElevation) {
             setAnimationState("ended");
           }
           stopTopographyPieceSound();
@@ -78,7 +79,7 @@ function TopographyWrapper({ shape, optimized } : TopographyWrapperProps) {
   );
 
 
-	return (
+  return (
     <>
       <TopologyShape
         points={shape.points}
