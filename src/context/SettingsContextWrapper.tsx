@@ -31,7 +31,7 @@ interface Props {
 
 function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
-  const [numberOfLayers, setNumberOfLayers] = useState<number>(7);
+  const [numberOfLayers, setNumberOfLayers] = useState<number>(7); // expected number of layers
   const [colorFrom, setColorFrom] = useState<string>("#abe2ab");
   const [colorTo, setColorTo] = useState<string>("#742906");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");

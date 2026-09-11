@@ -57,8 +57,7 @@ function App() {
 
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
-    );
-
+  );
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],

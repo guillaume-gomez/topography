@@ -1,6 +1,7 @@
-import { useContext, Suspense, type Ref } from 'react';
-import { type Mesh} from "three";
+import { useContext, Suspense, type Ref, useMemo } from 'react';
+import { type Mesh } from "three";
 import { animated, useSpring, Globals } from '@react-spring/three';
+import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
@@ -44,6 +45,10 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   [animationState]
   );
 
+  const maxElevation = useMemo(() => {
+    return maxBy(shapes, "elevation").elevation;
+  }, [shapes.length]);
+
   return (
     <Suspense fallback={<FallBackLoader/>} >
      <group
@@ -54,7 +59,11 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
         {
           shapes.map((shape, index) => {
             return (
-              <TopographyWrapper shape={shape} key={index} optimized={optimized} />
+              <TopographyWrapper
+                key={index} 
+                shape={shape}
+                maxElevation={maxElevation}
+                optimized={optimized}/>
             )
           })
         }
