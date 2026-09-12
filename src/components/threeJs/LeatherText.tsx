@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
 interface FrameProps {
 	position: [number, number, number];
@@ -16,9 +17,7 @@ function LeatherText({position, depth} : FrameProps) {
     `textures/brown-leather-unity/brown-leather_albedo.png`,
   ]);
 
-  const material = useMemo(() => {
-    return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
-  }, []);
+  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
   return (
       <group position={position}>
