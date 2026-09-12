@@ -27,7 +27,7 @@ function App() {
     setAnimationState,
     colorFrom,
     colorTo,
-    hasSingleTopograhy
+    hasSingleTopograhy,
   } = useContext(SettingsContext);
   const {
     setSceneName,
@@ -38,7 +38,7 @@ function App() {
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     grid,
-    width,
+    width, 
     height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]

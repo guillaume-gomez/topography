@@ -41,7 +41,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     }
 
     if(typeOfFile === "image") {
-      return gridFromImage();
+      return gridFromImage();  
     }
 
     // fallback generate noise to create a grid
