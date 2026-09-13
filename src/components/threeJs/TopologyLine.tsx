@@ -18,6 +18,16 @@ const MeshLineMaterialComponent = extend(MeshLineMaterial);
 const MeshLineMaterialAnimated = animated(MeshLineMaterialComponent) as any
 
 
+const TARGET_LINE_LUMINANCE = 4.1;
+const MAX_LINE_BOOST = 10;
+
+function boostForBloom(color: Color): Color {
+  const luminance = color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722;
+  const factor = luminance > 0 ? Math.min(TARGET_LINE_LUMINANCE / luminance, MAX_LINE_BOOST) : MAX_LINE_BOOST;
+  return color.clone().multiplyScalar(factor);
+}
+
+
 interface TopologyLineProps {
     points: Vector2[];
     color: Color;
@@ -38,7 +48,7 @@ function TopologyLine({ points, color, position, thickness = 1, opacity = new Sp
       <MeshLineMaterialAnimated
         transparent
         lineWidth={thickness}
-        color={color.clone().multiplyScalar(2)}
+        color={boostForBloom(color)}
         dashArray={0.}
         opacity={opacity}
       />

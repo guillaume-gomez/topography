@@ -148,7 +148,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.5} intensity={2} levels={10} />
+          <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} />
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}
