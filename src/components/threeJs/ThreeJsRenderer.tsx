@@ -78,6 +78,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     recenterCamera();
   }
 
+  console.log(width)
+
   return (
       <Canvas
         camera={{ position: [0, 200, 250], fov: 75, far: 1500 }}
@@ -97,7 +99,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           shadow-camera-far={1500}
           shadow-camera-left={-(width + 100)}
           shadow-camera-right={(width + 100)}
-          shadow-camera-top={(height + 100)}
+          shadow-camera-top={height + 100}
           shadow-camera-bottom={-(height + 100)}
         />
         <PerformanceMonitor
@@ -122,8 +124,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.1,
-              height: height * 1.1,
+              width: width *1.2,
+              height: height * 1.2,
               resolution: 256,
               color:"#FF0000"
             }}

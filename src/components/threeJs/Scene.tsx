@@ -6,6 +6,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import MarbleBase from "./MarbleBase";
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -23,8 +24,10 @@ interface SceneProps {
   optimized: boolean;
 }
 
-const BaseHeight = 30;
+const FrameHeight = 30;
 const OceanHeight = 15;
+
+const BasePosition: [number, number, number] = [0, -30, 50];
 
 function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
@@ -36,7 +39,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const [rotationSpring,] = useSpring(
   {
     from: { y: 0, rotationY: 0, },
-    to: { y: BaseHeight/2, rotationY: Math.PI * 2,},
+    to: { y: FrameHeight/2, rotationY: Math.PI * 2,},
     config: {
       duration: 800
     },
@@ -52,7 +55,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   return (
     <Suspense fallback={<FallBackLoader/>} >
      <group
-        position={[-width/2, BaseHeight, height/2]}
+        position={[-width/2, FrameHeight, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -68,15 +71,16 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      <animated.mesh
+      {/*<animated.mesh
         position-x={0}
         position-y={rotationSpring.y}
         rotation-y={rotationSpring.rotationY}
       >
         <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>
-      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
+      </animated.mesh>*/}
+       {/*<Frame width={width} height={height} depth={FrameHeight} position={[0, 0, (height)/2]}/>*/}
+      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
     </Suspense>
   );
 };
