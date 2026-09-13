@@ -1,4 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
+import useGrid from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
@@ -19,8 +20,8 @@ export interface SettingsContextParams {
   setColorTo: (color: string) => void;
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
+  grid: Grid;
   hasSingleTopograhy: boolean;
-
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -30,14 +31,13 @@ interface Props {
 
 function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
-  const [width, _setWidth] = useState<number>(500);
-  const [height, _setHeight] = useState<number>(500);
-  const [numberOfLayers, setNumberOfLayers] = useState<number>(7);
+  const [numberOfLayers, setNumberOfLayers] = useState<number>(7); // expected number of layers
   const [colorFrom, setColorFrom] = useState<string>("#abe2ab");
   const [colorTo, setColorTo] = useState<string>("#742906");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
+  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
 
   return (
     <SettingsContext value={{
@@ -51,7 +51,8 @@ function SettingsContextWrapper({children}: Props) {
       numberOfLayers, setNumberOfLayers,
       colorFrom, setColorFrom,
       colorTo, setColorTo,
-      colorChosen, setColorChosen
+      colorChosen, setColorChosen,
+      grid
     }}>
       {children}
     </SettingsContext >
