@@ -17,6 +17,7 @@ function SceneBackground() {
     timerSwitch,
   } = useContext(SettingsContext);
 
+
   const spring = useSpring({
     color: isLight ? FROM : TO,
     intensity: isLight ? 1.5 : 0.5,
@@ -31,7 +32,7 @@ function SceneBackground() {
 
   return <>
     <animated.ambientLight intensity={spring.intensity} />
-    { isLight ? null : <Stars radius={100} depth={100} count={5000} factor={4} saturation={0} fade speed={1} /> }
+    { isLight ? null : <Stars radius={200} depth={100} count={5000} factor={4} saturation={0} fade speed={1} /> }
    </>;
 }
 

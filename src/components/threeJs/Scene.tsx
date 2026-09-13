@@ -6,6 +6,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import GalleryRoom from './GalleryRoom';
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -51,6 +52,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
+    <GalleryRoom />
      <group
         position={[-width/2, BaseHeight, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
