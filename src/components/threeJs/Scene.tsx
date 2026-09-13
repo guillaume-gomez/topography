@@ -6,6 +6,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import MarbleBase from "./MarbleBase";
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -76,7 +77,8 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
         <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
       </animated.mesh>
-      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
+      <MarbleBase />
+      {/*<Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>*/}
     </Suspense>
   );
 };
