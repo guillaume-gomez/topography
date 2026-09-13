@@ -27,6 +27,8 @@ function App() {
     setAnimationState,
     colorFrom,
     colorTo,
+    enableBloom,
+    setEnableBloom,
     hasSingleTopograhy
   } = useContext(SettingsContext);
   const {
@@ -157,6 +159,12 @@ function App() {
                     value={colorTo}
                     onChange={(newColor) => setColorTo(newColor)}
                     animate={false}
+                  />
+                  <input
+                    className="toggle toggle-secondary"
+                    type="checkbox"
+                    onChange={() => setEnableBloom(!enableBloom)}
+                    checked={enableBloom}
                   />
                 </div>
               </Card>
