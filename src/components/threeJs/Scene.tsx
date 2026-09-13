@@ -6,6 +6,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import MarbleBase from "./MarbleBase";
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
@@ -26,7 +27,7 @@ interface SceneProps {
 const FrameHeight = 30;
 const OceanHeight = 15;
 
-const BasePosition = [0, -30, 50];
+const BasePosition: [number, number, number] = [0, -30, 50];
 
 function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
@@ -70,20 +71,16 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      <animated.mesh
+      {/*<animated.mesh
         position-x={0}
         position-y={rotationSpring.y}
         rotation-y={rotationSpring.rotationY}
       >
         <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>
-      <Frame width={width} height={height} depth={FrameHeight} position={[0, 0, (height)/2]}/>
-      
-      <mesh position={BasePosition}>
-        <boxGeometry args={[width + 200, 50, height + 300]} />
-        <meshStandardMaterial color="#FFFFFF" />
-      </mesh> 
+      </animated.mesh>*/}
+       {/*<Frame width={width} height={height} depth={FrameHeight} position={[0, 0, (height)/2]}/>*/}
+      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
     </Suspense>
   );
 };

@@ -37,7 +37,7 @@ function SettingsContextWrapper({children}: Props) {
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
-  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
+  const { grid, width, height } = useGrid({filepath: "auvergne.json", typeOfFile: "noise" });
 
   return (
     <SettingsContext value={{

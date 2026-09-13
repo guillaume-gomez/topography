@@ -124,8 +124,8 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.1,
-              height: height * 1.1,
+              width: width *1.2,
+              height: height * 1.2,
               resolution: 256,
               color:"#FF0000"
             }}
