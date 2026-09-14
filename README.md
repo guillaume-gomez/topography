@@ -52,7 +52,6 @@ https://freepbr.com/product/semi-gloss-wood-pbr/
 https://www.texturecan.com/details/364/
 
 
-<<<<<<< HEAD
 https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
 
 Room
