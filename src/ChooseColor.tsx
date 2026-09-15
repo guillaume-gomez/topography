@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useTrail, animated } from '@react-spring/web';
+import { useTrail } from '@react-spring/web';
 import ColorInput from "./components/ColorInput";
 import NumberInput from "./components/NumberInput";
 import SwitchButton from "./components/SwitchButton";
