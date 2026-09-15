@@ -11,7 +11,7 @@ export interface ColorBlobInputHandle {
 interface ColorBlobInputProps {
   value: string;
   onChange: (newValue: string) => void;
-  ref: React.Ref<ColorBlobInputHandle>;
+  ref?: React.Ref<ColorBlobInputHandle>;
   animate?: boolean;
 
 }

@@ -6,7 +6,7 @@ import { useSpring } from '@react-spring/three';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { SoundsContext } from "../../context/SoundsContextWrapper";
 
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 
 interface TopographyWrapperProps {
   shape: Shape;

@@ -1,7 +1,7 @@
 
-export async function loadImage(imagepath: string): Promise<Image> {
+export async function loadImage(imagepath: string): Promise<typeof Image> {
   return new Promise((resolve, reject) => {
-    let image = new Image();
+    const image = new Image();
     image.onload = () => resolve(image);
     image.onerror = reject;
     image.src = imagepath;
@@ -25,7 +25,7 @@ export function resizeImageAndConvertToGrey(image: HTMLImageElement): ImageData 
   return context.getImageData(0, 0, expectedWidth, expectedHeight);
 }
 
-export function resizeImageSize(width, height): {expectedWidth: number, expectedHeight: number} {
+export function resizeImageSize(width: number, height: number): {expectedWidth: number, expectedHeight: number} {
   if(width > height) {
     return {expectedWidth: 256, expectedHeight: 256 * (height/width) }
   }

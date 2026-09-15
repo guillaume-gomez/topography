@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import { Vector2, Color } from "three";
 import { lerpColors } from "../colorUtils";
-import { generateGrid } from "../libs/generateGrid";
-import { Grid } from "./useGrid";
-import { getData } from "../readJson";
+import { type Grid } from "./useGrid";
 import * as d3 from "d3-contour";
-
-const { BASE_URL } = import.meta.env;
 
 interface TopographyProps {
   grid: Grid;
@@ -61,7 +57,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
     return thresholdsContrained;
   }
 
-  async function generate(): Shape[] {
+  async function generate(): Promise<Shape[]> {
     const shapes : Shape[] = [];
     const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()

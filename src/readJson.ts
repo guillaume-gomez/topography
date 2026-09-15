@@ -1,4 +1,12 @@
-export async function getData(url: string): any {
+interface TopographyData {
+  width: number;
+  height: number;
+  values: number[];
+  min: number;
+  max: number;
+}
+
+export async function getData(url: string): Promise<TopographyData> {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -7,7 +15,7 @@ export async function getData(url: string): any {
 
     const result = await response.json();
     return result;
-  } catch (error) {
+  } catch (error: unknown ) {
     return error.message;
   }
 }
