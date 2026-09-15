@@ -7,7 +7,7 @@ import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 const { MODE } = import.meta.env;

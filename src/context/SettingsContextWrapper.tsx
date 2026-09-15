@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
-import useGrid from "../hooks/useGrid";
+import useGrid, { type Grid } from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
