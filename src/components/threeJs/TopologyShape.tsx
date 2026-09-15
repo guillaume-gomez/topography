@@ -8,7 +8,7 @@ interface TopologyShapeProps {
     points: Vector2[];
     color: Color;
 		position: [number, number, number];
-    scale?: SpringValue<number> | number;
+    scale: SpringValue<number> | number;
     thickness?: number;
     opacity?: SpringValue<number>;
     optimized?: boolean;

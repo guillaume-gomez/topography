@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getData } from "../readJson";
 import { generateGrid } from "../libs/generateGrid";
+import { SettingsContext } from "../context/SettingsContextWrapper";
 import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../libs/imageProcessingUtils";
 
 const { BASE_URL } = import.meta.env;
@@ -9,8 +10,6 @@ export interface Grid {
   gridWidth: number;
   gridHeight: number;
   data: number[];
-  min: number;
-  max: number;
 }
 
 interface UseGridProps {
@@ -36,7 +35,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     call();
   }, [filepath, typeOfFile])
 
-  async function computeGrid(): Promise<Grid> {
+  async function computeGrid(): Grid {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
     }
@@ -57,12 +56,12 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90 };
   }
 
-  async function gridFromRealData(): Promise<Grid> {
+  async function gridFromRealData() : Grid {
     const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/${filepath}`);
     return { gridWidth: width, gridHeight: height, data: values, min, max };
   }
 
-  async function gridFromImage(): Promise<Grid> {
+  async function gridFromImage() : Grid {
     const image = await loadImage(`${BASE_URL}/presets-images/${filepath}`);
     const greyImageData = resizeImageAndConvertToGrey(image);
     const greyData = fromImageDataToGridData(greyImageData);
@@ -71,7 +70,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
   }
 
   function fromImageDataToGridData(greyImageData: ImageData): number[] {
-    const greyData : number[] = [];
+    let greyData : number[] = [];
     for(let i = 0; i < greyImageData.data.length; i+= 4) {
       greyData.push(greyImageData.data[i]);
     }
@@ -79,8 +78,8 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return greyData;
   }
 
-  function computeSizeBaseOnData(gridWidth: number, gridHeight: number): [number, number] {
-    const ratio = parseFloat((gridWidth/gridHeight).toFixed(2));
+  function computeSizeBaseOnData(gridWidth, gridHeight): [number, number] {
+    const ratio = (gridWidth/gridHeight).toFixed(2);
     return [width * ratio, height];
   }
 
