@@ -15,7 +15,11 @@ interface TopographyWrapperProps {
 }
 
 const Thickness = 2.5;
-const OriginalPosition = 400;
+
+const AnimationStartingFromTop = 500;
+const AnimationStartingFromBottom = -50;
+
+const OriginalPosition = AnimationStartingFromBottom;
 
 function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrapperProps) {
   const {
