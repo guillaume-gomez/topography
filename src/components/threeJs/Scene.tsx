@@ -1,6 +1,5 @@
 import { useContext, Suspense, type Ref, useMemo } from 'react';
 import { type Mesh } from "three";
-import { animated, useSpring, Globals } from '@react-spring/three';
 import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
@@ -11,12 +10,6 @@ import GalleryRoom from './GalleryRoom';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
-
-// https://github.com/pmndrs/react-spring/issues/1586
-Globals.assign({
-  frameLoop: "always",
-});
-
 
 interface SceneProps {
   shapes: Shape[];
@@ -33,18 +26,6 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     height,
     animationState
   } = useContext(SettingsContext);
-
-  const [rotationSpring,] = useSpring(
-  {
-    from: { y: 0, rotationY: 0, },
-    to: { y: BaseHeight/2, rotationY: Math.PI * 2,},
-    config: {
-      duration: 800
-    },
-    reset: false,
-  },
-  [animationState]
-  );
 
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
@@ -70,14 +51,12 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      <animated.mesh
-        position-x={0}
-        position-y={rotationSpring.y}
-        rotation-y={rotationSpring.rotationY}
+      <mesh
+        position={[0, BaseHeight/2, 0]}
       >
         <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>
+      </mesh>
       <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
     </Suspense>
   );
