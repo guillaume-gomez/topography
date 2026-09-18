@@ -1,4 +1,5 @@
 import { animated } from '@react-spring/web';
+import type { CSSProperties } from 'react';
 
 interface Props {
   style: CSSProperties;

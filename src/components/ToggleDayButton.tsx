@@ -20,7 +20,7 @@ function ToggleDayButton() {
 
   return (
     <button
-      className="btn btn-secondary"
+      className="btn btn-secondary btn-dash"
       onClick={() => setLight(!isLight)}
     >
       <svg

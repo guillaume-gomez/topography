@@ -11,7 +11,7 @@ export interface ColorBlobInputHandle {
 interface ColorBlobInputProps {
   value: string;
   onChange: (newValue: string) => void;
-  ref: React.Ref<ColorBlobInputHandle>;
+  ref?: React.Ref<ColorBlobInputHandle>;
   animate?: boolean;
 
 }
@@ -55,7 +55,7 @@ function ColorBlobInput({ value, onChange, ref, animate = true } : ColorBlobInpu
   useImperativeHandle(ref, () => ({ openColorInput }));
 
   return (
-    <div style={{ height: 64, width: 64 }}>
+    <div style={{ height: 48, width: 64 }}>
       <input
         ref={refColorInput}
         id="colorInput"

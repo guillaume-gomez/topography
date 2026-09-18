@@ -20,6 +20,7 @@ function App() {
     grid,
     width,
     height,
+    isLight,
     numberOfLayers,
     setColorFrom,
     setColorTo,
@@ -27,6 +28,8 @@ function App() {
     setAnimationState,
     colorFrom,
     colorTo,
+    enableBloom,
+    setEnableBloom,
     hasSingleTopograhy
   } = useContext(SettingsContext);
   const {
@@ -38,7 +41,7 @@ function App() {
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     grid,
-    width,
+    width, 
     height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
@@ -137,6 +140,7 @@ function App() {
               className="w-full h-screen"
               style={style as AnimationProps}
             >
+              <ToggleSoundButton />
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
                 <ProgressButton
                   label="Generate"
@@ -145,8 +149,19 @@ function App() {
                       setAnimationState("started")
                     }
                   } />
-                <ToggleDayButton />
-                <ToggleSoundButton />
+                <div className="flex flex-row gap-3 items-center">
+                  <ToggleDayButton />
+                  <div className="flex flex-col gap-1">
+                    <span>Bloom</span>
+                    <input
+                      disabled={isLight}
+                      className="toggle toggle-secondary"
+                      type="checkbox"
+                      onChange={() => setEnableBloom(!enableBloom)}
+                      checked={enableBloom}
+                    />
+                  </div>
+                </div>
                 <div className="flex flex-row gap-1">
                   <ColorBlobInput
                     value={colorFrom}
