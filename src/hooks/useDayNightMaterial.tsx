@@ -12,7 +12,7 @@ function useDayNightMaterial(materialsParams: object) {
 
   const material = useMemo(() => {
     return new MeshStandardMaterial({ displacementScale:0, ...materialsParams });
-  }, [materialsParams]);
+  }, []); // do not want to regenerate when materialsParams is recompute (as un array every render)
 
   useSpring({
     factorColor: isLight ? 1 : 0,
