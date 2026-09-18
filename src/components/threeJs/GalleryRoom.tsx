@@ -33,7 +33,6 @@ function GalleryRoom() {
   useSpring({
     factor: isLight ? 1 : 0.01,
     onChange: (result) => {
-      console.log(result.value.factor)
       applyGalleryDarkenFactor(result.value.factor)
     },
     config: { duration: timerSwitch }
