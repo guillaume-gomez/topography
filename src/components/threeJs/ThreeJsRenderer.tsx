@@ -144,11 +144,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
         }*/}
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+          <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} />
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}
