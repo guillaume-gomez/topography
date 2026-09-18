@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Vector2, Color } from "three";
 import { lerpColors } from "../colorUtils";
 import { generateGrid } from "../libs/generateGrid";
-import { Grid } from "./useGrid";
 import { getData } from "../readJson";
 import * as d3 from "d3-contour";
 

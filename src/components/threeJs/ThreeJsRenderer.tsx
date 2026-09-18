@@ -1,17 +1,16 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
-
-const { /*BASE_URL,*/ MODE } = import.meta.env;
+const { MODE } = import.meta.env;
 
 interface ThreeJsRendererProps {
   shapes: Shape[];
@@ -21,6 +20,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
   const {
     animationState,
     isLight,
+    enableBloom,
     width,
     height
   } = useContext(SettingsContext);
@@ -82,7 +82,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, far: 1500 }}
+        camera={{ position: [0, 200, 250], fov: 75, near: 10, far: 3000 }}
         dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -147,11 +147,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
         }*/}
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+          { enableBloom && <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> }
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}

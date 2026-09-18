@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
-import useGrid from "../hooks/useGrid";
+import useGrid, { type Grid } from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
@@ -20,6 +20,8 @@ export interface SettingsContextParams {
   setColorTo: (color: string) => void;
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
+  enableBloom: boolean;
+  setEnableBloom: (bloom: boolean) => void;
   grid: Grid;
   hasSingleTopograhy: boolean;
 }
@@ -36,6 +38,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorTo, setColorTo] = useState<string>("#742906");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
+  const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
   const { grid, width, height } = useGrid({filepath: "auvergne.json", typeOfFile: "noise" });
 
@@ -52,6 +55,7 @@ function SettingsContextWrapper({children}: Props) {
       colorFrom, setColorFrom,
       colorTo, setColorTo,
       colorChosen, setColorChosen,
+      enableBloom, setEnableBloom,
       grid
     }}>
       {children}
