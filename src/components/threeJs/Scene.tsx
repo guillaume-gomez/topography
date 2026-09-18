@@ -10,7 +10,7 @@ import GalleryRoom from './GalleryRoom';
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 
 // https://github.com/pmndrs/react-spring/issues/1586
 Globals.assign({
@@ -47,7 +47,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   );
 
   const maxElevation = useMemo(() => {
-    return maxBy(shapes, "elevation").elevation;
+    return maxBy(shapes, "elevation")!.elevation;
   }, [shapes.length]);
 
   return (

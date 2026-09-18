@@ -1,5 +1,6 @@
 import { animated } from '@react-spring/web';
 import { debounce } from "lodash";
+import type { CSSProperties } from 'react';
 
 interface Props {
   style: CSSProperties;
@@ -16,7 +17,7 @@ function ColorCardButton({ style, value, onChange }: Props) {
         rounded-md
         border
         border-black
-        hover:border-dashed 
+        hover:border-dashed
         hover:border-white
         hover:scale-y-102
         hover:duration-300
