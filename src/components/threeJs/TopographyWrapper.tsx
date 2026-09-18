@@ -6,7 +6,7 @@ import { useSpring } from '@react-spring/three';
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 import { SoundsContext } from "../../context/SoundsContextWrapper";
 
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 
 interface TopographyWrapperProps {
   shape: Shape;
@@ -15,7 +15,11 @@ interface TopographyWrapperProps {
 }
 
 const Thickness = 2.5;
-const OriginalPosition = 400;
+
+const AnimationStartingFromTop = 500;
+const AnimationStartingFromBottom = -50;
+
+const OriginalPosition = AnimationStartingFromBottom;
 
 function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrapperProps) {
   const {

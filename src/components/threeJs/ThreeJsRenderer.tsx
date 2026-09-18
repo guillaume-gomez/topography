@@ -1,16 +1,16 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { type Mesh, NoToneMapping } from "three";
-import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor, Gltf } from '@react-three/drei';
+import { type Mesh } from "three";
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
-const { BASE_URL, MODE } = import.meta.env;
+const { MODE } = import.meta.env;
 
 interface ThreeJsRendererProps {
   shapes: Shape[];
