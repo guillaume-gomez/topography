@@ -38,7 +38,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorTo, setColorTo] = useState<string>("#742906");
   const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
-  const [enableBloom, setEnableBloom] = useState<boolean>(false);
+  const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
   const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
 
