@@ -52,7 +52,6 @@ https://freepbr.com/product/semi-gloss-wood-pbr/
 https://www.texturecan.com/details/364/
 
 
-<<<<<<< HEAD
 https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
 
 Room
@@ -67,7 +66,9 @@ https://sketchfab.com/3d-models/vr-gallery-1e087aa25dc742e680accb15249bd6be
 
 <img width="1287" height="740" alt="Capture d’écran 2026-09-07 à 17 18 23" src="https://github.com/user-attachments/assets/1faf71aa-a932-42bd-8b5b-7acb53ccda07" />
 
+<img width="1281" height="712" alt="Capture d’écran 2026-09-13 à 22 34 57" src="https://github.com/user-attachments/assets/2cc34b36-4dce-4547-b7dd-950bbdc49724" />
 
-## convert tif file
+
+### convert tif file
 
 `python3 convert.py output_be.tif`

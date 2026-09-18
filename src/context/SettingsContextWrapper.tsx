@@ -1,5 +1,5 @@
 import { createContext, useState, type ReactNode } from 'react';
-import useGrid from "../hooks/useGrid";
+import useGrid, { type Grid } from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
 
@@ -22,8 +22,8 @@ export interface SettingsContextParams {
   setColorChosen: (chosen: boolean) => void;
   enableBloom: boolean;
   setEnableBloom: (bloom: boolean) => void;
-  hasSingleTopograhy: boolean;
   grid: Grid;
+  hasSingleTopograhy: boolean;
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -40,7 +40,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [enableBloom, setEnableBloom] = useState<boolean>(false);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
-  const { grid, width, height } = useGrid({filepath: "bretagne.json", typeOfFile: "real-data" });
+  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
 
   return (
     <SettingsContext value={{

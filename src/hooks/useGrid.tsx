@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { getData } from "../readJson";
 import { generateGrid } from "../libs/generateGrid";
 import { SettingsContext } from "../context/SettingsContextWrapper";
@@ -10,6 +10,8 @@ export interface Grid {
   gridWidth: number;
   gridHeight: number;
   data: number[];
+  min: number;
+  max: number;
 }
 
 interface UseGridProps {
@@ -35,7 +37,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     call();
   }, [filepath, typeOfFile])
 
-  async function computeGrid(): Grid {
+  async function computeGrid(): Promise<Grid> {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
     }
@@ -48,7 +50,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return gridFromNoise();
   }
 
-  function gridFromNoise() : Grid {
+  function gridFromNoise(): Grid {
     const gridWidth = 64;
     const gridHeight = gridWidth;
     const grid = generateGrid(gridWidth, gridHeight, frequency);
@@ -56,12 +58,12 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90 };
   }
 
-  async function gridFromRealData() : Grid {
+  async function gridFromRealData(): Promise<Grid> {
     const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/${filepath}`);
     return { gridWidth: width, gridHeight: height, data: values, min, max };
   }
 
-  async function gridFromImage() : Grid {
+  async function gridFromImage(): Promise<Grid> {
     const image = await loadImage(`${BASE_URL}/presets-images/${filepath}`);
     const greyImageData = resizeImageAndConvertToGrey(image);
     const greyData = fromImageDataToGridData(greyImageData);
@@ -70,7 +72,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
   }
 
   function fromImageDataToGridData(greyImageData: ImageData): number[] {
-    let greyData : number[] = [];
+    const greyData : number[] = [];
     for(let i = 0; i < greyImageData.data.length; i+= 4) {
       greyData.push(greyImageData.data[i]);
     }
@@ -79,7 +81,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
   }
 
   function computeSizeBaseOnData(gridWidth, gridHeight): [number, number] {
-    const ratio = (gridWidth/gridHeight).toFixed(2);
+    const ratio = parseFloat((gridWidth/gridHeight).toFixed(2));
     return [width * ratio, height];
   }
 

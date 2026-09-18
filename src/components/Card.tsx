@@ -7,7 +7,7 @@ interface CardProps {
 function Card({ children, kustomClass = "" }: CardProps) {
   return (
     <div className={"bg-neutral card shadow-sm " + kustomClass}>
-      <div className="card-body">
+      <div className="card-body p-3">
         {children}
       </div>
     </div>
