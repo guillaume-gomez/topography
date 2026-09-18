@@ -20,6 +20,7 @@ function App() {
     grid,
     width,
     height,
+    isLight,
     numberOfLayers,
     setColorFrom,
     setColorTo,
@@ -27,7 +28,9 @@ function App() {
     setAnimationState,
     colorFrom,
     colorTo,
-    hasSingleTopograhy,
+    enableBloom,
+    setEnableBloom,
+    hasSingleTopograhy
   } = useContext(SettingsContext);
   const {
     setSceneName,
@@ -146,7 +149,19 @@ function App() {
                       setAnimationState("started")
                     }
                   } />
-                <ToggleDayButton />
+                <div className="flex flex-row gap-3 items-center">
+                  <ToggleDayButton />
+                  <div className="flex flex-col gap-1">
+                    <span>Bloom</span>
+                    <input
+                      disabled={isLight}
+                      className="toggle toggle-secondary"
+                      type="checkbox"
+                      onChange={() => setEnableBloom(!enableBloom)}
+                      checked={enableBloom}
+                    />
+                  </div>
+                </div>
                 <div className="flex flex-row gap-1">
                   <ColorBlobInput
                     value={colorFrom}
