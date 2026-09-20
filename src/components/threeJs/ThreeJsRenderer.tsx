@@ -117,15 +117,16 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             intensity={1}
             environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
+              position: [0, 20, 0],
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.1,
-              height: height * 1.1,
+              width: width *1.3,
+              height: height * 1.3,
               resolution: 256,
-              color:"#FF0000"
+              color:"#000000"
             }}
           >
             <Scene
