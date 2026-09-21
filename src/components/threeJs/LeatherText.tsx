@@ -9,6 +9,8 @@ interface FrameProps {
   depth: number;
 }
 
+export const LeatherTextWidth = 150; 
+
 function LeatherText({position, depth} : FrameProps) {
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/brown-leather-unity/brown-leather_height.png`,
@@ -22,7 +24,7 @@ function LeatherText({position, depth} : FrameProps) {
   return (
       <group position={position}>
         <mesh position={[0, 0, 0]} material={material} >
-          <boxGeometry args={[150, depth - 15, 1]} />
+          <boxGeometry args={[LeatherTextWidth, depth - 15, 1]} />
           {/*<meshStandardMaterial color="red" />*/}
         </mesh>
 
