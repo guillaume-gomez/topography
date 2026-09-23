@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
+import { SettingsContext } from "../../context/SettingsContextWrapper";
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
 interface FrameProps {
@@ -12,6 +13,8 @@ interface FrameProps {
 export const LeatherTextWidth = 150; 
 
 function LeatherText({position, depth} : FrameProps) {
+  const { generationName } = useContext(SettingsContext);
+
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/brown-leather-unity/brown-leather_height.png`,
     `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
@@ -38,7 +41,7 @@ function LeatherText({position, depth} : FrameProps) {
           lineHeight={0.8}
           position={[0, 12, 5]}
         >
-          Seed 68787
+          {generationName}
         </Text>
       </group>
   );

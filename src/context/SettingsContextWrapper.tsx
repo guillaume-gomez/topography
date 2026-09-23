@@ -24,6 +24,7 @@ export interface SettingsContextParams {
   setEnableBloom: (bloom: boolean) => void;
   grid: Grid;
   hasSingleTopograhy: boolean;
+  generationName: string;
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -40,6 +41,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
+  const [generationName, _setGenerationName] = useState<string>("Jumping Mario");
   const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
 
   return (
@@ -56,7 +58,8 @@ function SettingsContextWrapper({children}: Props) {
       colorTo, setColorTo,
       colorChosen, setColorChosen,
       enableBloom, setEnableBloom,
-      grid
+      grid,
+      generationName
     }}>
       {children}
     </SettingsContext >
