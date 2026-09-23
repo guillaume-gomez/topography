@@ -40,7 +40,7 @@ function SettingsContextWrapper({children}: Props) {
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
-  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
+  const { grid, width, height } = useGrid({filepath: "none", typeOfFile: "noise" });
 
   return (
     <SettingsContext value={{
