@@ -42,7 +42,7 @@ function SettingsContextWrapper({children}: Props) {
   const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
   const [generationName, _setGenerationName] = useState<string>("Jumping Mario");
-  const { grid, width, height } = useGrid({filepath: "mario.jpeg", typeOfFile: "image" });
+  const { grid, width, height } = useGrid({filepath: "none", typeOfFile: "noise" });
 
   return (
     <SettingsContext value={{

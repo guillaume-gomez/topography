@@ -13,7 +13,10 @@ export function resizeImageAndConvertToGrey(image: HTMLImageElement): ImageData 
   const offscreenCanvas = new OffscreenCanvas(width, height);
 
   const context = getContext(offscreenCanvas);
-  context.drawImage(image, 0, 0);
+  // invert vertically because the image is upside down when the grid is generated (see useGrid)
+  context.scale(1, -1);
+  context.drawImage(image, 0, height * -1);
+  
   // convert to gray
   convertToGrayScale(context, width, height);
   
