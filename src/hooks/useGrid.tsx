@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { getData } from "../readJson";
 import { generateGrid } from "../libs/generateGrid";
-import { SettingsContext } from "../context/SettingsContextWrapper";
 import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../libs/imageProcessingUtils";
 
 const { BASE_URL } = import.meta.env;
