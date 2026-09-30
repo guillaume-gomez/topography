@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useState, useMemo, type ReactNode } from 'react';
 import useGrid, { type Grid } from "../hooks/useGrid";
 
 type GenerationAnimationState = "started" | "ended";
@@ -32,6 +32,9 @@ interface Props {
   children: ReactNode;
 }
 
+
+const BASE_TERRAIN = 500;
+
 function SettingsContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
   const [numberOfLayers, setNumberOfLayers] = useState<number>(7); // expected number of layers
@@ -41,8 +44,17 @@ function SettingsContextWrapper({children}: Props) {
   const [colorChosen, setColorChosen] = useState<boolean>(false);
   const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
-  const [generationName, _setGenerationName] = useState<string>("Jumping Mario");
-  const { grid, width, height } = useGrid({filepath: "none", typeOfFile: "noise" });
+  const [generationName, _setGenerationName] = useState<string>("Guillaume Gomez");
+  const { grid } = useGrid({filepath: "colombia.json", typeOfFile: "real-data" });
+
+  const { width, height } = useMemo(() => {
+    if(hasSingleTopograhy) {
+      return { width: BASE_TERRAIN, height: BASE_TERRAIN };
+    } else {
+      const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+      return { width: BASE_TERRAIN * ratio, height: BASE_TERRAIN };  
+    }
+  }, [grid]);
 
   return (
     <SettingsContext value={{

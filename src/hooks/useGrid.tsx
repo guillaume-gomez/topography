@@ -18,19 +18,15 @@ interface UseGridProps {
   typeOfFile: "noise"|"real-data"|"image";
 }
 
+
 function useGrid({ filepath, typeOfFile }: UseGridProps) {
   const [frequency, _setFrequency] = useState<number>(0.05);
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
-  const [width, setWidth] = useState<number>(500);
-  const [height, setHeight] = useState<number>(500);
-
+  
   useEffect(() => {
     async function call () {
       const grid = await computeGrid();
       setGrid(grid);
-      const [newWidth, newHeight] = computeSizeBaseOnData(grid.gridWidth, grid.gridHeight);
-      setWidth(newWidth);
-      setHeight(newHeight);
     }
 
     call();
@@ -79,12 +75,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return greyData;
   }
 
-  function computeSizeBaseOnData(gridWidth, gridHeight): [number, number] {
-    const ratio = parseFloat((gridWidth/gridHeight).toFixed(2));
-    return [width * ratio, height];
-  }
-
-  return { grid, width, height };
+  return { grid };
 };
 
 export default useGrid;
