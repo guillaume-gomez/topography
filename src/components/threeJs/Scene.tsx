@@ -8,7 +8,7 @@ import Frame from "./Frame";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
 
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
 
@@ -32,7 +32,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     width,
     height,
     animationState
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;

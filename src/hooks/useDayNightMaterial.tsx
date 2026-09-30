@@ -1,5 +1,5 @@
 import { useMemo, useContext } from "react";
-import { SettingsContext } from "../context/SettingsContextWrapper";
+import { RendererContext } from "../context/RendererContextWrapper";
 import { MeshStandardMaterial } from "three";
 import { useSpring } from "@react-spring/three";
 
@@ -8,7 +8,7 @@ function useDayNightMaterial(materialsParams: object) {
   const {
     isLight,
     timerSwitch,
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   const material = useMemo(() => {
     return new MeshStandardMaterial({ displacementScale:0, ...materialsParams });
