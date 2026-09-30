@@ -153,13 +153,15 @@ function App() {
                   <ToggleDayButton />
                   <div className="flex flex-col gap-1">
                     <span>Bloom</span>
-                    <input
-                      disabled={isLight}
-                      className="toggle toggle-secondary"
-                      type="checkbox"
-                      onChange={() => setEnableBloom(!enableBloom)}
-                      checked={enableBloom}
-                    />
+                    <div className="tooltip" data-tip={isLight ? "Bloom only works on night mode" : ""}>
+                      <input
+                        disabled={isLight}
+                        className="toggle toggle-secondary"
+                        type="checkbox"
+                        onChange={() => setEnableBloom(!enableBloom)}
+                        checked={enableBloom}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-row gap-1">
