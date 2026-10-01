@@ -2,7 +2,7 @@ import { useMemo, useContext } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
 interface FrameProps {
@@ -13,7 +13,7 @@ interface FrameProps {
 export const LeatherTextWidth = 150; 
 
 function LeatherText({position, depth} : FrameProps) {
-  const { generationName } = useContext(SettingsContext);
+  const { generationName } = useContext(RendererContext);
 
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/brown-leather-unity/brown-leather_height.png`,

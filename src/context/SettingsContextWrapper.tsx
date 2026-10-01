@@ -1,30 +1,14 @@
 import { createContext, useState, type ReactNode } from 'react';
-import useGrid, { type Grid } from "../hooks/useGrid";
-
-type GenerationAnimationState = "started" | "ended";
 
 export interface SettingsContextParams {
-  isLight: boolean;
-  setLight: (newLight: boolean) => void;
-  width: number;
-  height: number;
   numberOfLayers: number;
   setNumberOfLayers: (layers: number) => void;
-  timerSwitch: number;
-  timerGeneration: number;
-  animationState: GenerationAnimationState;
-  setAnimationState: (status: GenerationAnimationState ) => void;
   colorFrom: string;
   setColorFrom: (color: string) => void;
   colorTo: string;
   setColorTo: (color: string) => void;
   colorChosen: boolean;
   setColorChosen: (chosen: boolean) => void;
-  enableBloom: boolean;
-  setEnableBloom: (bloom: boolean) => void;
-  grid: Grid;
-  hasSingleTopograhy: boolean;
-  generationName: string;
 }
 export const SettingsContext = createContext<SettingsContextParams>(null!);
 
@@ -33,33 +17,17 @@ interface Props {
 }
 
 function SettingsContextWrapper({children}: Props) {
-  const [isLight, setLight] = useState<boolean>(true);
   const [numberOfLayers, setNumberOfLayers] = useState<number>(7); // expected number of layers
   const [colorFrom, setColorFrom] = useState<string>("#abe2ab");
   const [colorTo, setColorTo] = useState<string>("#742906");
-  const [animationState, setAnimationState] = useState<GenerationAnimationState>("ended");
   const [colorChosen, setColorChosen] = useState<boolean>(false);
-  const [enableBloom, setEnableBloom] = useState<boolean>(true);
-  const [hasSingleTopograhy, ] = useState<boolean>(false);
-  const [generationName, _setGenerationName] = useState<string>("Jumping Mario");
-  const { grid, width, height } = useGrid({filepath: "none", typeOfFile: "noise" });
 
   return (
     <SettingsContext value={{
-      hasSingleTopograhy,
-      isLight, setLight,
-      timerSwitch: 2000,
-      timerGeneration: 4000,
-      animationState, setAnimationState,
-      width,
-      height,
       numberOfLayers, setNumberOfLayers,
       colorFrom, setColorFrom,
       colorTo, setColorTo,
       colorChosen, setColorChosen,
-      enableBloom, setEnableBloom,
-      grid,
-      generationName
     }}>
       {children}
     </SettingsContext >

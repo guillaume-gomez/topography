@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { SettingsContext } from "../context/SettingsContextWrapper";
+import { RendererContext } from "../context/RendererContextWrapper";
 
 interface ProgressButtonProps {
   label: string;
@@ -14,7 +14,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const {
     animationState,
     timerGeneration
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   function animate(time: number) {
     if (previousTimeRef.current != undefined) {
