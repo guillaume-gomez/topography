@@ -1,5 +1,6 @@
 import { useMemo, useContext } from "react";
 import { Text } from '@react-three/drei';
+import { uniqueId } from "lodash";
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
 import { RendererContext } from "../../context/RendererContextWrapper";
