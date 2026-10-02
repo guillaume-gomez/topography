@@ -37,19 +37,6 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     animationState
   } = useContext(RendererContext);
 
-  const [rotationSpring,] = useSpring(
-  {
-    from: { y: 0, rotationY: 0, },
-    to: { y: FrameHeight/2, rotationY: Math.PI * 2,},
-    config: {
-      duration: 800
-    },
-    reset: false,
-  },
-  [animationState]
-  );
-
-
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
   }, [shapes.length]);
@@ -75,12 +62,6 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
         }
       </group>
       <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
-      <mesh
-        position={[0, BaseHeight/2, 0]}
-      >
-        <boxGeometry args={[width, OceanHeight, height]} />
-        <meshStandardMaterial color="#092a5e" />
-      </mesh>
     </Suspense>
   );
 };
