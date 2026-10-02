@@ -35,7 +35,8 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   } = useContext(RendererContext);
 
   const maxElevation = useMemo(() => {
-    return maxBy(shapes, "elevation")!.elevation;
+    const elevation = maxBy(shapes, "elevation")?.elevation;
+    return elevation || 0;
   }, [shapes.length]);
 
   return (
