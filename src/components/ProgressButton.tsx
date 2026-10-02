@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { SettingsContext } from "../context/SettingsContextWrapper";
+import { RendererContext } from "../context/RendererContextWrapper";
 
 interface ProgressButtonProps {
   label: string;
@@ -14,7 +14,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const {
     animationState,
     timerGeneration
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   function animate(time: number) {
     if (previousTimeRef.current != undefined) {
@@ -61,6 +61,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
     <button
       className="btn btn-secondary flex flex-row justify-start w-full min-w-24 px-0"
       onClick={handleClick}
+      disabled={animationState == "started"}
     >
         <div
           className="bg-primary w-full h-full flex items-center justify-center rounded-lg"
@@ -71,7 +72,12 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
           className="absolute object-center"
           style={{left: "50%", transform: "translate(-50% , 0%)"}}
         >
-          { milliseconds === 0 ? label : `${Math.trunc(progressPercentage)}%` }
+          { milliseconds === 0 ? 
+            <span>{label}</span> :
+            <span className="text-white">
+              {`${Math.trunc(progressPercentage)}%`}
+            </span>
+          }
         </div>
     </button>
   );

@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { useSpring, animated } from '@react-spring/web';
-import { SettingsContext } from "../context/SettingsContextWrapper";
+import { RendererContext } from "../context/RendererContextWrapper";
 
 function ToggleDayButton() {
   const {
     isLight,
     setLight,
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   const sunProps = useSpring({
     opacity: isLight ? 1 : 0,

@@ -1,5 +1,6 @@
 import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
+import { RendererContext } from "./context/RendererContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
 import ColorBlobInput from "./components/ColorBlobInput";
@@ -17,21 +18,23 @@ type AnimationProps = AnimatedProps<CSSProperties>
 
 function App() {
   const {
-    grid,
-    width,
-    height,
-    isLight,
     numberOfLayers,
     setColorFrom,
     setColorTo,
     setNumberOfLayers,
-    setAnimationState,
     colorFrom,
     colorTo,
+  } = useContext(SettingsContext);
+  const {
+    grid,
+    width,
+    height,
+    isLight,
+    setAnimationState,
     enableBloom,
     setEnableBloom,
     hasSingleTopograhy
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
   const {
     setSceneName,
     isColorChoose,
@@ -153,13 +156,15 @@ function App() {
                   <ToggleDayButton />
                   <div className="flex flex-col gap-1">
                     <span>Bloom</span>
-                    <input
-                      disabled={isLight}
-                      className="toggle toggle-secondary"
-                      type="checkbox"
-                      onChange={() => setEnableBloom(!enableBloom)}
-                      checked={enableBloom}
-                    />
+                    <div className="tooltip" data-tip={isLight ? "Bloom only works on night mode" : ""}>
+                      <input
+                        disabled={isLight}
+                        className="toggle toggle-secondary"
+                        type="checkbox"
+                        onChange={() => setEnableBloom(!enableBloom)}
+                        checked={enableBloom}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-row gap-1">

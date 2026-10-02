@@ -4,6 +4,7 @@ import TopologyLine from "./TopologyLine";
 import { useSpring } from '@react-spring/three';
 
 import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 import { SoundsContext } from "../../context/SoundsContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
@@ -22,14 +23,14 @@ const AnimationStartingFromBottom = -50;
 const OriginalPosition = AnimationStartingFromBottom;
 
 function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrapperProps) {
+  const { numberOfLayers } = useContext(SettingsContext);
   const {
     isLight,
     timerSwitch,
     timerGeneration,
-    numberOfLayers,
     setAnimationState,
     animationState
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   const {
     playTopographyPieceSound,

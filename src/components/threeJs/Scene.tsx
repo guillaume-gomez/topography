@@ -1,6 +1,5 @@
 import { useContext, Suspense, type Ref, useMemo } from 'react';
 import { type Mesh } from "three";
-import { animated, useSpring, Globals } from '@react-spring/three';
 import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
@@ -8,8 +7,9 @@ import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
+import { Globals } from '@react-spring/three';
 
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
 
@@ -35,7 +35,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     width,
     height,
     animationState
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
   const [rotationSpring,] = useSpring(
   {
@@ -48,6 +48,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
   },
   [animationState]
   );
+
 
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
@@ -73,16 +74,13 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      {/*<animated.mesh
-        position-x={0}
-        position-y={rotationSpring.y}
-        rotation-y={rotationSpring.rotationY}
+      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
+      <mesh
+        position={[0, BaseHeight/2, 0]}
       >
         <boxGeometry args={[width, OceanHeight, height]} />
         <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>*/}
-       {/*<Frame width={width} height={height} depth={FrameHeight} position={[0, 0, (height)/2]}/>*/}
-      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
+      </mesh>
     </Suspense>
   );
 };

@@ -60,7 +60,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
     return thresholdsContrained;
   }
 
-  async function generate(): Shape[] {
+  function generate(): Shape[] {
     const shapes : Shape[] = [];
     const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()

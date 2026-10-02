@@ -8,7 +8,7 @@ import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
 import { type Shape } from "../../hooks/useTopography";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
 const { MODE } = import.meta.env;
 
@@ -23,7 +23,7 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     enableBloom,
     width,
     height
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
   const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
@@ -119,15 +119,16 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             intensity={1}
             environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
+              position: [0, 20, 0],
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.2,
-              height: height * 1.2,
+              width: width *1.3,
+              height: height * 1.3,
               resolution: 256,
-              color:"#FF0000"
+              color:"#000000"
             }}
           >
             <Scene
