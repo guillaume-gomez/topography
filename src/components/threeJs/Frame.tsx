@@ -1,9 +1,8 @@
-import { useMemo } from "react";
-import { Text } from '@react-three/drei';
 import { animated, useSpring } from '@react-spring/three';
 import { useLoader } from '@react-three/fiber';
-import { MeshStandardMaterial, TextureLoader } from "three";
-import LeatherText from "./LeatherText";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
+import { TextureLoader } from "three";
+import LeatherText, { LeatherTextWidth } from "./LeatherText";
 
 interface FrameProps {
 	width: number;
@@ -12,9 +11,11 @@ interface FrameProps {
   position: [number, number, number]
 }
 
-const duration = 5000;
+const duration = 1000;
+const frameDepth = 25;
 
 function Frame({width, height, depth, position } : FrameProps) {
+
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/dark-wood-stain-unity/dark-wood-stain_height.png`,
     `textures/dark-wood-stain-unity/dark-wood-stain_normal-ogl.png`,
@@ -22,11 +23,9 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
-  const frameDepth = 40;
-
   const [frontFrame,] = useSpring(
   {
-    from: { z: 10000 },
+    from: { z: 1000 },
     to: { z: frameDepth/2 },
     config: {
       duration
@@ -36,7 +35,7 @@ function Frame({width, height, depth, position } : FrameProps) {
 
   const [backFrame,] = useSpring(
   {
-    from: { z: -10000 },
+    from: { z: -1000 },
     to: { z: -height - frameDepth/2 },
     config: {
       duration
@@ -46,7 +45,7 @@ function Frame({width, height, depth, position } : FrameProps) {
 
   const [rightFrame,] = useSpring(
   {
-    from: { x: 10000 },
+    from: { x: 1000 },
     to: { x: width/2 + frameDepth/2 },
     config: {
       duration
@@ -56,7 +55,7 @@ function Frame({width, height, depth, position } : FrameProps) {
 
   const [leftFrame,] = useSpring(
   {
-    from: { x: -10000 },
+    from: { x: -1000 },
     to: { x: -width/2 - frameDepth/2 },
     config: {
       duration
@@ -64,9 +63,7 @@ function Frame({width, height, depth, position } : FrameProps) {
     reset: false,
   }, []);
 
-  const material = useMemo(() => {
-    return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
-  }, []);
+  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
 	return (
     <group position={position}>
@@ -116,9 +113,7 @@ function Frame({width, height, depth, position } : FrameProps) {
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
         {/*<meshStandardMaterial color="purple" />*/}
       </animated.mesh>
-
-      
-      
+      <LeatherText position={[width/2 - LeatherTextWidth/2, 30, frameDepth]} depth={depth} />
     </group>
   );
 };

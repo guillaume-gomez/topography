@@ -8,13 +8,14 @@ interface TopologyShapeProps {
     points: Vector2[];
     color: Color;
 		position: [number, number, number];
+    scale?: SpringValue<number> | number;
     thickness?: number;
-    opacity?: SpringValue<number> | number;
+    opacity?: SpringValue<number>;
     optimized?: boolean;
 };
 
 
-function TopologyShape({ points, color, position, thickness = 1, opacity = new SpringValue(1), optimized = true  }: TopologyShapeProps): ReactElement {
+function TopologyShape({ points, color, position, scale = new SpringValue(1), thickness = 1, opacity = new SpringValue(1), optimized = true  }: TopologyShapeProps): ReactElement {
 	const shape = useMemo(() => {
     return new Shape(points);
   },
@@ -30,25 +31,19 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = new S
     bevelSegments: 10
 	}), []);
 
+
   return (
     <animated.mesh
       position-x={position[0]}
       position-y={position[1]}
       position-z={position[2]}
+      scale={scale}
       castShadow
       receiveShadow
       visible={opacity.to((v: number) => v > 0.001)}
 
     >
       <extrudeGeometry attach="geometry" args={[shape, extrudeSettings]} />
-      {/*<WavyPhysicalMaterial
-        color={color}
-        emissive={"black"}
-        roughness={1.}
-        metalness={0.1}
-        amplitude={4}
-        frequency={10}
-      />*/}
       {optimized ?
         <animated.meshLambertMaterial
           wireframe={false}
@@ -71,6 +66,14 @@ function TopologyShape({ points, color, position, thickness = 1, opacity = new S
         />
       }
       {/*<meshNormalMaterial/>*/}
+      {/*<WavyPhysicalMaterial
+        color={color}
+        emissive={"black"}
+        roughness={1.}
+        metalness={0.1}
+        amplitude={4}
+        frequency={10}
+      />*/}
     </animated.mesh>
   );
 };

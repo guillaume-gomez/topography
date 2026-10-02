@@ -1,5 +1,6 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import { SceneContext } from "../context/SceneContextWrapper";
+import { useWindowSize } from 'usehooks-ts';
 import { useSpring, useSpringRef, animated, easings, useChain, to } from '@react-spring/web';
 import "./ParallaxTilt.css"
 
@@ -18,8 +19,12 @@ function ParallaxTilt() {
   const fifthLayerPropsRef = useSpringRef();
   const sixthLayerPropsRef = useSpringRef();
   const titlePropsRef = useSpringRef();
-  const [ratio, ] = useState<number>(1);
+  const [ratio, setRatio] = useState<number>(1);
+  const { width } = useWindowSize();
 
+  useEffect(() => {
+    setRatio(width / 1800);
+  }, [width])
 
   // top
   const firstLayerProps = useSpring(
@@ -252,7 +257,7 @@ function ParallaxTilt() {
           zIndex: 10, paddingTop: "6rem", ...titleProps
         }}
       >
-        <h1 className="md:text-4xl">Topography</h1>
+        <h1 className="text-4xl">Topography</h1>
         <p className="text-lg">by Guillaume Gomez</p>
         <button className="btn btn-primary btn-lg" onClick={() => setSceneName("color-choice")} >Start to create</button>
       </animated.div>

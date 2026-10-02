@@ -1,3 +1,9 @@
+# Topography
+
+[preview.webm](https://github.com/user-attachments/assets/6eef2309-1412-4339-9c71-70bfc3c0ad34)
+
+<img width="1144" height="593" alt="Capture d’écran 2026-08-07 à 13 49 11" src="https://github.com/user-attachments/assets/ef2a61ea-7d02-4e60-a657-b0cedc120e8a" />
+
 # Intention Note
 
 As I am passionate about topography map. I would created a simple "3d topography" map.
@@ -12,16 +18,13 @@ https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--p
 
 https://perspective-gray.vercel.app/
 
+https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
+
 ## typography:
+
   WorkSans : https://fonts.google.com/specimen/Work+Sans?preview.script=Latn
 
-
-  Assets used:
-    44062__feegle__gamepiece
-
 ## Sounds
-
-  paper sound : https://floraphonic.gumroad.com/
 
   montain song : https://pixabay.com/fr/users/freesound_community-46691455/
 
@@ -30,11 +33,6 @@ https://perspective-gray.vercel.app/
   backpack : https://pixabay.com/fr/users/freesound_community-46691455/
 
   closing zipper : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-closing-zipper-325443/
-
-  wood impact : https://pixabay.com/fr/sound-effects/films-et-effets-sp%c3%a9ciaux-wood-impact-84721/
-
-
-  droppping a pin on wood : http://pixabay.com/fr/sound-effects/films-et-effets-sp%C3%A9ciaux-dropping-a-pen-on-wood-103665/
 
 https://perspective-gray.vercel.app/
 
@@ -57,12 +55,30 @@ https://www.google.com/imgres?q=carte%20topographique&imgurl=https%3A%2F%2Fwww.l
 https://blog-espritdesign.com/deco/tableau-deco/boilise-la-carte-topographique-revisitee-64628
 
 
-
 Frame texture
 https://freepbr.com/product/bamboo-wood-pbr-material/
 https://freepbr.com/product/brown-leather/
 https://freepbr.com/product/semi-gloss-wood-pbr/
+https://www.texturecan.com/details/364/
 
-# Rendering
+
+https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
+
+Room
+
+https://sketchfab.com/3d-models/vr-gallery-1e087aa25dc742e680accb15249bd6be
+
+## Other Rendering
 
 <img width="967" height="895" alt="Capture d’écran 2026-07-01 à 15 12 47" src="https://github.com/user-attachments/assets/2999e8bb-bf6f-4e45-9764-312f1b0d4358" />
+
+<img width="991" height="596" alt="Capture d’écran 2026-08-09 à 11 49 28" src="https://github.com/user-attachments/assets/c4f5ec95-a922-43c5-ab06-dbff59b943b9" />
+
+<img width="1287" height="740" alt="Capture d’écran 2026-09-07 à 17 18 23" src="https://github.com/user-attachments/assets/1faf71aa-a932-42bd-8b5b-7acb53ccda07" />
+
+<img width="1281" height="712" alt="Capture d’écran 2026-09-13 à 22 34 57" src="https://github.com/user-attachments/assets/2cc34b36-4dce-4547-b7dd-950bbdc49724" />
+
+
+### convert tif file
+
+`python3 convert.py output_be.tif`

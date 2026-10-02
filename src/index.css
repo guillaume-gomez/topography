@@ -1,6 +1,44 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+@plugin "daisyui/theme" {
+  name: "topography";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: #2a1e0e;
+  --color-base-200: oklch(18.522% 0.007 17.911);
+  --color-base-300: oklch(16.203% 0.007 17.911);
+  --color-base-content: oklch(83.768% 0.001 17.911);
+  --color-primary: #436e5a;
+  --color-primary-content: oklch(96% 0.003 264.542);
+  --color-secondary: #f9f871;
+  --color-secondary-content: oklch(13.955% 0.027 168.327);
+  --color-accent: #85b66d;
+  --color-accent-content: oklch(14.125% 0.023 185.713);
+  --color-neutral: oklch(30.698% 0.039 171.364);
+  --color-neutral-content: oklch(86.139% 0.007 171.364);
+  --color-info: oklch(72.06% 0.191 231.6);
+  --color-info-content: oklch(0% 0 0);
+  --color-success: oklch(64.8% 0.15 160);
+  --color-success-content: oklch(0% 0 0);
+  --color-warning: oklch(84.71% 0.199 83.87);
+  --color-warning-content: oklch(0% 0 0);
+  --color-error: oklch(71.76% 0.221 22.18);
+  --color-error-content: oklch(0% 0 0);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 1;
+}
+
+
+
 @font-face {
   font-family: 'WorkSans';
   src: local("WorkSans"),
@@ -12,3 +50,5 @@
     font-family: WorkSans, system-ui;
   }
 }
+
+

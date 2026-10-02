@@ -1,15 +1,21 @@
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
 import { Text } from '@react-three/drei';
 import { uniqueId } from "lodash";
 import { useLoader } from '@react-three/fiber';
 import { MeshStandardMaterial, TextureLoader } from "three";
+import { RendererContext } from "../../context/RendererContextWrapper";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
 interface FrameProps {
 	position: [number, number, number];
   depth: number;
 }
 
+export const LeatherTextWidth = 150; 
+
 function LeatherText({position, depth} : FrameProps) {
+  const { generationName } = useContext(RendererContext);
+
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/brown-leather-unity/brown-leather_height.png`,
     `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
@@ -17,28 +23,26 @@ function LeatherText({position, depth} : FrameProps) {
     `textures/brown-leather-unity/brown-leather_albedo.png`,
   ]);
 
-  const material = useMemo(() => {
-    return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
-  }, []);
+  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
   return (
       <group position={position}>
         <mesh position={[0, 0, 0]} material={material} >
-          <boxGeometry args={[200, depth - 15, 1]} />
+          <boxGeometry args={[LeatherTextWidth, depth - 15, 1]} />
           {/*<meshStandardMaterial color="red" />*/}
         </mesh>
 
         <Text
           //font={`${BASE_URL}/fonts/good-bakwan.woff`}
           color={0x000000}
-          fontSize={30}
+          fontSize={16}
           letterSpacing={0}
           anchorY="center"
           anchorX="center"
           lineHeight={0.8}
-          position={[0, 15, 5]}
+          position={[0, 12, 5]}
         >
-          {uniqueId("Seed 67")}
+          {generationName}
         </Text>
       </group>
   );
