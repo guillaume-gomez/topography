@@ -48,7 +48,6 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
   });
 
   const durationByLayer = timerGeneration / numberOfLayers; 
-  console.log(maxElevation)
 
   const [springPosition, ] = useSpring(() => {
       // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes

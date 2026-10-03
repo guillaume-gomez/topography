@@ -29,7 +29,6 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
 
   async function call (): Promise<Grid> {
     const grid = await computeGrid();
-    // memoize the grid to avoid uncessary call
     setGrid(grid);
     
     return grid;

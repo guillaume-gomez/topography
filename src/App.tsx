@@ -131,11 +131,8 @@ function App() {
                 setColorTo(colorTo);
                 setNumberOfLayers(layers);
 
-                // delay the first renderer to let user see the scene before the animation
-                setTimeout(() => {
-                  onGenerate();
-                }, 3000);
-
+                onGenerate();
+              
                 setSceneName("3d-scene");
               }} />
             </animated.div>
