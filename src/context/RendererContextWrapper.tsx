@@ -15,6 +15,7 @@ export interface RendererContextParams {
   hasSingleTopograhy: boolean;
   generationName: string;
   grid: Grid;
+  regenerateGrid: () => void;
   width: number;
   height: number;
 }
@@ -33,7 +34,7 @@ function RendererContextWrapper({children}: Props) {
   const [enableBloom, setEnableBloom] = useState<boolean>(true);
   const [hasSingleTopograhy, ] = useState<boolean>(false);
   const [generationName, _setGenerationName] = useState<string>("Guillaume Gomez");
-  const { grid } = useGrid({filepath: "colombia.json", typeOfFile: "real-data" });
+  const { grid, call: regenerateGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
 
   const { width, height } = useMemo(() => {
     if(hasSingleTopograhy) {
@@ -54,6 +55,7 @@ function RendererContextWrapper({children}: Props) {
       hasSingleTopograhy,
       generationName,
       grid,
+      regenerateGrid,
       width,
       height,
     }}>

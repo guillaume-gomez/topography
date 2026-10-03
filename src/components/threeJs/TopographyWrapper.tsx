@@ -47,7 +47,8 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
     config: { duration: timerSwitch}
   });
 
-  const durationByLayer = timerGeneration / numberOfLayers;
+  const durationByLayer = timerGeneration / numberOfLayers; 
+  console.log(maxElevation)
 
   const [springPosition, ] = useSpring(() => {
       // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes
@@ -73,11 +74,12 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
           if(shape.elevation === maxElevation) {
             setAnimationState("ended");
           }
+          console.log("play")
           stopTopographyPieceSound();
           playTopographyPieceSound();
         },
         reset: true,
-        delay: 1000
+        //delay: 1000
       }
     },
     [animationState]

@@ -27,6 +27,7 @@ function App() {
   } = useContext(SettingsContext);
   const {
     grid,
+    regenerateGrid,
     width,
     height,
     isLight,
@@ -43,7 +44,6 @@ function App() {
   } = useContext(SceneContext);
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
-    grid,
     width, 
     height,
     numberOfLayers,
@@ -94,11 +94,12 @@ function App() {
       }
   );
 
-  function onGenerate() {
+  async function onGenerate() {
     if(hasSingleTopograhy) {
       generateTopography();
     } else {
-      generateTopographies();
+      const grid = await regenerateGrid();
+      generateTopographies(grid);
     }
     setAnimationState("started")
   }
@@ -130,7 +131,10 @@ function App() {
                 setColorTo(colorTo);
                 setNumberOfLayers(layers);
 
-                onGenerate();
+                // delay the first renderer to let user see the scene before the animation
+                setTimeout(() => {
+                  onGenerate();
+                }, 3000);
 
                 setSceneName("3d-scene");
               }} />
@@ -148,8 +152,7 @@ function App() {
                 <ProgressButton
                   label="Generate"
                   onClick={() => {
-                      generateTopographies();
-                      setAnimationState("started")
+                      onGenerate();
                     }
                   } />
                 <div className="flex flex-row gap-3 items-center">

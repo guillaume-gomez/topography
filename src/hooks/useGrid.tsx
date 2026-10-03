@@ -24,14 +24,18 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   
   useEffect(() => {
-    async function call () {
-      const grid = await computeGrid();
-      setGrid(grid);
-    }
-
     call();
-  }, [filepath, typeOfFile])
+  }, [filepath, typeOfFile]);
 
+  async function call (): Promise<Grid> {
+    const grid = await computeGrid();
+    // memoize the grid to avoid uncessary call
+    setGrid(grid);
+    
+    return grid;
+  }
+
+  // TODO: memoize grid computed if the file has no changes
   async function computeGrid(): Promise<Grid> {
     if(typeOfFile === "real-data") {
       return await gridFromRealData();
@@ -75,7 +79,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return greyData;
   }
 
-  return { grid };
+  return { grid, call };
 };
 
 export default useGrid;
