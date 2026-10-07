@@ -21,6 +21,12 @@ export interface Shape {
   elevation: number;
 }
 
+
+interface UseTopographyResult {
+  generate: () => void;
+  shapes: Shape[];
+}
+
 const COLORS_SAMPLE = [
 "#F05D5E",
 "#0F7173",
@@ -43,7 +49,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopography({ width, height, numberOfLayers, fromToColors } : TopographyProps) {
+function useTopography({ width, height, numberOfLayers, fromToColors } : TopographyProps): UseTopographyResult {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [frequency, _setFrequency] = useState<number>(0.5);
   const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
