@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { Vector2, Color } from "three";
 import { lerpColors } from "../colorUtils";
-import { generateGrid } from "../libs/generateGrid";
-import { getData } from "../readJson";
 import * as d3 from "d3-contour";
-
-const { BASE_URL } = import.meta.env;
 
 interface TopographyProps {
   grid: Grid;
@@ -21,6 +17,10 @@ export interface Shape {
   elevation: number;
 }
 
+interface UseTopographiesReturn {
+  generate: () => void;
+  shapes: Shape[];
+}
 
 const COLORS_SAMPLE = [
 "#F05D5E",
@@ -44,7 +44,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ grid, width, height, numberOfLayers, fromToColors } : TopographyProps) {
+function useTopographies({ grid, width, height, numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
   const [shapes, setShapes] = useState<Shape[]>([]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
     return thresholdsContrained;
   }
 
-  async function generate(): Shape[] {
+  function generate(): Shape[] {
     const shapes : Shape[] = [];
     const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()

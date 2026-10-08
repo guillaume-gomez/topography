@@ -1,6 +1,5 @@
 import { useContext, Suspense, type Ref, useMemo } from 'react';
 import { type Mesh } from "three";
-import { animated, useSpring, Globals } from '@react-spring/three';
 import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
@@ -8,8 +7,9 @@ import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
+import { Globals } from '@react-spring/three';
 
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
 
@@ -35,19 +35,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     width,
     height,
     animationState
-  } = useContext(SettingsContext);
-
-  const [rotationSpring,] = useSpring(
-  {
-    from: { y: 0, rotationY: 0, },
-    to: { y: FrameHeight/2, rotationY: Math.PI * 2,},
-    config: {
-      duration: 800
-    },
-    reset: false,
-  },
-  [animationState]
-  );
+  } = useContext(RendererContext);
 
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;

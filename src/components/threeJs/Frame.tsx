@@ -1,7 +1,7 @@
 import { useLoader } from '@react-three/fiber';
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 import { TextureLoader } from "three";
-import LeatherText from "./LeatherText";
+import LeatherText, { LeatherTextWidth } from "./LeatherText";
 
 interface FrameProps {
 	width: number;
@@ -9,6 +9,7 @@ interface FrameProps {
   depth: number;
   position: [number, number, number]
 }
+
 
 function Frame({width, height, depth, position } : FrameProps) {
 
@@ -58,7 +59,7 @@ function Frame({width, height, depth, position } : FrameProps) {
         {/*<meshStandardMaterial color="purple" />*/}
       </mesh>
 
-      <LeatherText position={[170, 30, frameDepth]} depth={depth} />
+      <LeatherText position={[width/2 - LeatherTextWidth/2, 30, frameDepth]} depth={depth} />
       
     </group>
   );

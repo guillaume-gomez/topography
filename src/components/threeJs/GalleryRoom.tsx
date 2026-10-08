@@ -1,6 +1,6 @@
 import { useSpring } from "@react-spring/three";
 import { useCallback, useContext, useRef } from "react";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 import { Mesh, type Color, type Group } from "three";
 import { Gltf } from "@react-three/drei";
 
@@ -10,7 +10,7 @@ function GalleryRoom() {
   const {
       isLight,
       timerSwitch,
-    } = useContext(SettingsContext);
+    } = useContext(RendererContext);
 
   const galleryRef = useRef<Group>(null);
   const galleryOriginalColors = useRef(new Map<string, Color>());

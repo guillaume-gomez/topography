@@ -1,9 +1,5 @@
-import { useMemo, useContext } from "react";
-import { Geometry, Base, Subtraction } from '@react-three/csg'
 import { useLoader } from '@react-three/fiber';
-import { FontLoader, TextGeometry } from 'three-stdlib';
 import { TextureLoader } from "three";
-import { Center } from '@react-three/drei';
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 import TextLabel from "./TextLabel";
 import MapScale from "./MapScale";
