@@ -54,7 +54,7 @@ function MapScale({
     <group position={position} rotation={rotation}>
       <mesh scale={0.35}>
         <planeGeometry args={[Width, Height]} />
-        <meshBasicMaterial map={texture} transparent />
+        <meshLambertMaterial map={texture} transparent />
       </mesh>
     </group>
   );
