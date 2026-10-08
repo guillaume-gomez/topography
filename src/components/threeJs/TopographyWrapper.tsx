@@ -18,7 +18,7 @@ interface TopographyWrapperProps {
 const Thickness = 2.5;
 
 const AnimationStartingFromTop = 500;
-const AnimationStartingFromBottom = -50;
+const AnimationStartingFromBottom = -20;
 
 const OriginalPosition = AnimationStartingFromBottom;
 

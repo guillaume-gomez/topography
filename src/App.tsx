@@ -14,7 +14,7 @@ import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
-type AnimationProps = AnimatedProps<CSSProperties>
+type AnimationProps = AnimatedProps<CSSProperties>;
 
 function App() {
   const {

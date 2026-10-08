@@ -12,6 +12,8 @@ import { RendererContext } from "../../context/RendererContextWrapper";
 
 const { MODE } = import.meta.env;
 
+const CAMERA_PADDING = 1;
+
 interface ThreeJsRendererProps {
   shapes: Shape[];
 }
@@ -56,7 +58,12 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       return;
     }
     await cameraControllerRef.current.fitToBox(meshRef.current, true,
-      { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
+      { 
+        paddingLeft: CAMERA_PADDING,
+        paddingRight: CAMERA_PADDING, 
+        paddingBottom: CAMERA_PADDING,
+        paddingTop: CAMERA_PADDING
+      }
     );
 
   }
