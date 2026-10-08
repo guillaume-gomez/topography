@@ -9,6 +9,7 @@ interface TopographyProps {
 }
 
 export interface Shape {
+  id: string;
   color: Color;
   points: Vector2[];
   elevation: number;
@@ -77,6 +78,7 @@ function useTopographies({ numberOfLayers, fromToColors } : TopographyProps) : U
         const points  = vertexes.map(([x, y]) => ({x, y}));
 
         const shape = {
+          id: crypto.randomUUID(),
           color: colorByElevation(thresholdIndex),
           points: points.map(point => new Vector2(point.x * scaleX, point.y * scaleY)),
           elevation: thresholdIndex

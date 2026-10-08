@@ -16,6 +16,7 @@ interface Point {
 }
 
 export interface Shape {
+  id: string;
   color: Color;
   points: Vector2[];
   elevation: number;
@@ -136,6 +137,7 @@ function useTopography({ width, height, numberOfLayers, fromToColors } : Topogra
       // );
 
       const shape = {
+        id: crypto.randomUUID(),
         color: colorByElevation(elevation),
         points: shapePoints.map(point => new Vector2(point.x, point.y)),
         elevation

@@ -42,7 +42,7 @@ function Scene({
 
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
-  }, [shapes.length]);
+  }, [shapes]);
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
@@ -53,10 +53,10 @@ function Scene({
         ref={meshRef}
       >
         {
-          shapes.map((shape, index) => {
+          shapes.map((shape) => {
             return (
               <TopographyWrapper
-                key={index} 
+                key={shape.id}
                 shape={shape}
                 maxElevation={maxElevation}
                 optimized={optimized}/>
