@@ -7,7 +7,7 @@ const { BASE_URL } = import.meta.env;
 
 
 interface UseGridReturn {
-  generateGrid: () => Promise<Grid>;
+  createGrid: () => Promise<Grid>;
   grid: Grid;
 }
 
@@ -29,7 +29,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   const [frequency, _setFrequency] = useState<number>(0.05);
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   
-  async function generateGrid (): Promise<Grid> {
+  async function createGrid (): Promise<Grid> {
     const grid = await computeGrid();
     setGrid(grid);
 
@@ -37,7 +37,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   }
 
   useEffect(() => {
-    generateGrid();
+    createGrid();
   }, [filepath, typeOfFile])
 
   async function computeGrid(): Promise<Grid> {
@@ -83,7 +83,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
     return greyData;
   }
 
-  return { grid, generateGrid };
+  return { grid, createGrid };
 };
 
 export default useGrid;

@@ -17,6 +17,8 @@ import ParallaxTilt from "./components/ParallaxTilt";
 
 type AnimationProps = AnimatedProps<CSSProperties>;
 
+const BASE_TERRAIN = 500;
+
 function App() {
   const {
     numberOfLayers,
@@ -27,9 +29,6 @@ function App() {
     colorTo,
   } = useContext(SettingsContext);
   const {
-    grid,
-    width,
-    height,
     isLight,
     setAnimationState,
     enableBloom,
@@ -43,19 +42,16 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { grid, generateGrid } = useGrid({filepath: "colombia.json", typeOfFile: "real-data" });
+  const { grid, createGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
-    grid,
-    width, 
-    height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
 
   const { generate: generateTopography, shapes: shapesTopography } = useTopography({
-    width,
-    height,
+    width: BASE_TERRAIN,
+    height: BASE_TERRAIN,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
@@ -67,6 +63,15 @@ function App() {
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
   );
+
+  const { widthTerrain, heightTerrain } = useMemo(() => {
+    if(hasSingleTopograhy) {
+      return { widthTerrain: BASE_TERRAIN, heightTerrain: BASE_TERRAIN };
+    } else {
+      const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+      return { widthTerrain: BASE_TERRAIN * ratio, heightTerrain: BASE_TERRAIN };
+    }
+  }, [grid, hasSingleTopograhy]);
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -97,12 +102,12 @@ function App() {
       }
   );
 
-  function onGenerate() {
+  async function onGenerate() {
     if(hasSingleTopograhy) {
       generateTopography();
     } else {
-      const grid = generateGrid();
-      generateTopographies(grid);
+      const newGrid = await createGrid();
+      generateTopographies(newGrid);
     }
     setAnimationState("started")
   }
@@ -183,7 +188,11 @@ function App() {
                   />
                 </div>
               </Card>
-              <ThreejsRenderer shapes={shapes}/>
+              <ThreejsRenderer
+                shapes={shapes}
+                widthTerrain={widthTerrain}
+                heightTerrain={heightTerrain}
+              />
             </animated.div>
           ))
         }

@@ -4,9 +4,6 @@ import { lerpColors } from "../colorUtils";
 import * as d3 from "d3-contour";
 
 interface TopographyProps {
-  grid: Grid;
-  width: number;
-  height: number;
   numberOfLayers: number;
   fromToColors?: [string, string];
 }
@@ -44,7 +41,9 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
+const BASE_TERRAIN = 500;
+
+function useTopographies({ numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
   const [shapes, setShapes] = useState<Shape[]>([]);
 
   function computeThresholds(min:number, max :number) : number[] {
@@ -66,7 +65,8 @@ function useTopographies({ width, height, numberOfLayers, fromToColors } : Topog
 
     const result = contours(data.flat());
 
-    const [newWidth, newHeight] = [width, height];
+    const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+    const [newWidth, newHeight] = [BASE_TERRAIN * ratio, BASE_TERRAIN];
 
     const scaleX = (newWidth/gridWidth);
     const scaleY = (newHeight/gridHeight);

@@ -20,6 +20,8 @@ Globals.assign({
 
 interface SceneProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
   meshRef: Ref<Mesh>;
   optimized: boolean;
 }
@@ -27,10 +29,14 @@ interface SceneProps {
 const BaseHeight = 30;
 const OceanHeight = 15;
 
-function Scene({ shapes, meshRef, optimized } : SceneProps) {
+function Scene({ 
+  shapes,
+  meshRef,
+  widthTerrain,
+  heightTerrain,
+  optimized
+} : SceneProps) {
   const {
-    width,
-    height,
     animationState
   } = useContext(RendererContext);
 
@@ -42,7 +48,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     <Suspense fallback={<FallBackLoader/>} >
     <GalleryRoom />
      <group
-        position={[-width/2, BaseHeight, height/2]}
+        position={[-widthTerrain/2, BaseHeight, heightTerrain/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -61,10 +67,10 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
       <mesh
         position={[0, BaseHeight/2, 0]}
       >
-        <boxGeometry args={[width, OceanHeight, height]} />
+        <boxGeometry args={[widthTerrain, OceanHeight, heightTerrain]} />
         <meshStandardMaterial color="#092a5e" />
       </mesh>
-      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
+      <Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>
     </Suspense>
   );
 };
