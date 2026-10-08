@@ -85,8 +85,6 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     recenterCamera();
   }
 
-  console.log(width)
-
   return (
       <Canvas
         camera={{ position: [0, 200, 250], fov: 75, near: 10, far: 3000 }}
