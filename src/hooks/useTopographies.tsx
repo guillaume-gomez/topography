@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Vector2, Color } from "three";
+import { Vector2, Color, SRGBColorSpace } from "three";
 import { lerpColors } from "../colorUtils";
 import * as d3 from "d3-contour";
 
@@ -18,7 +18,7 @@ export interface Shape {
 }
 
 interface UseTopographiesReturn {
-  generate: () => void;
+  generate: (grid: Grid) => void;
   shapes: Shape[];
 }
 
@@ -44,12 +44,8 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ grid, width, height, numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
+function useTopographies({ width, height, numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
   const [shapes, setShapes] = useState<Shape[]>([]);
-
-  useEffect(() => {
-    generate();
-  }, [grid, numberOfLayers]);
 
   function computeThresholds(min:number, max :number) : number[] {
     const thresholds = [];
@@ -60,7 +56,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
     return thresholdsContrained;
   }
 
-  function generate(): Shape[] {
+  function generate(grid: Grid): Shape[] {
     const shapes : Shape[] = [];
     const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()
@@ -96,7 +92,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
   function colorByElevation(index: number): Color {
     if(fromToColors) {
       const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
-      return new Color(...colors[index % colors.length]);
+      return new Color().setRGB(...colors[index % colors.length], SRGBColorSpace);
     }
 
     return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])

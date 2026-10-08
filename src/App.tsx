@@ -9,6 +9,7 @@ import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
+import useGrid, { type Grid } from "./hooks/useGrid";
 import ToggleSoundButton from "./components/ToggleSoundButton";
 import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
@@ -41,6 +42,8 @@ function App() {
     isIntro,
     is3DScene,
   } = useContext(SceneContext);
+
+  const { grid, generateGrid } = useGrid({filepath: "colombia.json", typeOfFile: "real-data" });
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     grid,
@@ -98,7 +101,8 @@ function App() {
     if(hasSingleTopograhy) {
       generateTopography();
     } else {
-      generateTopographies();
+      const grid = generateGrid();
+      generateTopographies(grid);
     }
     setAnimationState("started")
   }
@@ -148,8 +152,7 @@ function App() {
                 <ProgressButton
                   label="Generate"
                   onClick={() => {
-                      generateTopographies();
-                      setAnimationState("started")
+                      onGenerate();
                     }
                   } />
                 <div className="flex flex-row gap-3 items-center">

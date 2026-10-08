@@ -5,6 +5,12 @@ import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../libs
 
 const { BASE_URL } = import.meta.env;
 
+
+interface UseGridReturn {
+  generateGrid: () => Promise<Grid>;
+  grid: Grid;
+}
+
 export interface Grid {
   gridWidth: number;
   gridHeight: number;
@@ -19,17 +25,19 @@ interface UseGridProps {
 }
 
 
-function useGrid({ filepath, typeOfFile }: UseGridProps) {
+function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   const [frequency, _setFrequency] = useState<number>(0.05);
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   
-  useEffect(() => {
-    async function call () {
-      const grid = await computeGrid();
-      setGrid(grid);
-    }
+  async function generateGrid (): Promise<Grid> {
+    const grid = await computeGrid();
+    setGrid(grid);
 
-    call();
+    return grid;
+  }
+
+  useEffect(() => {
+    generateGrid();
   }, [filepath, typeOfFile])
 
   async function computeGrid(): Promise<Grid> {
@@ -75,7 +83,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) {
     return greyData;
   }
 
-  return { grid };
+  return { grid, generateGrid };
 };
 
 export default useGrid;
