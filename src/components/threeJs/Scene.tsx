@@ -61,15 +61,6 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      {/*<animated.mesh
-        position-x={0}
-        position-y={rotationSpring.y}
-        rotation-y={rotationSpring.rotationY}
-      >
-        <boxGeometry args={[width, OceanHeight, height]} />
-        <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>*/}
-       {/*<Frame width={width} height={height} depth={FrameHeight} position={[0, 0, (height)/2]}/>*/}
       <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
     </Suspense>
   );
