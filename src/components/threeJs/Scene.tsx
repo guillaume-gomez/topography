@@ -5,6 +5,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
 
@@ -24,8 +25,10 @@ interface SceneProps {
   optimized: boolean;
 }
 
-const BaseHeight = 30;
+const FrameHeight = 30;
 const OceanHeight = 15;
+
+const BasePosition: [number, number, number] = [0, -30, 50];
 
 function Scene({ shapes, meshRef, optimized } : SceneProps) {
   const {
@@ -42,7 +45,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
     <Suspense fallback={<FallBackLoader/>} >
     <GalleryRoom />
      <group
-        position={[-width/2, BaseHeight, height/2]}
+        position={[-width/2, FrameHeight, height/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -58,13 +61,7 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      <mesh
-        position={[0, BaseHeight/2, 0]}
-      >
-        <boxGeometry args={[width, OceanHeight, height]} />
-        <meshStandardMaterial color="#092a5e" />
-      </mesh>
-      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
+      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
     </Suspense>
   );
 };
