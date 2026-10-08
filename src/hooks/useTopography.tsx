@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Vector2, Color } from "three";
+import { Vector2, Color, SRGBColorSpace } from "three";
 import { createNoise2D } from 'simplex-noise';
 import { lerpColors } from "../colorUtils";
 
@@ -155,7 +155,7 @@ function useTopography({ width, height, numberOfLayers, fromToColors } : Topogra
   function colorByElevation(number: number): Color {
     if(fromToColors) {
       const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
-      return new Color(...colors[number % colors.length]);
+      return new Color().setRGB(...colors[number % colors.length], SRGBColorSpace);
     }
 
     return new Color(COLORS_SAMPLE[number % COLORS_SAMPLE.length])

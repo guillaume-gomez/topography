@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Vector2, Color } from "three";
+import { Vector2, Color, SRGBColorSpace } from "three";
 import { lerpColors } from "../colorUtils";
 import * as d3 from "d3-contour";
 
@@ -96,7 +96,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
   function colorByElevation(index: number): Color {
     if(fromToColors) {
       const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
-      return new Color(...colors[index % colors.length]);
+      return new Color().setRGB(...colors[index % colors.length], SRGBColorSpace);
     }
 
     return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])
