@@ -1,15 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getData } from "../readJson";
 import { generateGrid } from "../libs/generateGrid";
 import { loadImage, resizeImageAndConvertToGrey, resizeImageSize } from "../libs/imageProcessingUtils";
 
 const { BASE_URL } = import.meta.env;
 
-
-interface UseGridReturn {
-  createGrid: () => Promise<Grid>;
-  grid: Grid;
-}
+type TypeOfFile = "noise"|"real-data"|"image";
 
 export interface Grid {
   gridWidth: number;
@@ -17,28 +13,35 @@ export interface Grid {
   data: number[];
   min: number;
   max: number;
+  filepath: string;
+  typeOfFile: TypeOfFile;
 }
 
 interface UseGridProps {
   filepath: string;
-  typeOfFile: "noise"|"real-data"|"image";
+  typeOfFile: TypeOfFile;
 }
 
+
+interface UseGridReturn {
+  createGrid: () => Promise<Grid>;
+  grid: Grid;
+}
 
 function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   const [frequency, _setFrequency] = useState<number>(0.05);
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   
   async function createGrid (): Promise<Grid> {
+    if(alreadyInCache()) {
+      return grid;
+    }
+    
     const grid = await computeGrid();
     setGrid(grid);
 
     return grid;
   }
-
-  useEffect(() => {
-    createGrid();
-  }, [filepath, typeOfFile])
 
   async function computeGrid(): Promise<Grid> {
     if(typeOfFile === "real-data") {
@@ -81,6 +84,17 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
     }
 
     return greyData;
+  }
+
+  function alreadyInCache(): boolean {
+    // no cache for noise
+    if(typeOfFile === "noise") {
+      return false;
+    }
+
+    if(grid.typeOfFile === typeOfFile && grid.filepath === filepath){
+      return true;
+    }
   }
 
   return { grid, createGrid };
