@@ -36,7 +36,7 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
     playTopographyPieceSound,
     stopTopographyPieceSound
   } = useContext(SoundsContext);
-  
+
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 0.0,
     config: { duration: timerSwitch}

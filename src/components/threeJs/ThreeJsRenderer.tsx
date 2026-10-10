@@ -16,15 +16,15 @@ const CAMERA_PADDING = 1;
 
 interface ThreeJsRendererProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
 }
 
-function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
+function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRendererProps ): React.ReactElement {
   const {
     animationState,
     isLight,
-    enableBloom,
-    width,
-    height
+    enableBloom
   } = useContext(RendererContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
@@ -102,10 +102,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-far={1500}
-          shadow-camera-left={-(width + 100)}
-          shadow-camera-right={(width + 100)}
-          shadow-camera-top={(height + 100)}
-          shadow-camera-bottom={-(height + 100)}
+          shadow-camera-left={-(widthTerrain + 100)}
+          shadow-camera-right={(widthTerrain + 100)}
+          shadow-camera-top={(heightTerrain + 100)}
+          shadow-camera-bottom={-(heightTerrain + 100)}
         />
         <PerformanceMonitor
             bounds={() => [30, 500]} // frame/second limit to trigger functions
@@ -130,14 +130,16 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.3,
-              height: height * 1.3,
+              width: widthTerrain *1.3,
+              height: heightTerrain * 1.3,
               resolution: 256,
               color:"#000000"
             }}
           >
             <Scene
               shapes={shapes}
+              widthTerrain={widthTerrain}
+              heightTerrain={heightTerrain}
               meshRef={meshRef}
               optimized={optimized}
             />
