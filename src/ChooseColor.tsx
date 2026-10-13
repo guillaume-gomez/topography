@@ -101,7 +101,7 @@ function ChooseColor({ onSubmit } : ChooseColorProps) {
 
 	return (
     <div className="flex flex-col gap-2">
-      <p className="self-center text-3xl">Pick two colours</p>
+      <p className="self-center text-4xl">Pick two colours</p>
       <Card>
         <div className="flex flex-row gap-1 items-end h-100" style={{minHeight: "50vh"}}>
           {

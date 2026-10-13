@@ -1,26 +1,24 @@
 import { useState, useEffect } from "react";
-import { Vector2, Color } from "three";
+import { Vector2, Color, SRGBColorSpace } from "three";
 import { lerpColors } from "../colorUtils";
-import { generateGrid } from "../libs/generateGrid";
-import { getData } from "../readJson";
 import * as d3 from "d3-contour";
 
-const { BASE_URL } = import.meta.env;
-
 interface TopographyProps {
-  grid: Grid;
-  width: number;
-  height: number;
   numberOfLayers: number;
   fromToColors?: [string, string];
 }
 
 export interface Shape {
+  id: string;
   color: Color;
   points: Vector2[];
   elevation: number;
 }
 
+interface UseTopographiesReturn {
+  generate: (grid: Grid) => void;
+  shapes: Shape[];
+}
 
 const COLORS_SAMPLE = [
 "#F05D5E",
@@ -44,12 +42,10 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopographies({ grid, width, height, numberOfLayers, fromToColors } : TopographyProps) {
-  const [shapes, setShapes] = useState<Shape[]>([]);
+const BASE_TERRAIN = 500;
 
-  useEffect(() => {
-    generate();
-  }, [grid, numberOfLayers]);
+function useTopographies({ numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
+  const [shapes, setShapes] = useState<Shape[]>([]);
 
   function computeThresholds(min:number, max :number) : number[] {
     const thresholds = [];
@@ -60,7 +56,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
     return thresholdsContrained;
   }
 
-  async function generate(): Shape[] {
+  function generate(grid: Grid): Shape[] {
     const shapes : Shape[] = [];
     const { gridWidth, gridHeight, data, min, max } = grid;
     const contours = d3.contours()
@@ -70,7 +66,8 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
 
     const result = contours(data.flat());
 
-    const [newWidth, newHeight] = [width, height];
+    const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+    const [newWidth, newHeight] = [BASE_TERRAIN * ratio, BASE_TERRAIN];
 
     const scaleX = (newWidth/gridWidth);
     const scaleY = (newHeight/gridHeight);
@@ -81,6 +78,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
         const points  = vertexes.map(([x, y]) => ({x, y}));
 
         const shape = {
+          id: crypto.randomUUID(),
           color: colorByElevation(thresholdIndex),
           points: points.map(point => new Vector2(point.x * scaleX, point.y * scaleY)),
           elevation: thresholdIndex
@@ -96,7 +94,7 @@ function useTopographies({ grid, width, height, numberOfLayers, fromToColors } :
   function colorByElevation(index: number): Color {
     if(fromToColors) {
       const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
-      return new Color(...colors[index % colors.length]);
+      return new Color().setRGB(...colors[index % colors.length], SRGBColorSpace);
     }
 
     return new Color(COLORS_SAMPLE[index % COLORS_SAMPLE.length])

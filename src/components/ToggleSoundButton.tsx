@@ -23,7 +23,7 @@ function ToggleSoundButton() {
 
   return (
     <button
-      className="btn btn-circle"
+      className="btn btn-circle btn-ghost absolute right-2 lg:right-5 top-2 lg:top-5 z-10 opacity-70"
       onClick={() => setHasSound(!hasSound)}
     >
       <svg width="800px" height="800px" viewBox="-0.5 0 25 25" >

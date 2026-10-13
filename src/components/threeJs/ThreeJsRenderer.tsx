@@ -8,21 +8,24 @@ import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
 import { type Shape } from "../../hooks/useTopography";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
 const { MODE } = import.meta.env;
 
+const CAMERA_PADDING = 1;
+
 interface ThreeJsRendererProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
 }
 
-function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
+function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRendererProps ): React.ReactElement {
   const {
     animationState,
     isLight,
-    width,
-    height
-  } = useContext(SettingsContext);
+    enableBloom
+  } = useContext(RendererContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
   const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
@@ -55,7 +58,12 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
       return;
     }
     await cameraControllerRef.current.fitToBox(meshRef.current, true,
-      { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
+      { 
+        paddingLeft: CAMERA_PADDING,
+        paddingRight: CAMERA_PADDING, 
+        paddingBottom: CAMERA_PADDING,
+        paddingTop: CAMERA_PADDING
+      }
     );
 
   }
@@ -94,10 +102,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-far={1500}
-          shadow-camera-left={-(width + 100)}
-          shadow-camera-right={(width + 100)}
-          shadow-camera-top={(height + 100)}
-          shadow-camera-bottom={-(height + 100)}
+          shadow-camera-left={-(widthTerrain + 100)}
+          shadow-camera-right={(widthTerrain + 100)}
+          shadow-camera-top={(heightTerrain + 100)}
+          shadow-camera-bottom={-(heightTerrain + 100)}
         />
         <PerformanceMonitor
             bounds={() => [30, 500]} // frame/second limit to trigger functions
@@ -116,19 +124,22 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
             intensity={1}
             environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
+              position: [0, 20, 0],
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
               offset: 5,
               scale: 1,
-              width: width *1.1,
-              height: height * 1.1,
+              width: widthTerrain *1.3,
+              height: heightTerrain * 1.3,
               resolution: 256,
-              color:"#FF0000"
+              color:"#000000"
             }}
           >
             <Scene
               shapes={shapes}
+              widthTerrain={widthTerrain}
+              heightTerrain={heightTerrain}
               meshRef={meshRef}
               optimized={optimized}
             />
@@ -144,11 +155,11 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
         }*/}
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
           { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+          { enableBloom && <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> }
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}

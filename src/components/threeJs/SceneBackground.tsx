@@ -1,7 +1,7 @@
 import { useRef, useContext } from 'react';
 import { useSpring, animated } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 import { Stars } from '@react-three/drei';
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
@@ -15,7 +15,7 @@ function SceneBackground() {
   const {
     isLight,
     timerSwitch,
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
 
 
   const spring = useSpring({
