@@ -36,7 +36,14 @@ export default function App() {
   )
 }
 
-function Shape({ children, color, ...props }) {
+interface ShapeProps {
+  children: any;
+  color: string;
+  position: [number, number, number];
+  rotation?: [number, number, number];
+}
+
+function Shape({ children, color, ...props }: ShapeProps) {
   const [hovered, hover] = useState(true)
   return (
     <mesh {...props} onPointerOver={() => hover(false)} onPointerOut={() => hover(true)}>

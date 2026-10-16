@@ -37,10 +37,10 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
       return grid;
     }
     
-    const grid = await computeGrid();
-    setGrid(grid);
+    const newGrid = await computeGrid();
+    setGrid(newGrid);
 
-    return grid;
+    return newGrid;
   }
 
   async function computeGrid(): Promise<Grid> {
@@ -61,12 +61,12 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
     const gridHeight = gridWidth;
     const grid = generateGrid(gridWidth, gridHeight, frequency);
 
-    return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90 };
+    return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90, filepath: "", typeOfFile: "noise" };
   }
 
   async function gridFromRealData(): Promise<Grid> {
     const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/${filepath}`);
-    return { gridWidth: width, gridHeight: height, data: values, min, max };
+    return { gridWidth: width, gridHeight: height, data: values, min, max, filepath, typeOfFile: "real-data" };
   }
 
   async function gridFromImage(): Promise<Grid> {
@@ -74,7 +74,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
     const greyImageData = resizeImageAndConvertToGrey(image);
     const greyData = fromImageDataToGridData(greyImageData);
     const { expectedWidth, expectedHeight} = resizeImageSize(image.width, image.height);
-    return { gridWidth: expectedWidth, gridHeight: expectedHeight, data: greyData, min: 0, max: 255 };
+    return { gridWidth: expectedWidth, gridHeight: expectedHeight, data: greyData, min: 0, max: 255, filepath, typeOfFile: "image" };
   }
 
   function fromImageDataToGridData(greyImageData: ImageData): number[] {
@@ -92,9 +92,11 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
       return false;
     }
 
-    if(grid.typeOfFile === typeOfFile && grid.filepath === filepath){
+    if(grid.typeOfFile === typeOfFile && grid.filepath === filepath) {
       return true;
     }
+
+    return false;
   }
 
   return { grid, createGrid };

@@ -1,9 +1,9 @@
 import { animated } from '@react-spring/web';
 import { debounce } from "lodash";
-import type { CSSProperties } from 'react';
+import type { ComponentProps } from 'react';
 
 interface Props {
-  style: CSSProperties;
+  style: ComponentProps<typeof animated.div>['style'];
   value: string;
   onChange: (newColor: string) => void;
 }

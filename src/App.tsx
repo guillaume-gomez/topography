@@ -9,7 +9,7 @@ import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
-import useGrid, { type Grid } from "./hooks/useGrid";
+import useGrid from "./hooks/useGrid";
 import ToggleSoundButton from "./components/ToggleSoundButton";
 import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";

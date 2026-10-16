@@ -1,4 +1,4 @@
-import { useContext, Suspense, type Ref, useMemo } from 'react';
+import { Suspense, type Ref, useMemo } from 'react';
 import { type Mesh } from "three";
 import { maxBy } from "lodash";
 
@@ -7,8 +7,6 @@ import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
-
-import { RendererContext } from "../../context/RendererContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
 
@@ -36,10 +34,6 @@ function Scene({
   heightTerrain,
   optimized
 } : SceneProps) {
-  const {
-    animationState
-  } = useContext(RendererContext);
-
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
   }, [shapes]);

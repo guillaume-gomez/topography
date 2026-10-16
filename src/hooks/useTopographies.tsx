@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { type Grid } from "./useGrid";
+import { useState } from "react";
 import { Vector2, Color, SRGBColorSpace } from "three";
 import { lerpColors } from "../colorUtils";
 import * as d3 from "d3-contour";

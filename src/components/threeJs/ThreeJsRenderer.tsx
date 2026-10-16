@@ -152,15 +152,16 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
           </GizmoHelper>
         }
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-        {/*{ MODE === "development" &&
-          <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
-        }*/}
         <EffectComposer enableNormalPass={false}>
-          { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
+          { !optimized ?
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} /> :
+            <></>
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
-          { enableBloom && <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> }
+          { enableBloom ?
+            <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> :
+            <></>
+          }
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}

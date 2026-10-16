@@ -1,7 +1,7 @@
-import { useMemo, useContext } from "react";
+import { useContext } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
-import { MeshStandardMaterial, TextureLoader } from "three";
+import { TextureLoader } from "three";
 import { RendererContext } from "../../context/RendererContextWrapper";
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
