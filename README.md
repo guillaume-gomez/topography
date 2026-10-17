@@ -10,7 +10,7 @@ As I am passionate about topography map. I would created a simple "3d topography
 It enphasizes the beauty of natural nivellations and shapes made by mother nature.
 
 
-## Inspirations
+## References & Inspirations
 
 https://editor.p5js.org/StevesMakerspace/sketches/h39Za5FoN
 
@@ -19,6 +19,10 @@ https://mkosir.github.io/react-parallax-tilt/?path=/story/react-parallax-tilt--p
 https://perspective-gray.vercel.app/
 
 https://touchterrain.geol.iastate.edu/main?map_lat=35.36&map_lon=49.04&map_zoom=8&DEM_name=JAXA/ALOS/AW3D30/V4_1
+
+https://www.boilise.com/en/products/lac-dannecy
+
+https://css-tip.com/3d-parallax-effect/
 
 ## typography:
 
@@ -38,10 +42,6 @@ https://perspective-gray.vercel.app/
 
 // for blop animation
 https://www.blobmaker.app/
-
-ref
-https://www.boilise.com/en/products/lac-dannecy
-https://css-tip.com/3d-parallax-effect/
 
 https://3d-mapper.com/
 
