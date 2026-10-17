@@ -8,6 +8,7 @@ import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
+import Legend from "./components/Legend";
 import useTopography from "./hooks/useTopography";
 import useGrid from "./hooks/useGrid";
 import ToggleSoundButton from "./components/ToggleSoundButton";
@@ -188,6 +189,9 @@ function App() {
                   />
                 </div>
               </Card>
+              <Legend />
+              <ThreejsRenderer shapes={shapes}/>
+
               <ThreejsRenderer
                 shapes={shapes}
                 widthTerrain={widthTerrain}
