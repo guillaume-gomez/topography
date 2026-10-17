@@ -1,32 +1,41 @@
-import { useEffect, useContext, type CSSProperties } from 'react';
+import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
+import { RendererContext } from "./context/RendererContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
 import { animated, easings, useTransition, type AnimatedProps } from '@react-spring/web';
-
+import ColorBlobInput from "./components/ColorBlobInput";
 import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
-import useTopography from "./components/hooks/useTopography";
+import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import Legend from "./components/Legend";
+import useTopography from "./hooks/useTopography";
+import useGrid from "./hooks/useGrid";
+import ToggleSoundButton from "./components/ToggleSoundButton";
+import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
-type AnimationProps = AnimatedProps<CSSProperties>
+type AnimationProps = AnimatedProps<CSSProperties>;
+
+const BASE_TERRAIN = 500;
 
 function App() {
   const {
-    isLight,
-    setLight,
-    width,
-    height,
     numberOfLayers,
     setColorFrom,
     setColorTo,
     setNumberOfLayers,
-    setAnimationState,
-    colorFrom, 
-    colorTo
+    colorFrom,
+    colorTo,
   } = useContext(SettingsContext);
+  const {
+    isLight,
+    setAnimationState,
+    enableBloom,
+    setEnableBloom,
+    hasSingleTopograhy
+  } = useContext(RendererContext);
   const {
     setSceneName,
     isColorChoose,
@@ -34,9 +43,16 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { generate, shapes } = useTopography({
-    width,
-    height,
+  const { grid, createGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
+
+  const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
+    numberOfLayers,
+    fromToColors: [colorFrom, colorTo]
+  });
+
+  const { generate: generateTopography, shapes: shapesTopography } = useTopography({
+    width: BASE_TERRAIN,
+    height: BASE_TERRAIN,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
@@ -44,6 +60,19 @@ function App() {
   useEffect(() => {
     setSceneName("intro")
   }, []);
+
+  const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
+    [hasSingleTopograhy, shapesTopography, shapesTopographies]
+  );
+
+  const { widthTerrain, heightTerrain } = useMemo(() => {
+    if(hasSingleTopograhy) {
+      return { widthTerrain: BASE_TERRAIN, heightTerrain: BASE_TERRAIN };
+    } else {
+      const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+      return { widthTerrain: BASE_TERRAIN * ratio, heightTerrain: BASE_TERRAIN };
+    }
+  }, [grid, hasSingleTopograhy]);
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -74,11 +103,15 @@ function App() {
       }
   );
 
-  function onGenerate() {
-    generate();
-    setAnimationState("started");
+  async function onGenerate() {
+    if(hasSingleTopograhy) {
+      generateTopography();
+    } else {
+      const newGrid = await createGrid();
+      generateTopographies(newGrid);
+    }
+    setAnimationState("started")
   }
-
 
   return (
     <>
@@ -87,7 +120,7 @@ function App() {
         bg-[linear-gradient(to_right,#73737320_1px,#03030349_1px),linear-gradient(to_bottom,#73737320_1px,#03030349_1px)]
         bg-[size:30px_30px]"
       />
-      <div className="w-screen h-screen md:p-5 p-2 flex flex-col">
+      <div className="w-full h-screen md:p-5 p-2 flex flex-col">
         {
           transitionIntroProps(style => (
             <animated.div className="w-full h-full p-5 items-center justify-center" style={style as AnimationProps}>
@@ -120,14 +153,50 @@ function App() {
               className="w-full h-screen"
               style={style as AnimationProps}
             >
+              <ToggleSoundButton />
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <ProgressButton label="Generate" onClick={() => {generate(); setAnimationState("started")}} />
-                <button className="btn btn-xs btn-secondary" onClick={() => setLight(!isLight)}>
-                  {isLight ? "Light" : "Dark"}
-                </button>
+                <ProgressButton
+                  label="Generate"
+                  onClick={() => {
+                      onGenerate();
+                    }
+                  } />
+                <div className="flex flex-row gap-3 items-center">
+                  <ToggleDayButton />
+                  <div className="flex flex-col gap-1">
+                    <span>Bloom</span>
+                    <div className="tooltip" data-tip={isLight ? "Bloom only works on night mode" : ""}>
+                      <input
+                        disabled={isLight}
+                        className="toggle toggle-secondary"
+                        type="checkbox"
+                        onChange={() => setEnableBloom(!enableBloom)}
+                        checked={enableBloom}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-row gap-1">
+                  <ColorBlobInput
+                    value={colorFrom}
+                    onChange={(newColor) => setColorFrom(newColor)}
+                    animate={false}
+                  />
+                  <ColorBlobInput
+                    value={colorTo}
+                    onChange={(newColor) => setColorTo(newColor)}
+                    animate={false}
+                  />
+                </div>
               </Card>
               <Legend />
               <ThreejsRenderer shapes={shapes}/>
+
+              <ThreejsRenderer
+                shapes={shapes}
+                widthTerrain={widthTerrain}
+                heightTerrain={heightTerrain}
+              />
             </animated.div>
           ))
         }
