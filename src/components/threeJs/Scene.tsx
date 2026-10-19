@@ -1,14 +1,14 @@
-import { useContext, Suspense, type Ref } from 'react';
-import { type Mesh} from "three";
-import { animated, useSpring, Globals } from '@react-spring/three';
+import { Suspense, type Ref, useMemo } from 'react';
+import { type Mesh } from "three";
+import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import GalleryRoom from './GalleryRoom';
+import { Globals } from '@react-spring/three';
 
-import { SettingsContext } from "../../context/SettingsContextWrapper";
-
-import { type Shape } from "../hooks/useTopography";
+import { type Shape } from "../../hooks/useTopography";
 
 // https://github.com/pmndrs/react-spring/issues/1586
 Globals.assign({
@@ -18,6 +18,8 @@ Globals.assign({
 
 interface SceneProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
   meshRef: Ref<Mesh>;
   optimized: boolean;
 }
@@ -25,49 +27,44 @@ interface SceneProps {
 const BaseHeight = 30;
 const OceanHeight = 15;
 
-function Scene({ shapes, meshRef, optimized } : SceneProps) {
-  const {
-    width,
-    height,
-    animationState
-  } = useContext(SettingsContext);
-
-  const [rotationSpring,] = useSpring(
-  {
-    from: { y: 0, rotationY: 0, },
-    to: { y: BaseHeight/2, rotationY: Math.PI * 2,},
-    config: {
-      duration: 800
-    },
-    reset: false,
-  },
-  [animationState]
-  );
+function Scene({ 
+  shapes,
+  meshRef,
+  widthTerrain,
+  heightTerrain,
+  optimized
+} : SceneProps) {
+  const maxElevation = useMemo(() => {
+    return maxBy(shapes, "elevation")!.elevation;
+  }, [shapes]);
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
+    <GalleryRoom />
      <group
-        position={[-width/2, BaseHeight, height/2]}
+        position={[-widthTerrain/2, BaseHeight, heightTerrain/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
         {
-          shapes.map((shape, index) => {
+          shapes.map((shape) => {
             return (
-              <TopographyWrapper shape={shape} key={index} optimized={optimized} />
+              <TopographyWrapper
+                key={shape.id}
+                shape={shape}
+                maxElevation={maxElevation}
+                optimized={optimized}/>
             )
           })
         }
       </group>
-      <animated.mesh
-        position-x={0}
-        position-y={rotationSpring.y}
-        rotation-y={rotationSpring.rotationY}
+      <mesh
+        position={[0, BaseHeight/2, 0]}
       >
-        <boxGeometry args={[width, OceanHeight, height]} />
+        <boxGeometry args={[widthTerrain, OceanHeight, heightTerrain]} />
         <meshStandardMaterial color="#092a5e" />
-      </animated.mesh>
-      <Frame width={width} height={height} depth={BaseHeight} position={[0, 0, (height)/2]}/>
+      </mesh>
+      <Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>
     </Suspense>
   );
 };

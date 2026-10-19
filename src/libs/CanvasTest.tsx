@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { line } from "./drawLine";
-import type { Shape } from "../components/hooks/useTopographies";
+import type { Shape } from "../hooks/useTopographies";
 
 interface CanvasTest {
   shapes: Shape[];

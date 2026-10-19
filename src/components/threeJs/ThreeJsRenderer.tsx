@@ -1,29 +1,31 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
-import { GizmoHelper, GizmoViewport, Grid, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
 import { EffectComposer, Bloom, ToneMapping, TiltShift } from '@react-three/postprocessing';
 import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
-import { type Shape } from "../hooks/useTopography";
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { type Shape } from "../../hooks/useTopography";
+import { RendererContext } from "../../context/RendererContextWrapper";
 
+const { MODE } = import.meta.env;
 
-const { /*BASE_URL,*/ MODE } = import.meta.env;
+const CAMERA_PADDING = 1;
 
 interface ThreeJsRendererProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
 }
 
-function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement {
+function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRendererProps ): React.ReactElement {
   const {
     animationState,
     isLight,
-    width,
-    height
-  } = useContext(SettingsContext);
+    enableBloom
+  } = useContext(RendererContext);
   const cameraControllerRef = useRef<CameraControls>(null);
   const meshRef = useRef<Mesh|null>(null);
   const [dpr, setDpr] = useState<number>(() => window.devicePixelRatio);
@@ -49,40 +51,43 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
     if(!isLight) {
       moveTopDown();
     }
-  }, [isLight])
-  
+  }, [isLight]);
+
   async function recenterCamera() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
     }
-
     await cameraControllerRef.current.fitToBox(meshRef.current, true,
-      { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
+      { 
+        paddingLeft: CAMERA_PADDING,
+        paddingRight: CAMERA_PADDING, 
+        paddingBottom: CAMERA_PADDING,
+        paddingTop: CAMERA_PADDING
+      }
     );
+
   }
 
   async function moveTopDown() {
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
     }
-    await cameraControllerRef.current.setPosition(0, 350, 0, true);
+    await cameraControllerRef.current.setPosition(0, 400, 0, true);
 
     //recenterCamera();
   }
 
   async function onAnimationEnd() {
-     console.log("ended")
      recenterCamera();
   }
 
   function onAnimationStart() {
-    console.log("started")
-    //recenterCamera();
+    recenterCamera();
   }
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, far: 1500 }}
+        camera={{ position: [0, 300, 450], fov: 75, near: 10, far: 3000 }}
         dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -97,10 +102,10 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-far={1500}
-          shadow-camera-left={-600}
-          shadow-camera-right={600}
-          shadow-camera-top={600}
-          shadow-camera-bottom={-600}
+          shadow-camera-left={-(widthTerrain + 100)}
+          shadow-camera-right={(widthTerrain + 100)}
+          shadow-camera-top={(heightTerrain + 100)}
+          shadow-camera-bottom={-(heightTerrain + 100)}
         />
         <PerformanceMonitor
             bounds={() => [30, 500]} // frame/second limit to trigger functions
@@ -116,22 +121,26 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
         >
           <Stage
             adjustCamera={false}
+            center={{ disable: true }}
             intensity={1}
-            environment={"park"}
+            environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
+              position: [0, 20, 0],
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
-              offset: 20,
+              offset: 5,
               scale: 1,
-              width: width *1.2,
-              height: height * 1.2,
+              width: widthTerrain *1.3,
+              height: heightTerrain * 1.3,
               resolution: 256,
-              color:"#FF0000"
+              color:"#000000"
             }}
           >
             <Scene
               shapes={shapes}
+              widthTerrain={widthTerrain}
+              heightTerrain={heightTerrain}
               meshRef={meshRef}
               optimized={optimized}
             />
@@ -143,21 +152,22 @@ function ThreejsRenderer({ shapes } : ThreeJsRendererProps ): React.ReactElement
           </GizmoHelper>
         }
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-        { MODE === "development" &&
-          <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
-        }
         <EffectComposer enableNormalPass={false}>
-          <Bloom mipmapBlur={!optimized} luminanceThreshold={1.0} />
-          { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5}  blendFunction={BlendFunction.NORMAL} />
+          { !optimized ?
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} /> :
+            <></>
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
+          { enableBloom ?
+            <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> :
+            <></>
+          }
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}
           makeDefault
           smoothTime={1.0}
-          minPolarAngle={0.75}
+          minPolarAngle={0}
           maxPolarAngle={Math.PI / 2.5}
           minAzimuthAngle={-Math.PI}
           maxAzimuthAngle={Math.PI}

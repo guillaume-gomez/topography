@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Vector2, Color } from "three";
+import { Vector2, Color, SRGBColorSpace } from "three";
 import { createNoise2D } from 'simplex-noise';
-import { lerpColors } from "../../colorUtils";
+import { lerpColors } from "../colorUtils";
 
 interface TopographyProps {
   width: number;
@@ -17,9 +17,16 @@ interface Point {
 }
 
 export interface Shape {
+  id: string;
   color: Color;
   points: Vector2[];
   elevation: number;
+}
+
+
+interface UseTopographyResult {
+  generate: () => void;
+  shapes: Shape[];
 }
 
 const COLORS_SAMPLE = [
@@ -44,7 +51,7 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
-function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : TopographyProps) {
+function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : TopographyProps): UseTopographyResult {
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [frequency, _setFrequency] = useState<number>(0.5);
   const [minRadiusRatio, _setMinRadiusRatio] = useState<number>(0.7);
@@ -67,10 +74,10 @@ function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : T
           Math.cos(m) * frequency,
           Math.sin(m) * frequency
         );
-      
+
         // Convertir le bruit (-1 à 1) en variation de rayon (0.7 à 1.3)
         const noisyRadius = mapRange(noiseValue, -1, 1, minRadiusRatio, maxRadiusRatio) * radius;
-      
+
         const x = Math.cos(m) * noisyRadius;
         const y = Math.sin(m) * noisyRadius;
         points.push({x, y});
@@ -97,7 +104,7 @@ function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : T
   //         Math.sin(m) * frequency
   //       );
   //       const noisyRadius = mapRange(noiseValue, -1, 1, minRadiusRatio, maxRadiusRatio) * radius;
-      
+
   //       const x = Math.cos(m) * noisyRadius;
   //       const y = Math.sin(m) * noisyRadius;
   //       points.push({x, y});
@@ -130,7 +137,8 @@ function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : T
       //   100,
       // );
 
-      const shape = { 
+      const shape = {
+        id: crypto.randomUUID(),
         color: colorByElevation(elevation),
         points: shapePoints.map(point => new Vector2(point.x, point.y)),
         elevation
@@ -150,7 +158,7 @@ function useTopography({ width, height, numberOfLayers, colorFrom, colorTo } : T
   function colorByElevation(number: number): Color {
     if(colorFrom && colorTo) {
       const colors = lerpColors(colorFrom, colorTo, numberOfLayers);
-      return new Color(...colors[number % colors.length]);
+      return new Color().setRGB(...colors[number % colors.length], SRGBColorSpace);
     }
 
     return new Color(COLORS_SAMPLE[number % COLORS_SAMPLE.length])
