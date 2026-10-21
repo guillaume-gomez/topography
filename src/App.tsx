@@ -42,7 +42,12 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { grid, createGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
+  const { grid, createGrid } = useGrid({
+    //filepath: "volcano.json",
+    typeOfFile: "noise",
+    widthForNoise: 128,
+    heightForNoise: 96
+  });
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     numberOfLayers,

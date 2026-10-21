@@ -16,12 +16,12 @@ export function generateGrid(
   const grid: number[][] = [];
   const noise = createNoise2D();
 
-  for (let x = 0; x < width; x += 1) {
-    const row: number[] = [];
-    for (let y = 0; y < height; y += 1) {
-      row.push(scale((noise(offset + x * frequency, offset + y * frequency)), [-1, 1], [0, 1]));
+  for (let y = 0; y < height; y += 1) {
+    const column: number[] = [];
+    for (let x = 0; x < width; x += 1) {
+      column.push(scale((noise(offset + x * frequency, offset + y * frequency)), [-1, 1], [0, 1]));
     }
-    grid.push(row);
+    grid.push(column);
   }
 
   return grid;
