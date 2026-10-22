@@ -17,13 +17,9 @@ export interface Grid {
   typeOfFile: TypeOfFile;
 }
 
-interface UseGridProps {
-  filepath: string;
-  typeOfFile: TypeOfFile;
-  widthForNoise?: number;
-  heightForNoise?: number;
-}
-
+type UseGridProps =
+  | { typeOfFile: "noise"; filepath: never, widthForNoise?: number; heightForNoise?: number; }
+  | { typeOfFile: "real-data" | "image"; filepath: string };
 
 interface UseGridReturn {
   createGrid: () => Promise<Grid>;
