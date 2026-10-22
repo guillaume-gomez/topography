@@ -1,3 +1,4 @@
+import { animated, useSpring } from '@react-spring/three';
 import { useLoader } from '@react-three/fiber';
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 import { TextureLoader } from "three";
@@ -10,6 +11,8 @@ interface FrameProps {
   position: [number, number, number]
 }
 
+const duration = 1000;
+const frameDepth = 25;
 
 function Frame({width, height, depth, position } : FrameProps) {
 
@@ -20,47 +23,97 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
+  const [frontFrame,] = useSpring(
+  {
+    from: { z: 1000 },
+    to: { z: frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [backFrame,] = useSpring(
+  {
+    from: { z: -1000 },
+    to: { z: -height - frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [rightFrame,] = useSpring(
+  {
+    from: { x: 1000 },
+    to: { x: width/2 + frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
+  const [leftFrame,] = useSpring(
+  {
+    from: { x: -1000 },
+    to: { x: -width/2 - frameDepth/2 },
+    config: {
+      duration
+    },
+    reset: false,
+  }, []);
+
   const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
-  const frameDepth = 25;
 	return (
     <group position={position}>
-      <mesh
-        position={[0, 30, frameDepth/2]}
-        material={material}
-      >
-        <boxGeometry args={[width, depth, frameDepth]} />
-        {/*<meshStandardMaterial color="blue" />*/}
-      </mesh>
-
-      <mesh
-        position={[0, 30, -height - frameDepth/2]}
+      {/* Front */}
+      <animated.mesh
+        position-x={0}
+        position-y={30}
+        position-z={frontFrame.z}
         material={material}
       >
         <boxGeometry args={[width, depth, frameDepth]} />
         {/*<meshStandardMaterial color="red" />*/}
-      </mesh>
+        <LeatherText position={[175, 0, frameDepth -20]} depth={depth} />
+      </animated.mesh>
 
-      <mesh
-        position={[width/2 + frameDepth/2, 30, -height/2]}
+      {/* Back */}
+      <animated.mesh
+        position-x={0}
+        position-y={30}
+        position-z={backFrame.z}
+        material={material}
+      >
+        <boxGeometry args={[width, depth, frameDepth]} />
+        {/*<meshStandardMaterial color="red" />*/}
+      </animated.mesh>
+
+      {/* Right */}
+      <animated.mesh
+        position-x={rightFrame.x}
+        position-y={30}
+        position-z={-height/2}
         rotation={[0, Math.PI/2, 0]}
         material={material}
       >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
         {/*<meshStandardMaterial color="orange" />*/}
-      </mesh>
+      </animated.mesh>
 
-      <mesh
-        position={[-width/2 - frameDepth/2, 30, -height/2]}
+      {/* Left */}
+      <animated.mesh
+        position-x={leftFrame.x}
+        position-y={30}
+        position-z={-height/2}
         rotation={[0, Math.PI/2, 0]}
         material={material}
       >
         <boxGeometry args={[height + 2*frameDepth, depth, frameDepth]} />
         {/*<meshStandardMaterial color="purple" />*/}
-      </mesh>
-
+      </animated.mesh>
       <LeatherText position={[width/2 - LeatherTextWidth/2, 30, frameDepth]} depth={depth} />
-      
     </group>
   );
 };
