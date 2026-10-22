@@ -46,14 +46,16 @@ function App() {
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     numberOfLayers,
-    fromToColors: [colorFrom, colorTo]
+    colorFrom, 
+    colorTo
   });
 
   const { generate: generateTopography, shapes: shapesTopography } = useTopography({
     width: BASE_TERRAIN,
     height: BASE_TERRAIN,
     numberOfLayers,
-    fromToColors: [colorFrom, colorTo]
+    colorFrom,
+    colorTo
   });
 
   useEffect(() => {
@@ -140,7 +142,7 @@ function App() {
                 setNumberOfLayers(layers);
 
                 onGenerate();
-
+                
                 setSceneName("3d-scene");
               }} />
             </animated.div>
