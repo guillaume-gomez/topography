@@ -72,7 +72,7 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
     if(!meshRef.current || !cameraControllerRef.current) {
       return;
     }
-    await cameraControllerRef.current.setPosition(0, 350, 0, true);
+    await cameraControllerRef.current.setPosition(0, 400, 0, true);
 
     //recenterCamera();
   }
@@ -87,7 +87,7 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
 
   return (
       <Canvas
-        camera={{ position: [0, 200, 250], fov: 75, near: 10, far: 3000 }}
+        camera={{ position: [0, 300, 450], fov: 75, near: 10, far: 3000 }}
         dpr={Math.min(dpr, window.devicePixelRatio)}
         shadows
         className="rounded-xl hover:cursor-grabbing w-full h-full"
@@ -121,6 +121,7 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
         >
           <Stage
             adjustCamera={false}
+            center={{ disable: true }}
             intensity={1}
             environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
@@ -151,21 +152,22 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
           </GizmoHelper>
         }
         { import.meta.env.MODE === "development" ? <Stats/> : <></> }
-        {/*{ MODE === "development" &&
-          <Grid args={[1000, 1000]} position={[0,-50,0]} cellColor='green' />
-        }*/}
         <EffectComposer enableNormalPass={false}>
-          { !optimized && 
-            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} />
+          { !optimized ?
+            <TiltShift offset={0.30} focusArea={0.50} feather={0.5} blendFunction={BlendFunction.NORMAL} /> :
+            <></>
           }
           <ToneMapping  mode={ToneMappingMode.UNCHARTED2} />
-          { enableBloom && <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> }
+          { enableBloom ?
+            <Bloom mipmapBlur={!optimized} luminanceThreshold={4} intensity={0.6} levels={10} /> :
+            <></>
+          }
         </EffectComposer>
         <CameraControls
           ref={cameraControllerRef}
           makeDefault
           smoothTime={1.0}
-          minPolarAngle={0.75}
+          minPolarAngle={0}
           maxPolarAngle={Math.PI / 2.5}
           minAzimuthAngle={-Math.PI}
           maxAzimuthAngle={Math.PI}

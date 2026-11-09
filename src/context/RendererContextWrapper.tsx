@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, type ReactNode } from 'react';
+import { createContext, useState, type ReactNode } from 'react';
 
 export type GenerationAnimationState = "started" | "ended";
 
@@ -19,9 +19,6 @@ export const RendererContext = createContext<RendererContextParams>(null!);
 interface Props {
   children: ReactNode;
 }
-
-
-const BASE_TERRAIN = 500;
 
 function RendererContextWrapper({children}: Props) {
   const [isLight, setLight] = useState<boolean>(true);
