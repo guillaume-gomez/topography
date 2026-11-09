@@ -1,8 +1,8 @@
 import { animated } from '@react-spring/web';
-import type { CSSProperties } from 'react';
+import type { ComponentProps } from 'react';
 
 interface Props {
-  style: CSSProperties;
+  style: ComponentProps<typeof animated.div>['style'];
 }
 
 function ColorCard({ style }: Props) {

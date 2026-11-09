@@ -9,12 +9,15 @@ import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
+import useGrid from "./hooks/useGrid";
 import ToggleSoundButton from "./components/ToggleSoundButton";
 import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
 import ParallaxTilt from "./components/ParallaxTilt";
 
 type AnimationProps = AnimatedProps<CSSProperties>;
+
+const BASE_TERRAIN = 500;
 
 function App() {
   const {
@@ -26,9 +29,6 @@ function App() {
     colorTo,
   } = useContext(SettingsContext);
   const {
-    grid,
-    width,
-    height,
     isLight,
     setAnimationState,
     enableBloom,
@@ -42,17 +42,16 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
+  const { grid, createGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
+
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
-    grid,
-    width, 
-    height,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
 
   const { generate: generateTopography, shapes: shapesTopography } = useTopography({
-    width,
-    height,
+    width: BASE_TERRAIN,
+    height: BASE_TERRAIN,
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
@@ -64,6 +63,15 @@ function App() {
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
   );
+
+  const { widthTerrain, heightTerrain } = useMemo(() => {
+    if(hasSingleTopograhy) {
+      return { widthTerrain: BASE_TERRAIN, heightTerrain: BASE_TERRAIN };
+    } else {
+      const ratio = parseFloat((grid.gridWidth/grid.gridHeight).toFixed(2));
+      return { widthTerrain: BASE_TERRAIN * ratio, heightTerrain: BASE_TERRAIN };
+    }
+  }, [grid, hasSingleTopograhy]);
 
   const transitionIntroProps  = useTransition(
       isIntro() ? [1] : [],
@@ -94,11 +102,12 @@ function App() {
       }
   );
 
-  function onGenerate() {
+  async function onGenerate() {
     if(hasSingleTopograhy) {
       generateTopography();
     } else {
-      generateTopographies();
+      const newGrid = await createGrid();
+      generateTopographies(newGrid);
     }
     setAnimationState("started")
   }
@@ -145,13 +154,6 @@ function App() {
             >
               <ToggleSoundButton />
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <ProgressButton
-                  label="Generate"
-                  onClick={() => {
-                      generateTopographies();
-                      setAnimationState("started")
-                    }
-                  } />
                 <div className="flex flex-row gap-3 items-center">
                   <ToggleDayButton />
                   <div className="flex flex-col gap-1">
@@ -179,8 +181,18 @@ function App() {
                     animate={false}
                   />
                 </div>
+                <ProgressButton
+                  label="Generate"
+                  onClick={() => {
+                      onGenerate();
+                    }
+                  } />
               </Card>
-              <ThreejsRenderer shapes={shapes}/>
+              <ThreejsRenderer
+                shapes={shapes}
+                widthTerrain={widthTerrain}
+                heightTerrain={heightTerrain}
+              />
             </animated.div>
           ))
         }

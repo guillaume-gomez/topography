@@ -17,7 +17,7 @@ interface TopographyWrapperProps {
 
 const Thickness = 2.5;
 
-const AnimationStartingFromTop = 500;
+//const AnimationStartingFromTop = 500; // other animation
 const AnimationStartingFromBottom = -20;
 
 const OriginalPosition = AnimationStartingFromBottom;
@@ -36,7 +36,7 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
     playTopographyPieceSound,
     stopTopographyPieceSound
   } = useContext(SoundsContext);
-  
+
   const shapeToDisplay = useSpring({
     opacity: isLight ? 1.0 : 0.0,
     config: { duration: timerSwitch}
