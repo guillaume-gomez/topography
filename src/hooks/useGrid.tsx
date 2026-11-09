@@ -18,16 +18,15 @@ export interface Grid {
 }
 
 type UseGridProps =
-  | { typeOfFile: "noise"; filepath: never }
+  | { typeOfFile: "noise"; filepath: never, widthForNoise?: number; heightForNoise?: number; }
   | { typeOfFile: "real-data" | "image"; filepath: string };
-
 
 interface UseGridReturn {
   createGrid: () => Promise<Grid>;
   grid: Grid;
 }
 
-function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
+function useGrid({ filepath, typeOfFile, widthForNoise, heightForNoise }: UseGridProps) : UseGridReturn {
   const [frequency, _setFrequency] = useState<number>(0.05);
   const [grid, setGrid] = useState<Grid>(gridFromNoise());
   
@@ -56,8 +55,8 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   }
 
   function gridFromNoise(): Grid {
-    const gridWidth = 64;
-    const gridHeight = gridWidth;
+    const gridWidth = widthForNoise || 64;
+    const gridHeight = heightForNoise || 64;
     const grid = generateGrid(gridWidth, gridHeight, frequency);
 
     return {gridWidth, gridHeight, data: grid.flat(), min: 0.1, max: 0.90, filepath: "", typeOfFile: "noise" };

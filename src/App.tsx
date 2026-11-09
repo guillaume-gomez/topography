@@ -1,4 +1,4 @@
-import { useEffect, useContext, useMemo, type CSSProperties } from 'react';
+import { useEffect, useContext, useMemo, useState, type CSSProperties } from 'react';
 import { SettingsContext } from "./context/SettingsContextWrapper";
 import { RendererContext } from "./context/RendererContextWrapper";
 import { SceneContext } from "./context/SceneContextWrapper";
@@ -8,6 +8,7 @@ import ChooseColor from "./ChooseColor";
 import ThreejsRenderer from './components/threeJs/ThreeJsRenderer';
 import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
+import RatioInput from "./components/RatioInput";
 import useTopography from "./hooks/useTopography";
 import useGrid from "./hooks/useGrid";
 import ToggleSoundButton from "./components/ToggleSoundButton";
@@ -42,7 +43,14 @@ function App() {
     is3DScene,
   } = useContext(SceneContext);
 
-  const { grid, createGrid } = useGrid({filepath: "volcano.json", typeOfFile: "noise" });
+  const [noiseRatio, setNoiseRatio] = useState<number>(1);
+
+  const { grid, createGrid } = useGrid({
+    //filepath: "volcano.json",
+    typeOfFile: "noise",
+    widthForNoise: 128 * noiseRatio,
+    heightForNoise: 128
+  });
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
     numberOfLayers,
@@ -175,7 +183,8 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row gap-1">
+                <RatioInput onChange={(newValue: number) => setNoiseRatio(newValue)} value={noiseRatio} />
+                <div className="flex flex-row gap-1 items-center justify-between">
                   <ColorBlobInput
                     value={colorFrom}
                     onChange={(newColor) => setColorFrom(newColor)}
