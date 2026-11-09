@@ -1,8 +1,7 @@
-import { useMemo } from "react";
-import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
-import { MeshStandardMaterial, TextureLoader } from "three";
-import LeatherText from "./LeatherText";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
+import { TextureLoader } from "three";
+import LeatherText, { LeatherTextWidth } from "./LeatherText";
 
 interface FrameProps {
 	width: number;
@@ -11,7 +10,9 @@ interface FrameProps {
   position: [number, number, number]
 }
 
+
 function Frame({width, height, depth, position } : FrameProps) {
+
   const [displacementMap, normalMap, aoMap, map] = useLoader(TextureLoader, [
     `textures/dark-wood-stain-unity/dark-wood-stain_height.png`,
     `textures/dark-wood-stain-unity/dark-wood-stain_normal-ogl.png`,
@@ -19,22 +20,9 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
-  const [displacementMap2, normalMap2, aoMap2, map2] = useLoader(TextureLoader, [
-    `textures/brown-leather-unity/brown-leather_height.png`,
-    `textures/brown-leather-unity/brown-leather_normal-ogl.png`,
-    `textures/brown-leather-unity/brown-leather_ao.png`,
-    `textures/brown-leather-unity/brown-leather_albedo.png`,
-  ]);
+  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
-  const material = useMemo(() => {
-    return new MeshStandardMaterial({map, normalMap, aoMap, displacementMap, displacementScale:0 /*color: "white"*/})
-  }, []);
-
-  const material2 = useMemo(() => {
-    return new MeshStandardMaterial({map:map2, normalMap: normalMap2, aoMap: aoMap2, displacementMap: displacementMap2, displacementScale:0 /*color: "white"*/})
-  }, []);
-
-  const frameDepth = 40;
+  const frameDepth = 25;
 	return (
     <group position={position}>
       <mesh
@@ -71,7 +59,7 @@ function Frame({width, height, depth, position } : FrameProps) {
         {/*<meshStandardMaterial color="purple" />*/}
       </mesh>
 
-      <LeatherText position={[150, 30, frameDepth]} depth={depth} />
+      <LeatherText position={[width/2 - LeatherTextWidth/2, 30, frameDepth]} depth={depth} />
       
     </group>
   );

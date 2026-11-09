@@ -1,12 +1,12 @@
 import { useRef, useContext } from 'react';
 import { useSpring, animated } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
-import { SettingsContext } from "../../context/SettingsContextWrapper";
+import { RendererContext } from "../../context/RendererContextWrapper";
 import { Stars } from '@react-three/drei';
 import { hex2rgb } from "../../colorUtils";
 import { Color } from "three";
 
-const FROM = hex2rgb("#ffcfde");
+const FROM = hex2rgb("#b2bf9c");
 const TO = hex2rgb("#050505");
 
 function SceneBackground() {
@@ -15,7 +15,8 @@ function SceneBackground() {
   const {
     isLight,
     timerSwitch,
-  } = useContext(SettingsContext);
+  } = useContext(RendererContext);
+
 
   const spring = useSpring({
     color: isLight ? FROM : TO,
@@ -31,7 +32,7 @@ function SceneBackground() {
 
   return <>
     <animated.ambientLight intensity={spring.intensity} />
-    { isLight ? null : <Stars radius={100} depth={100} count={5000} factor={4} saturation={0} fade speed={1} /> }
+    { isLight ? null : <Stars radius={200} depth={100} count={5000} factor={4} saturation={0} fade speed={1} /> }
    </>;
 }
 
