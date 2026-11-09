@@ -1,7 +1,7 @@
-import { useMemo, useContext } from "react";
+import { useContext } from "react";
 import { Text } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
-import { MeshStandardMaterial, TextureLoader } from "three";
+import { TextureLoader } from "three";
 import { RendererContext } from "../../context/RendererContextWrapper";
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 
@@ -36,10 +36,10 @@ function LeatherText({position, depth} : FrameProps) {
           color={0x000000}
           fontSize={16}
           letterSpacing={0}
-          anchorY="center"
+          anchorY="middle"
           anchorX="center"
           lineHeight={0.8}
-          position={[0, 12, 5]}
+          position={[0, 5, 5]}
         >
           {generationName}
         </Text>

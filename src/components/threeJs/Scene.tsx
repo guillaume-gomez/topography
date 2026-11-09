@@ -1,4 +1,4 @@
-import { useContext, Suspense, type Ref, useMemo } from 'react';
+import { Suspense, type Ref, useMemo } from 'react';
 import { type Mesh } from "three";
 import { maxBy } from "lodash";
 
@@ -8,8 +8,6 @@ import Frame from "./Frame";
 import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
-
-import { RendererContext } from "../../context/RendererContextWrapper";
 
 import { type Shape } from "../../hooks/useTopography";
 
@@ -21,6 +19,8 @@ Globals.assign({
 
 interface SceneProps {
   shapes: Shape[];
+  widthTerrain: number;
+  heightTerrain: number;
   meshRef: Ref<Mesh>;
   optimized: boolean;
 }
@@ -30,30 +30,30 @@ const OceanHeight = 15;
 
 const BasePosition: [number, number, number] = [0, -30, 50];
 
-function Scene({ shapes, meshRef, optimized } : SceneProps) {
-  const {
-    width,
-    height,
-    animationState
-  } = useContext(RendererContext);
-
+function Scene({ 
+  shapes,
+  meshRef,
+  widthTerrain,
+  heightTerrain,
+  optimized
+} : SceneProps) {
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
-  }, [shapes.length]);
+  }, [shapes]);
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
     <GalleryRoom />
      <group
-        position={[-width/2, FrameHeight, height/2]}
+        position={[-widthTerrain/2, FrameHeight, heightTerrain/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
         {
-          shapes.map((shape, index) => {
+          shapes.map((shape) => {
             return (
               <TopographyWrapper
-                key={index} 
+                key={shape.id}
                 shape={shape}
                 maxElevation={maxElevation}
                 optimized={optimized}/>
@@ -61,7 +61,9 @@ function Scene({ shapes, meshRef, optimized } : SceneProps) {
           })
         }
       </group>
-      <MarbleBase position={[0, -0, 0]} size={[width * 1.1, 50, height * 1.25]} text="Auvergne Topo" />
+      
+      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text="Auvergne Topo" />
+      {/*<Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>*/}
     </Suspense>
   );
 };

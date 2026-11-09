@@ -1,5 +1,4 @@
 import { useMemo, useContext } from "react";
-import { Geometry, Base, Subtraction } from '@react-three/csg'
 import { useLoader } from '@react-three/fiber';
 import { FontLoader, TextGeometry } from 'three-stdlib';
 import { MeshStandardMaterial, TextureLoader } from "three";

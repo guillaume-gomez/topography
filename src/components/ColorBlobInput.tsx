@@ -70,7 +70,7 @@ function ColorBlobInput({ value, onChange, ref, animate = true } : ColorBlobInpu
           height="64"
           viewBox="0 0 200 200"
           className="hover:cursor-pointer relative"
-          style={{ bottom: 46, height: 60 }}
+          style={{ bottom: 50, height: 60 }}
         >
           <animated.path
             fill={value} 

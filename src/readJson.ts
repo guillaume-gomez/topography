@@ -15,7 +15,7 @@ export async function getData(url: string): Promise<TopographyData> {
 
     const result = await response.json();
     return result;
-  } catch (error) {
+  } catch (error : any) {
     return error.message;
   }
 }

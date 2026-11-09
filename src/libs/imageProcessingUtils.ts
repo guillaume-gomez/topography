@@ -1,5 +1,5 @@
 
-export async function loadImage(imagepath: string): Promise<Image> {
+export async function loadImage(imagepath: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     let image = new Image();
     image.onload = () => resolve(image);
@@ -28,7 +28,7 @@ export function resizeImageAndConvertToGrey(image: HTMLImageElement): ImageData 
   return context.getImageData(0, 0, expectedWidth, expectedHeight);
 }
 
-export function resizeImageSize(width, height): {expectedWidth: number, expectedHeight: number} {
+export function resizeImageSize(width: number, height: number): {expectedWidth: number, expectedHeight: number} {
   if(width > height) {
     return {expectedWidth: 256, expectedHeight: 256 * (height/width) }
   }
@@ -36,7 +36,7 @@ export function resizeImageSize(width, height): {expectedWidth: number, expected
   return {expectedHeight: 256, expectedWidth: 256 * (width/height) }
 }
 
-function resizeImageCanvas(originCanvas: HTMLCanvasElement, targetCanvas: HTMLCanvasElement, expectedWidth: number, expectedHeight: number) {
+function resizeImageCanvas(originCanvas: OffscreenCanvas, targetCanvas: OffscreenCanvas, expectedWidth: number, expectedHeight: number) {
   // resize image to 50%
   const canvasBuffer = new OffscreenCanvas(originCanvas.width * 0.5, originCanvas.height * 0.5);
   const contextBuffer = getContext(canvasBuffer);
@@ -64,7 +64,7 @@ function resizeImageCanvas(originCanvas: HTMLCanvasElement, targetCanvas: HTMLCa
 }
 
 
-function convertToGrayScale(context: CanvasRenderingContext2D, width: number, height: number) {
+function convertToGrayScale(context: OffscreenCanvasRenderingContext2D, width: number, height: number) {
   const imageData = context.getImageData(0, 0, width, height);
   for (let i = 0; i < imageData.data.length; i += 4) {
    const red = imageData.data[i];
@@ -81,7 +81,7 @@ function convertToGrayScale(context: CanvasRenderingContext2D, width: number, he
   context.putImageData(imageData, 0, 0);
 }
 
-function getContext(canvas: HTMLCanvasElement) : CanvasRenderingContext2D {
+function getContext(canvas: OffscreenCanvas) : OffscreenCanvasRenderingContext2D {
   const context = canvas.getContext("2d");
 
   if(!context) {
