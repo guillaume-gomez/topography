@@ -154,12 +154,6 @@ function App() {
             >
               <ToggleSoundButton />
               <Card kustomClass="absolute left-2 lg:left-5  top-2 lg:top-5 z-10 opacity-70">
-                <ProgressButton
-                  label="Generate"
-                  onClick={() => {
-                      onGenerate();
-                    }
-                  } />
                 <div className="flex flex-row gap-3 items-center">
                   <ToggleDayButton />
                   <div className="flex flex-col gap-1">
@@ -187,6 +181,12 @@ function App() {
                     animate={false}
                   />
                 </div>
+                <ProgressButton
+                  label="Generate"
+                  onClick={() => {
+                      onGenerate();
+                    }
+                  } />
               </Card>
               <ThreejsRenderer
                 shapes={shapes}
