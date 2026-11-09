@@ -48,8 +48,8 @@ function App() {
   const { grid, createGrid } = useGrid({
     //filepath: "volcano.json",
     typeOfFile: "noise",
-    widthForNoise: 128,
-    heightForNoise: 96
+    widthForNoise: 128 * noiseRatio,
+    heightForNoise: 128
   });
 
   const { generate: generateTopographies, shapes: shapesTopographies } = useTopographies({
@@ -183,7 +183,7 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <RatioInput onChange={(newValue: number) => setNatioRatio(newValue)} value={noiseRatio} />
+                <RatioInput onChange={(newValue: number) => setNoiseRatio(newValue)} value={noiseRatio} />
                 <div className="flex flex-row gap-1 items-center justify-between">
                   <ColorBlobInput
                     value={colorFrom}

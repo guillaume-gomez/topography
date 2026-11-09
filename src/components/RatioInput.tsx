@@ -15,17 +15,8 @@ function RatioInput({ value, onChange }: RatioInputProps) {
         value={value}
         step={0.25}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="range range-primary"
+        className="range range-secondary"
       />
-      <div className="flex justify-between  text-xs">
-        <span>|</span>
-        <span>|</span>
-        <span>|</span>
-        <span>|</span>
-        <span>|</span>
-        <span>|</span>
-        <span>|</span>
-      </div>
       <div className="flex justify-between text-xs">
         <span>0.5</span>
         <span>0.75</span>
