@@ -6,7 +6,8 @@ import * as d3 from "d3-contour";
 
 interface TopographyProps {
   numberOfLayers: number;
-  fromToColors?: [string, string];
+  colorFrom?: string;
+  colorTo?: string;
 }
 
 export interface Shape {
@@ -43,9 +44,10 @@ function mapRange (n: number, start1: number, stop1: number, start2: number, sto
   return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
 }
 
+
 const BASE_TERRAIN = 500;
 
-function useTopographies({ numberOfLayers, fromToColors } : TopographyProps) : UseTopographiesReturn {
+function useTopographies({ numberOfLayers, colorFrom, colorTo } : TopographyProps) : UseTopographiesReturn {
   const [shapes, setShapes] = useState<Shape[]>([]);
 
   function computeThresholds(min:number, max :number) : number[] {
@@ -93,8 +95,8 @@ function useTopographies({ numberOfLayers, fromToColors } : TopographyProps) : U
   }
 
   function colorByElevation(index: number): Color {
-    if(fromToColors) {
-      const colors = lerpColors(fromToColors[0], fromToColors[1], numberOfLayers);
+    if(colorFrom && colorTo) {
+      const colors = lerpColors(colorFrom, colorTo, numberOfLayers);
       return new Color().setRGB(...colors[index % colors.length], SRGBColorSpace);
     }
 
