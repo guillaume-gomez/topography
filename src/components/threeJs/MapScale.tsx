@@ -1,6 +1,7 @@
 import { useMemo, useContext } from "react";
-import { CanvasTexture, SRGBColorSpace } from "three";
+import { CanvasTexture, SRGBColorSpace, MeshLambertMaterial } from "three";
 import { lerpColors, rgbToHex } from "../../colorUtils";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 interface MapScaleProps {
@@ -50,11 +51,13 @@ function MapScale({
     return texture;
   }, [color, backgroundColor, colorFrom, colorTo]);
 
+  // lock the reload of the material when the material is reloaded
+  const material = useDayNightMaterial({ map: texture }, MeshLambertMaterial);
+
   return (
     <group position={position} rotation={rotation}>
-      <mesh scale={0.35}>
+      <mesh scale={0.35} material={material}>
         <planeGeometry args={[Width, Height]} />
-        <meshLambertMaterial map={texture} transparent />
       </mesh>
     </group>
   );
