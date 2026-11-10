@@ -5,6 +5,7 @@ import { maxBy } from "lodash";
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
+import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
 
@@ -24,8 +25,10 @@ interface SceneProps {
   optimized: boolean;
 }
 
-const BaseHeight = 30;
+const FrameHeight = 30;
 const OceanHeight = 15;
+
+const BasePosition: [number, number, number] = [0, -30, 50];
 
 function Scene({ 
   shapes,
@@ -42,7 +45,7 @@ function Scene({
     <Suspense fallback={<FallBackLoader/>} >
     <GalleryRoom />
      <group
-        position={[-widthTerrain/2, BaseHeight, heightTerrain/2]}
+        position={[-widthTerrain/2, FrameHeight, heightTerrain/2]}
         rotation={[-Math.PI / 2, 0, 0]}
         ref={meshRef}
       >
@@ -58,13 +61,9 @@ function Scene({
           })
         }
       </group>
-      <mesh
-        position={[0, BaseHeight/2, 0]}
-      >
-        <boxGeometry args={[widthTerrain, OceanHeight, heightTerrain]} />
-        <meshStandardMaterial color="#092a5e" />
-      </mesh>
-      <Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>
+      
+      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text="Guillaume Gomez" />
+      {/*<Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>*/}
     </Suspense>
   );
 };
