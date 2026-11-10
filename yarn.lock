@@ -1528,10 +1528,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"daisyui@npm:^5.5.19":
-  version: 5.5.19
-  resolution: "daisyui@npm:5.5.19"
-  checksum: 10c0/10e33c5e602b491b6e82e369fd08f1737359a327361cd464e87e2bf9e14e0601bf362db03e6846ae398f76d3f2cf524e071d3fec85b18d6637faddd628d2a10a
+"daisyui@npm:^5.7.50":
+  version: 5.7.50
+  resolution: "daisyui@npm:5.7.50"
+  checksum: 10c0/5c8f0466c34c8850acdd9671e4b1721f2187ef869d5735aa3270ac3309414f22d5295b86fc8f23237af1b394a664768f661bf5cf4c899d8fc9a13c6763bef7b5
   languageName: node
   linkType: hard
 
@@ -3260,7 +3260,7 @@ __metadata:
     "@types/three": "npm:^0.183.1"
     "@vitejs/plugin-react": "npm:^6.1.2"
     d3-contour: "npm:^4.0.2"
-    daisyui: "npm:^5.5.19"
+    daisyui: "npm:^5.7.50"
     eslint: "npm:^9.39.1"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.24"
