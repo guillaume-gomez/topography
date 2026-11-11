@@ -26,10 +26,10 @@ function MarbleBase({position , size, text} : Props) {
 				<boxGeometry args={size} />	
 			</mesh>
 		  <TextLabel
-				text={text}
-		  	width={200}
-				height={200}
-				fontSize={48}
+			  text={text}
+		    width={200}
+			  height={200}
+			  fontSize={48}
 		    color="#000000"
 		    anchor="bottom-right"
 		    rotation={[-Math.PI / 2, 0, 0]}

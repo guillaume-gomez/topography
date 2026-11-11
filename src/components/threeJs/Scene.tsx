@@ -62,7 +62,7 @@ function Scene({
         }
       </group>
       
-      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text="Auvergne Topo" />
+      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text="Guillaume Gomez" />
       {/*<Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>*/}
     </Suspense>
   );

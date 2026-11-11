@@ -69,7 +69,8 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
             setAnimationState("started");
           }
         },
-        onRest: () => {
+        onRest: (result) => {
+          if (!result.finished || result.cancelled) return;
           if(shape.elevation === maxElevation) {
             setAnimationState("ended");
           }

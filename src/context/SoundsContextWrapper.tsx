@@ -4,6 +4,17 @@ import useRandomSound from "../hooks/useRandomSound";
 
 const { BASE_URL } = import.meta.env;
 
+// defined outside the component so the reference stays stable and Howl instances are not recreated on every render
+const WOOD_SOUNDS = [
+  `${BASE_URL}/sounds/woods/1.mp3`,
+  `${BASE_URL}/sounds/woods/2.mp3`,
+  `${BASE_URL}/sounds/woods/3.mp3`,
+  `${BASE_URL}/sounds/woods/4.mp3`,
+  `${BASE_URL}/sounds/woods/5.mp3`,
+  `${BASE_URL}/sounds/woods/6.mp3`,
+  `${BASE_URL}/sounds/woods/7.wav`
+];
+
 export interface SoundsContextParams {
   playTopographyPieceSound: () => void;
   stopTopographyPieceSound: () => void;
@@ -20,15 +31,7 @@ interface Props {
 
 function SoundsContextWrapper({children}: Props) {
   const [hasSound, setHasSound] = useState<boolean>(true);
-  const { playRandomSound: playTopographyPieceSound, stopRandomSound: stopTopographyPieceSound } = useRandomSound([
-    `${BASE_URL}/sounds/woods/1.mp3`,
-    `${BASE_URL}/sounds/woods/2.mp3`,
-    `${BASE_URL}/sounds/woods/3.mp3`,
-    `${BASE_URL}/sounds/woods/4.mp3`,
-    `${BASE_URL}/sounds/woods/5.mp3`,
-    `${BASE_URL}/sounds/woods/6.mp3`,
-    `${BASE_URL}/sounds/woods/7.wav`
-  ], 0.5);
+  const { playRandomSound: playTopographyPieceSound, stopRandomSound: stopTopographyPieceSound } = useRandomSound(WOOD_SOUNDS, 0.5);
   const [playChangeColorSound] = useSound(`${BASE_URL}/sounds/freesound_community-paper-slide-89980.mp3`, { volume: 0.5 });
   const [playSubmitSound] = useSound(`${BASE_URL}/sounds/freesound_community-backpack-sound-96166.mp3`, { volume: .5 });
 

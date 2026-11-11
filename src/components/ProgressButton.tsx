@@ -58,7 +58,7 @@ function ProgressButton({ label, onClick } : ProgressButtonProps) {
   const progressPercentage = (milliseconds/timerGeneration)*100;
 
   return (
-    <div className="aura text-black-700">
+    <div className="aura text-amber-200">
       <button
         className="btn btn-secondary flex flex-row justify-start w-full min-w-24 px-0"
         onClick={handleClick}
