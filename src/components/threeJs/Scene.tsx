@@ -6,7 +6,6 @@ import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
 import Frame from "./Frame";
 import MarbleBase from "./MarbleBase";
-import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
 
 import { type Shape } from "../../hooks/useTopography";
@@ -43,7 +42,6 @@ function Scene({
 
   return (
     <Suspense fallback={<FallBackLoader/>} >
-    <GalleryRoom />
      <group
         position={[-widthTerrain/2, FrameHeight, heightTerrain/2]}
         rotation={[-Math.PI / 2, 0, 0]}
