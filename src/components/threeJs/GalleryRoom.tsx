@@ -39,7 +39,7 @@ function GalleryRoom() {
   });
 
   return (
-    <Gltf ref={galleryRef} src={`${BASE_URL}/vr_gallery/scene.gltf`} scale={280.0} position={[0,-250, 0]}  />
+    <Gltf ref={galleryRef} src={`${BASE_URL}/vr_gallery/scene.gltf`} scale={280.0} position={[0,-250, 0]} receiveShadow />
   )
 };
 

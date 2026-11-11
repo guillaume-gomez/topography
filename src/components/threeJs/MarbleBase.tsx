@@ -23,7 +23,7 @@ function MarbleBase({position , size, text} : Props) {
 
 	return (
 		<group position={position}>
-		  <mesh material={material}>
+		  <mesh material={material} castShadow receiveShadow>
 				<boxGeometry args={size} />	
 			</mesh>
 		  <TextLabel

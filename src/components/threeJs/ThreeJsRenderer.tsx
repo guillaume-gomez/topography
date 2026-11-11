@@ -1,4 +1,4 @@
-import { useRef, useContext, useState, useEffect } from 'react';
+import { useRef, useContext, useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { type Mesh } from "three";
 import { GizmoHelper, GizmoViewport, Stage, Stats, CameraControls, PerformanceMonitor } from '@react-three/drei';
@@ -7,6 +7,7 @@ import CameraControlsImpl from 'camera-controls';
 import { BlendFunction, ToneMappingMode } from 'postprocessing';
 import Scene from "./Scene";
 import SceneBackground from "./SceneBackground";
+import GalleryRoom from "./GalleryRoom";
 import { type Shape } from "../../hooks/useTopography";
 import { RendererContext } from "../../context/RendererContextWrapper";
 
@@ -95,9 +96,13 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
         id="three-js-renderer"
       >
         <SceneBackground/>
+        {/* outside <Stage> so its huge bounding box doesn't push the contact shadows away */}
+        <Suspense fallback={null}>
+          <GalleryRoom />
+        </Suspense>
         <ambientLight intensity={1.5} />
         <directionalLight
-          position={[0, 200, 0]}
+          position={[100, 300, 150]}
           intensity={3}
           castShadow
           shadow-mapSize-width={2048}
@@ -126,7 +131,7 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
             intensity={1}
             environment={{ preset: "warehouse", background: false, ground: false }}
             shadows={{
-              position: [0, 20, 0],
+              position: [0, -200, 0],
               type: "contact",
               opacity: isLight ? 0.4 : 0.0,
               blur: 4,
