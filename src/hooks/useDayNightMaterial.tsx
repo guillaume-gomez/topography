@@ -17,6 +17,10 @@ function useDayNightMaterial(materialsParams: object, materialKlass?: Material) 
     return new MeshStandardMaterial({ displacementScale:0, ...materialsParams });
   }, []); // do not want to regenerate when materialsParams is recompute (as un array every render)
 
+  function reloadMaterial(newParams: object) {
+    material.setValues(newParams);
+  }
+
   useSpring({
     factorColor: isLight ? 1 : 0,
     config: { duration: timerSwitch },
@@ -25,7 +29,7 @@ function useDayNightMaterial(materialsParams: object, materialKlass?: Material) 
     }
   });
 
-  return material;
+  return { material, reloadMaterial };
 }
 
 export default useDayNightMaterial;
