@@ -18,7 +18,7 @@ function MarbleBase({position , size, text} : Props) {
     `textures/stringy-marble-unity/stringy_marble_albedo.png`,
   ]);
 
-  const material = useDayNightMaterial({ normalMap, aoMap, map });
+  const { material } = useDayNightMaterial({ normalMap, aoMap, map });
 
 	return (
 		<group position={position}>

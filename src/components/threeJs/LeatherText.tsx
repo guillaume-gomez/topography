@@ -22,7 +22,7 @@ function LeatherText({position, depth} : FrameProps) {
     `textures/brown-leather-unity/brown-leather_albedo.png`,
   ]);
 
-  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
+  const { material } = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
   return (
       <group position={position}>

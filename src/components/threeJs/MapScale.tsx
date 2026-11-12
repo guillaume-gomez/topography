@@ -1,10 +1,10 @@
-import { useMemo, useContext } from "react";
-import { CanvasTexture, SRGBColorSpace } from "three";
+import { useMemo, useContext, useEffect } from "react";
+import { CanvasTexture, SRGBColorSpace, MeshLambertMaterial } from "three";
 import { lerpColors, rgbToHex } from "../../colorUtils";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
 import { SettingsContext } from "../../context/SettingsContextWrapper";
 
 interface MapScaleProps {
-  color?: string;
   backgroundColor?: string;
   position: [number, number, number];
   rotation: [number, number, number];
@@ -15,7 +15,6 @@ const Height = 64;
 
 
 function MapScale({
-  color = "#ffffff",
   backgroundColor = "transparent",
   position = [0, 0, 0],
   rotation = [0, 0, 0]
@@ -41,20 +40,25 @@ function MapScale({
     const colors = lerpColors(colorFrom, colorTo, numberOfLayers);
     for(let index = 0; index < numberOfLayers; index++) {
       ctx.fillStyle = rgbToHex(colors[index]);
-      console.log(ctx.fillStyle)
       ctx.fillRect(stripeWidth * index, 0, stripeWidth, canvas.height);
     }
-    
+
     const texture = new CanvasTexture(canvas);
     texture.colorSpace = SRGBColorSpace;
     return texture;
-  }, [color, backgroundColor, colorFrom, colorTo]);
+  }, [backgroundColor, colorFrom, colorTo, numberOfLayers]);
+
+  const { material, reloadMaterial } = useDayNightMaterial({ map: texture }, MeshLambertMaterial);
+
+  useEffect(() => {
+    reloadMaterial({ map: texture });
+    return () => texture.dispose();
+  }, [texture]);
 
   return (
     <group position={position} rotation={rotation}>
-      <mesh scale={0.35}>
+      <mesh scale={0.35} material={material}>
         <planeGeometry args={[Width, Height]} />
-        <meshLambertMaterial map={texture} transparent />
       </mesh>
     </group>
   );
