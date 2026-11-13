@@ -60,6 +60,10 @@ function App() {
     setSceneName("intro")
   }, []);
 
+  useEffect(() => {
+    onGenerate();
+  }, [colorFrom, colorTo])
+
   const shapes = useMemo(() => hasSingleTopograhy ? shapesTopography : shapesTopographies,
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
   );
@@ -142,8 +146,6 @@ function App() {
                 setColorFrom(colorFrom);
                 setColorTo(colorTo);
                 setNumberOfLayers(layers);
-
-                onGenerate();
 
                 setSceneName("3d-scene");
               }} />

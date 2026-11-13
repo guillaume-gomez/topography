@@ -1,0 +1,67 @@
+import { useMemo, useContext, useEffect } from "react";
+import { CanvasTexture, SRGBColorSpace, MeshLambertMaterial } from "three";
+import { lerpColors, rgbToHex } from "../../colorUtils";
+import useDayNightMaterial from "../../hooks/useDayNightMaterial";
+import { SettingsContext } from "../../context/SettingsContextWrapper";
+
+interface MapScaleProps {
+  backgroundColor?: string;
+  position: [number, number, number];
+  rotation: [number, number, number];
+}
+
+const Width = 512;
+const Height = 64;
+
+
+function MapScale({
+  backgroundColor = "transparent",
+  position = [0, 0, 0],
+  rotation = [0, 0, 0]
+}: MapScaleProps) {
+
+  const {
+    colorFrom,
+    colorTo,
+    numberOfLayers
+  } = useContext(SettingsContext);
+
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = Width;
+    canvas.height = Height;
+
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const stripeWidth = canvas.width/numberOfLayers;
+
+    const colors = lerpColors(colorFrom, colorTo, numberOfLayers);
+    for(let index = 0; index < numberOfLayers; index++) {
+      ctx.fillStyle = rgbToHex(colors[index]);
+      ctx.fillRect(stripeWidth * index, 0, stripeWidth, canvas.height);
+    }
+
+    const texture = new CanvasTexture(canvas);
+    texture.colorSpace = SRGBColorSpace;
+    return texture;
+  }, [backgroundColor, colorFrom, colorTo, numberOfLayers]);
+
+  const { material, reloadMaterial } = useDayNightMaterial({ map: texture }, MeshLambertMaterial);
+
+  useEffect(() => {
+    reloadMaterial({ map: texture });
+    return () => texture.dispose();
+  }, [texture]);
+
+  return (
+    <group position={position} rotation={rotation}>
+      <mesh scale={0.35} material={material}>
+        <planeGeometry args={[Width, Height]} />
+      </mesh>
+    </group>
+  );
+};
+
+export default MapScale;

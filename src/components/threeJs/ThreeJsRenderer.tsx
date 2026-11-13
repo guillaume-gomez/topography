@@ -91,7 +91,6 @@ function ThreejsRenderer({
     recenterCamera();
   }
 
-  
   return (
       <Canvas
         camera={{ position: [0, 300, 450], fov: 75, near: 10, far: 3000 }}

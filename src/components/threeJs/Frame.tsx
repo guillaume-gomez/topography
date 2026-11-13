@@ -20,7 +20,7 @@ function Frame({width, height, depth, position } : FrameProps) {
     `textures/dark-wood-stain-unity/dark-wood-stain_albedo.png`,
   ]);
 
-  const material = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
+  const { material } = useDayNightMaterial({ displacementMap, normalMap, aoMap, map });
 
   const frameDepth = 25;
 	return (
