@@ -23,6 +23,7 @@ interface SceneProps {
   heightTerrain: number;
   meshRef: Ref<Mesh>;
   optimized: boolean;
+  marbleText: string;
 }
 
 const FrameHeight = 30;
@@ -35,7 +36,8 @@ function Scene({
   meshRef,
   widthTerrain,
   heightTerrain,
-  optimized
+  optimized,
+  marbleText
 } : SceneProps) {
   const maxElevation = useMemo(() => {
     return maxBy(shapes, "elevation")!.elevation;
@@ -62,7 +64,7 @@ function Scene({
         }
       </group>
       
-      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text="Guillaume Gomez" />
+      <MarbleBase position={[0, -0, 0]} size={[widthTerrain * 1.1, 50, heightTerrain * 1.25]} text={marbleText} />
       {/*<Frame width={widthTerrain} height={heightTerrain} depth={BaseHeight} position={[0, 0, (heightTerrain)/2]}/>*/}
     </Suspense>
   );

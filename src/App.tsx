@@ -64,6 +64,10 @@ function App() {
     [hasSingleTopograhy, shapesTopography, shapesTopographies]
   );
 
+  const marbleText = useMemo(() => hasSingleTopograhy ? 'Guillaume Gomez' : grid.gridName,
+    [hasSingleTopograhy, grid]
+  )
+
   const { widthTerrain, heightTerrain } = useMemo(() => {
     if(hasSingleTopograhy) {
       return { widthTerrain: BASE_TERRAIN, heightTerrain: BASE_TERRAIN };
@@ -189,6 +193,7 @@ function App() {
                   } />
               </Card>
               <ThreejsRenderer
+                marbleText={marbleText}
                 shapes={shapes}
                 widthTerrain={widthTerrain}
                 heightTerrain={heightTerrain}

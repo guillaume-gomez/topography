@@ -18,9 +18,15 @@ interface ThreeJsRendererProps {
   shapes: Shape[];
   widthTerrain: number;
   heightTerrain: number;
+  marbleText: string;
 }
 
-function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRendererProps ): React.ReactElement {
+function ThreejsRenderer({
+  shapes,
+  widthTerrain,
+  heightTerrain,
+  marbleText
+} : ThreeJsRendererProps ): React.ReactElement {
   const {
     animationState,
     isLight,
@@ -144,6 +150,7 @@ function ThreejsRenderer({ shapes, widthTerrain, heightTerrain } : ThreeJsRender
               heightTerrain={heightTerrain}
               meshRef={meshRef}
               optimized={optimized}
+              marbleText={marbleText}
             />
           </Stage>
         </PerformanceMonitor>
