@@ -28,17 +28,18 @@ function MarbleBase({position , size, text} : Props) {
 		  <TextLabel
 			  text={text}
 		    width={200}
-			  height={200}
+			  height={50}
 			  fontSize={48}
+			  //backgroundColor="blue"
 		    color="#000000"
 		    anchor="bottom-right"
 		    rotation={[-Math.PI / 2, 0, 0]}
-		    position={[size[0]/2 - 20, size[1]/2 + 1, size[2]/2 + 70]}
+		    position={[size[0]/2 - 20, size[1]/2 + 1, size[2]/2 - 10]}
 		  />
 		  <MapScale
 		  	color="blue"
 		  	rotation={[-Math.PI / 2, 0, 0]}
-		  	position={[size[0]/2 - 400, size[1]/2 + 1, size[2]/2 - 35]}
+		  	position={[125 - size[0]/2, size[1]/2 + 1, size[2]/2 - 35]}
 		  />
 		</group>
 	);

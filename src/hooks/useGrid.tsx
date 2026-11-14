@@ -74,7 +74,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
   }
 
   async function gridFromRealData(): Promise<Grid> {
-    const { width, height, values, min, max } = await getData(`${BASE_URL}/presets/${filepath}`);
+    const { width, height, values, min, max, gridName } = await getData(`${BASE_URL}/presets/${filepath}`);
     return { 
       gridWidth: width,
       gridHeight: height, 
@@ -82,7 +82,7 @@ function useGrid({ filepath, typeOfFile }: UseGridProps) : UseGridReturn {
       min,
       max, 
       filepath,
-      gridName: "Real data",
+      gridName,
       typeOfFile: "real-data"
     };
   }
