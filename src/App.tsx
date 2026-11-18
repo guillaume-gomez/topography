@@ -10,6 +10,7 @@ import useTopographies from "./hooks/useTopographies";
 import ProgressButton from "./components/ProgressButton";
 import useTopography from "./hooks/useTopography";
 import useGrid from "./hooks/useGrid";
+import useExportShapes from "./hooks/useExportShapes";
 import ToggleSoundButton from "./components/ToggleSoundButton";
 import ToggleDayButton from "./components/ToggleDayButton";
 import Card from "./components/Card";
@@ -55,6 +56,8 @@ function App() {
     numberOfLayers,
     fromToColors: [colorFrom, colorTo]
   });
+
+  const print = useExportShapes({width: BASE_TERRAIN, height: BASE_TERRAIN});
 
   useEffect(() => {
     setSceneName("intro")
@@ -192,7 +195,9 @@ function App() {
                   onClick={() => {
                       onGenerate();
                     }
-                  } />
+                  }
+                />
+                <button  className="btn btn-accent" onClick={() => print(shapes)}>Print ma belle</button>
               </Card>
               <ThreejsRenderer
                 marbleText={marbleText}
