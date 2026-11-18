@@ -20,29 +20,42 @@ function useExportShapes({width, height}: UseExportShapesParams) {
 
   function call(shapes: Shape[]) {
     const shapesByElevation = shapesGroupedByElevation(shapes);
-    
+    let dataImages : string[] = [];
     // clear the canvas
     context.clearRect(0, 0, width, height);
 
     Object.values(shapesByElevation).forEach(shapes => {
       drawByElevation(shapes);
-      // to do : new tab for print
-      print();  
+      // export the result of the drawing, then store it in dataImages array
+      const dataImage = canvas.toDataURL("image/png");
+      dataImages.push(dataImage);
     })
-    
+    print(dataImages);
 	}
 
-	function print() {
-		const dataImage = canvas.toDataURL("image/png");
-
+	function print(dataImages: string[]) {
     const fen = window.open();
-    // ouverture du document pour écriture
     fen.document.open();
-    // insére un élément "<img> avec l'attribut src contenant les données de l'image
-    fen.document.write("<img src='" + dataImage + "'>");
-    // fermeture du document
+    fen.document.write(`<!doctype html>
+      <html>
+        <head>
+          <title>Topologie</title>
+          <style>
+            /* margin: 0 on @page removes the browser's header/footer (title, url, date) */
+            @page { margin: 0; }
+            body { margin: 1cm; }
+            //img { display: block; max-width: 100%; page-break-after: always; }
+          </style>
+        </head>
+        <body>`
+    );
+
+    dataImages.forEach(dataImage => {
+      fen.document.write("<img src='" + dataImage + "'>");
+    });
+
+    fen.document.write("</body></html>");
     fen.document.close();
-    // lance l'impression dès que chargé
     fen.onload = setTimeout(() => {
         fen.print();
         fen.close();
