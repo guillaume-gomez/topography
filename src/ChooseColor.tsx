@@ -37,6 +37,18 @@ const COLORS = [
   "#DE541E",
   "#FF9FE5",
   "#FF858D",
+  "#2A9D8F",
+  "#264653",
+  "#355070",
+  "#8AC6D0",
+  "#2E294E",
+  "#9381FF",
+  "#D4C1EC",
+  "#6D597A",
+  "#A23B72",
+  "#E0AFA0",
+  "#C2A878",
+  "#4A5859",
 ];
 
 function ChooseColor({ onSubmit } : ChooseColorProps) {
