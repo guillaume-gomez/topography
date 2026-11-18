@@ -30,8 +30,8 @@ function TextLabel({
 }: TextLabelProps) {
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 512 * (height / width);
+    canvas.width = width;
+    canvas.height = height;
 
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = backgroundColor;
