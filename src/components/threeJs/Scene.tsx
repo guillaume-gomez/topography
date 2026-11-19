@@ -58,7 +58,10 @@ function Scene({
                 key={shape.id}
                 shape={shape}
                 maxElevation={maxElevation}
-                optimized={optimized}/>
+                optimized={optimized}
+                widthTerrain={widthTerrain}
+                heightTerrain={heightTerrain}
+              />
             )
           })
         }

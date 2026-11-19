@@ -13,16 +13,28 @@ interface TopographyWrapperProps {
   shape: Shape;
   optimized: boolean;
   maxElevation: number;
+  widthTerrain: number;
+  heightTerrain: number;
 }
 
 const Thickness = 2.5;
+const ScaleShape = 0.9;
 
 //const AnimationStartingFromTop = 500; // other animation
 const AnimationStartingFromBottom = -20;
 
 const OriginalPosition = AnimationStartingFromBottom;
 
-function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrapperProps) {
+
+
+function TopographyWrapper({
+  shape,
+  optimized,
+  maxElevation,
+  widthTerrain,
+  heightTerrain
+} : TopographyWrapperProps)
+{
   const { numberOfLayers } = useContext(SettingsContext);
   const {
     isLight,
@@ -56,10 +68,29 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
       }
 
       return {
-        from: { y: OriginalPosition },
+        from: {
+          // x and y change based on its scale
+          x: (widthTerrain - (widthTerrain * ScaleShape))/ 2,
+          z: (heightTerrain - (heightTerrain * ScaleShape))/2,
+          y: OriginalPosition,
+          scale: ScaleShape
+        }, 
         to: async (next, _cancel) => {
-          await next({ y: OriginalPosition, immediate: true });
-          await next({ y: shape.elevation * (Thickness * 2.), delay: shape.elevation * durationByLayer });
+          await next({
+            // x and y change based on its scale
+            x: (widthTerrain - (widthTerrain * ScaleShape))/ 2,
+            z: (heightTerrain - (heightTerrain * ScaleShape))/2,
+            y: OriginalPosition,
+            scale: ScaleShape,
+            immediate: true, 
+          });
+          await next({
+            x: 0,
+            z: 0,
+            y: shape.elevation * (Thickness * 2.),
+            scale: 1.,
+            delay: shape.elevation * durationByLayer
+          });
         },
         config: {
           duration: durationByLayer
@@ -88,19 +119,22 @@ function TopographyWrapper({ shape, optimized, maxElevation } : TopographyWrappe
   return (
     <>
       <TopologyShape
+        // y become z due to rotation from the parent
+        position={[springPosition.x, springPosition.z, springPosition.y as unknown as number]}
+        // without animation below
+        // position={[0, 0, shape.elevation * Thickness]}
         points={shape.points}
         color={shape.color}
-        position={[0, 0, springPosition.y as unknown as number]}
-        //position={[0, 0, shape.elevation * Thickness]}
         thickness={Thickness}
         opacity={shapeToDisplay.opacity}
+        scale={springPosition.scale}
         optimized={optimized}
       />
+
       <TopologyLine
         points={shape.points}
         color={shape.color}
         position={[0, 0, springPosition.y as unknown as number]}
-        //position={[0, 0, shape.elevation * Thickness]}
         thickness={Thickness * 0.5}
         opacity={lineToDisplay.opacity}
       />
