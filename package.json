@@ -9,8 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "yarn run build && gh-pages -d dist"
   },
   "dependencies": {
     "@react-spring/three": "10.0.3",
