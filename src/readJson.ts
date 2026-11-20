@@ -4,6 +4,7 @@ interface TopographyData {
   values: number[];
   min: number;
   max: number;
+  gridName: string;
 }
 
 export async function getData(url: string): Promise<TopographyData> {

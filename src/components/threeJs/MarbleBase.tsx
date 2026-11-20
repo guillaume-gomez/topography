@@ -1,4 +1,3 @@
-import { useMemo, useContext } from "react";
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from "three";
 import useDayNightMaterial from "../../hooks/useDayNightMaterial";
@@ -37,7 +36,6 @@ function MarbleBase({position , size, text} : Props) {
 		    position={[size[0]/2 - 20, size[1]/2 + 1, size[2]/2 - 10]}
 		  />
 		  <MapScale
-		  	color="blue"
 		  	rotation={[-Math.PI / 2, 0, 0]}
 		  	position={[125 - size[0]/2, size[1]/2 + 1, size[2]/2 - 35]}
 		  />

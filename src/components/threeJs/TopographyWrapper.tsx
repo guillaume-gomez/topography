@@ -120,7 +120,11 @@ function TopographyWrapper({
     <>
       <TopologyShape
         // y become z due to rotation from the parent
-        position={[springPosition.x, springPosition.z, springPosition.y as unknown as number]}
+        position={[
+          springPosition.x as unknown as number,
+          springPosition.z as unknown as number,
+          springPosition.y as unknown as number
+        ]}
         // without animation below
         // position={[0, 0, shape.elevation * Thickness]}
         points={shape.points}

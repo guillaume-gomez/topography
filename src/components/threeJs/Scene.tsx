@@ -4,7 +4,7 @@ import { maxBy } from "lodash";
 
 import FallBackLoader from "./FallBackLoader";
 import TopographyWrapper from "./TopographyWrapper";
-import Frame from "./Frame";
+//import Frame from "./Frame";
 import MarbleBase from "./MarbleBase";
 import GalleryRoom from './GalleryRoom';
 import { Globals } from '@react-spring/three';
@@ -27,9 +27,6 @@ interface SceneProps {
 }
 
 const FrameHeight = 30;
-const OceanHeight = 15;
-
-const BasePosition: [number, number, number] = [0, -30, 50];
 
 function Scene({ 
   shapes,
