@@ -64,7 +64,7 @@ function TopographyWrapper({
   const [springPosition, ] = useSpring(() => {
       // ugly hack because useSprings 10.0.3 rerun everytime Scene props changes
       if(animationState === "ended") {
-        return { y: shape.elevation * (Thickness * 2.), delay: shape.elevation * durationByLayer };
+        return { x: 0, z: 0, y: shape.elevation * (Thickness * 2.), scale: 1., delay: shape.elevation * durationByLayer };
       }
 
       return {

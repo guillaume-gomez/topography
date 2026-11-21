@@ -1,10 +1,10 @@
 import { useMemo, useContext } from "react";
 import { RendererContext } from "../context/RendererContextWrapper";
-import { MeshStandardMaterial, type Material } from "three";
+import { MeshStandardMaterial, MeshLambertMaterial } from "three";
 import { useSpring } from "@react-spring/three";
 
 
-function useDayNightMaterial(materialsParams: object, materialKlass?: Material) {
+function useDayNightMaterial(materialsParams: object, materialKlass?: typeof MeshStandardMaterial | typeof MeshLambertMaterial) {
   const {
     isLight,
     timerSwitch,
